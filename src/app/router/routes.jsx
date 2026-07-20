@@ -3,10 +3,6 @@ import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import EmptyLayout from "@/layouts/EmptyLayout";
 
-// Guards
-import AuthGuard from "./guards/AuthGuard";
-import GuestGuard from "./guards/GuestGuard";
-
 // App Pages
 import Home from "@/pages/Home";
 import About from "@/pages/About";
@@ -68,43 +64,33 @@ export const routes = [
 				path: ROUTES.CONTACT.substring(1),
 				element: <Contact />,
 			},
-			// Protected Routes under AppLayout
+			// Protected Routes directly accessible (Guards removed temporarily)
 			{
-				element: <AuthGuard />,
-				children: [
-					{
-						path: ROUTES.CHECKOUT.substring(1),
-						element: <Checkout />,
-					},
-					{
-						path: ROUTES.PROFILE.substring(1),
-						element: <Profile />,
-					},
-				],
+				path: ROUTES.CHECKOUT.substring(1),
+				element: <Checkout />,
+			},
+			{
+				path: ROUTES.PROFILE.substring(1),
+				element: <Profile />,
 			},
 		],
 	},
-	// Auth Layout Routes (Guest Only)
+	// Auth Layout Routes (Direct access, GuestGuard removed temporarily)
 	{
 		path: "/auth",
-		element: <GuestGuard />,
+		element: <AuthLayout />,
 		children: [
 			{
-				element: <AuthLayout />,
-				children: [
-					{
-						path: ROUTES.LOGIN.replace("/auth/", ""),
-						element: <Login />,
-					},
-					{
-						path: ROUTES.REGISTER.replace("/auth/", ""),
-						element: <Register />,
-					},
-					{
-						path: ROUTES.FORGOT_PASSWORD.replace("/auth/", ""),
-						element: <ForgotPassword />,
-					},
-				],
+				path: ROUTES.LOGIN.replace("/auth/", ""),
+				element: <Login />,
+			},
+			{
+				path: ROUTES.REGISTER.replace("/auth/", ""),
+				element: <Register />,
+			},
+			{
+				path: ROUTES.FORGOT_PASSWORD.replace("/auth/", ""),
+				element: <ForgotPassword />,
 			},
 		],
 	},

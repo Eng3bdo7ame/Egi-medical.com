@@ -12,5 +12,3 @@ export const navigationLinks = [
 ];
 
 export default navigationLinks;
-
-

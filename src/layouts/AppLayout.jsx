@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import { navigationLinks } from "@/app/config/navigation";
+import { navigationLinks } from "@/config/navigation";
 import { useTheme } from "@/app/providers/ThemeProvider";
 
 const AppLayout = () => {
