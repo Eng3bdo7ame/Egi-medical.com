@@ -1,0 +1,132 @@
+import { Navigate } from "react-router-dom";
+import AppLayout from "@/layouts/AppLayout";
+import AuthLayout from "@/layouts/AuthLayout";
+import EmptyLayout from "@/layouts/EmptyLayout";
+
+// Guards
+import AuthGuard from "./guards/AuthGuard";
+import GuestGuard from "./guards/GuestGuard";
+
+// App Pages
+import Home from "@/pages/Home";
+import About from "@/pages/About";
+import Products from "@/pages/Products";
+import ProductDetails from "@/pages/ProductDetails";
+import Category from "@/pages/Category";
+import Brands from "@/pages/Brands";
+import Cart from "@/pages/Cart";
+import Checkout from "@/pages/Checkout";
+import Profile from "@/pages/Profile";
+import Contact from "@/pages/Contact";
+
+// Auth Pages
+import Login from "@/pages/Login";
+import Register from "@/pages/Register";
+import ForgotPassword from "@/pages/ForgotPassword";
+
+// Status / Empty Pages
+import NotFound from "@/pages/NotFound";
+import Maintenance from "@/pages/Maintenance";
+
+import { ROUTES } from "./paths";
+
+export const routes = [
+	// App Layout Routes
+	{
+		path: "/",
+		element: <AppLayout />,
+		children: [
+			{
+				index: true,
+				element: <Home />,
+			},
+			{
+				path: ROUTES.PRODUCTS.substring(1),
+				element: <Products />,
+			},
+			{
+				path: ROUTES.PRODUCT_DETAILS.substring(1),
+				element: <ProductDetails />,
+			},
+			{
+				path: ROUTES.CATEGORY.substring(1),
+				element: <Category />,
+			},
+			{
+				path: ROUTES.BRANDS.substring(1),
+				element: <Brands />,
+			},
+			{
+				path: ROUTES.CART.substring(1),
+				element: <Cart />,
+			},
+			{
+				path: ROUTES.ABOUT.substring(1),
+				element: <About />,
+			},
+			{
+				path: ROUTES.CONTACT.substring(1),
+				element: <Contact />,
+			},
+			// Protected Routes under AppLayout
+			{
+				element: <AuthGuard />,
+				children: [
+					{
+						path: ROUTES.CHECKOUT.substring(1),
+						element: <Checkout />,
+					},
+					{
+						path: ROUTES.PROFILE.substring(1),
+						element: <Profile />,
+					},
+				],
+			},
+		],
+	},
+	// Auth Layout Routes (Guest Only)
+	{
+		path: "/auth",
+		element: <GuestGuard />,
+		children: [
+			{
+				element: <AuthLayout />,
+				children: [
+					{
+						path: ROUTES.LOGIN.replace("/auth/", ""),
+						element: <Login />,
+					},
+					{
+						path: ROUTES.REGISTER.replace("/auth/", ""),
+						element: <Register />,
+					},
+					{
+						path: ROUTES.FORGOT_PASSWORD.replace("/auth/", ""),
+						element: <ForgotPassword />,
+					},
+				],
+			},
+		],
+	},
+	// Empty Layout Routes
+	{
+		path: "/",
+		element: <EmptyLayout />,
+		children: [
+			{
+				path: ROUTES.NOT_FOUND.substring(1),
+				element: <NotFound />,
+			},
+			{
+				path: ROUTES.MAINTENANCE.substring(1),
+				element: <Maintenance />,
+			},
+			{
+				path: "*",
+				element: <Navigate to={ROUTES.NOT_FOUND} replace />,
+			},
+		],
+	},
+];
+
+export default routes;
