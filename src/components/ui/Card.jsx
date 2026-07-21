@@ -1,11 +1,13 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export const Card = ({ className = "", children, ...props }) => {
+export const Card = ({ className, children, ...props }) => {
+	// Implements the Medical Design Card Base:
+	// White background, 20px radius, border-light, floating shadow, interactive hover state
 	return (
 		<div
 			className={cn(
-				"rounded-lg border border-border bg-surface text-text shadow-sm transition-colors",
+				"bg-surface text-text rounded-[20px] border border-border-light shadow-floating transition-all duration-200 hover:-translate-y-1 hover:shadow-overlay",
 				className
 			)}
 			{...props}
@@ -15,7 +17,7 @@ export const Card = ({ className = "", children, ...props }) => {
 	);
 };
 
-export const CardHeader = ({ className = "", children, ...props }) => {
+export const CardHeader = ({ className, children, ...props }) => {
 	return (
 		<div
 			className={cn("flex flex-col space-y-1.5 p-6", className)}
@@ -26,10 +28,10 @@ export const CardHeader = ({ className = "", children, ...props }) => {
 	);
 };
 
-export const CardTitle = ({ className = "", children, ...props }) => {
+export const CardTitle = ({ className, children, ...props }) => {
 	return (
 		<h3
-			className={cn("font-bold text-lg leading-none tracking-tight", className)}
+			className={cn("font-semibold text-xl leading-none tracking-tight", className)}
 			{...props}
 		>
 			{children}
@@ -37,7 +39,7 @@ export const CardTitle = ({ className = "", children, ...props }) => {
 	);
 };
 
-export const CardDescription = ({ className = "", children, ...props }) => {
+export const CardDescription = ({ className, children, ...props }) => {
 	return (
 		<p
 			className={cn("text-sm text-text-muted", className)}
@@ -48,7 +50,7 @@ export const CardDescription = ({ className = "", children, ...props }) => {
 	);
 };
 
-export const CardContent = ({ className = "", children, ...props }) => {
+export const CardContent = ({ className, children, ...props }) => {
 	return (
 		<div className={cn("p-6 pt-0", className)} {...props}>
 			{children}
@@ -56,10 +58,10 @@ export const CardContent = ({ className = "", children, ...props }) => {
 	);
 };
 
-export const CardFooter = ({ className = "", children, ...props }) => {
+export const CardFooter = ({ className, children, ...props }) => {
 	return (
 		<div
-			className={cn("flex items-center p-6 pt-0 border-t border-border/10 mt-6", className)}
+			className={cn("flex items-center p-6 pt-0 border-t border-border-light mt-6", className)}
 			{...props}
 		>
 			{children}

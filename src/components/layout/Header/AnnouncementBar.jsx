@@ -1,39 +1,82 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import Container from "@/components/ui/Container";
-import Stack from "@/components/ui/Stack";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { Icon } from "@/components/ui/Icon";
 
+/**
+ * AnnouncementBar Component
+ * Matches reference design exactly: Light background, Truck icon, Location, Hotline, Language, and Login.
+ */
 export const AnnouncementBar = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
 	return (
-		<div className="w-full bg-secondary text-background py-2 text-xs font-semibold select-none transition-colors duration-normal">
+		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none">
 			<Container>
-				<Stack direction="row" align="center" justify="between" gap={4}>
-					{/* Left: Official Distributor Message */}
-					<div className="text-center sm:text-start flex-1 sm:flex-none">
-						{isRtl 
-							? "🚚 الموزع الرسمي للماركات الطبية العالمية في مصر" 
-							: "🚚 Official Distributor of Global Medical Brands in Egypt"}
+				<div className="flex items-center justify-between py-2.5 gap-4">
+					{/* Left: Shipping */}
+					<div className="flex items-center gap-2 font-medium">
+						<Icon name="Truck" size="sm" className="text-primary" />
+						<span>
+							{isRtl
+								? "شحن مجاني للطلبات فوق 50 دولار"
+								: "Free Shipping on orders over $50"}
+						</span>
 					</div>
 
-					{/* Right: Location, Hotline, Language */}
-					<Stack direction="row" align="center" gap={4} className="hidden md:flex">
-						{/* Location */}
-						<div className="flex items-center gap-1">
-							<span>📍</span>
-							<span>{isRtl ? "القاهرة" : "Cairo"}</span>
+					{/* Right: Location + Hotline + Language + Auth */}
+					<div className="flex items-center gap-4 lg:gap-6">
+						{/* Deliver To */}
+						<div className="hidden lg:flex items-center gap-2 text-text-secondary">
+							<Icon name="MapPin" size="sm" className="text-primary shrink-0" />
+							<div className="flex flex-col leading-[1.2]">
+								<span className="text-[10px] text-text-muted font-normal">
+									{isRtl ? "التوصيل إلى" : "Deliver to"}
+								</span>
+								<span className="font-semibold text-text">
+									{isRtl ? "القاهرة، مصر" : "Cairo, Egypt"}
+								</span>
+							</div>
 						</div>
 
-						<span className="opacity-40">|</span>
+						<span className="hidden lg:block w-px h-5 bg-divider" />
 
 						{/* Hotline */}
-						<a href="tel:19999" className="hover:opacity-90 transition-opacity">
-							{isRtl ? "📞 الخط الساخن: 19999" : "📞 Hotline: 19999"}
+						<a
+							href="tel:01001234567"
+							className="hidden lg:flex items-center gap-2 text-text-secondary hover:text-primary transition-colors"
+						>
+							<Icon name="Phone" size="sm" className="text-primary shrink-0" />
+							<div className="flex flex-col leading-[1.2]">
+								<span className="text-[10px] text-text-muted font-normal">
+									{isRtl ? "تحتاج مساعدة؟" : "Need Help?"}
+								</span>
+								<span className="font-semibold text-text">0100 123 4567</span>
+							</div>
 						</a>
-					</Stack>
-				</Stack>
+
+						<span className="hidden lg:block w-px h-5 bg-divider" />
+
+						{/* Language Switcher */}
+						<LanguageSwitcher />
+
+						<span className="hidden sm:block w-px h-5 bg-divider" />
+
+						{/* Login / Register */}
+						<Link
+							to="/auth/login"
+							className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
+						>
+							<Icon name="User" size="sm" className="text-primary shrink-0" />
+							<span className="hidden sm:inline">
+								{isRtl ? "الدخول / التسجيل" : "Login / Register"}
+							</span>
+						</Link>
+					</div>
+				</div>
 			</Container>
 		</div>
 	);

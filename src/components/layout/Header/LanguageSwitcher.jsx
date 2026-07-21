@@ -1,21 +1,34 @@
 import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { Button } from "@/components/ui/button";
+import { LANGUAGES } from "@/constants/languages";
+import { Globe } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export const LanguageSwitcher = () => {
+/**
+ * LanguageSwitcher Component
+ * Toggles between English and Arabic.
+ * Persists choice in localStorage via I18nProvider.
+ * Supports RTL/LTR and Light/Dark.
+ */
+export const LanguageSwitcher = ({ variant = "default", className }) => {
 	const { language, toggleLanguage } = useLanguage();
 	const isRtl = language === "ar";
 
 	return (
-		<Button
-			variant="ghost"
-			size="sm"
+		<button
 			onClick={toggleLanguage}
-			className="text-xs font-bold font-mono tracking-wider hover:bg-surface-2 transition-colors duration-fast"
-			aria-label={isRtl ? "Switch to English" : "تغيير اللغة للعربية"}
+			className={cn(
+				"inline-flex items-center gap-1.5 text-xs font-medium transition-colors duration-150 cursor-pointer select-none rounded-md focus-visible:ring-2 focus-visible:ring-ring/50 outline-none",
+				variant === "announcement"
+					? "text-white/90 hover:text-white px-2 py-1"
+					: "text-text-secondary hover:text-primary px-2 py-1.5 hover:bg-surface-2",
+				className
+			)}
+			aria-label={isRtl ? "Switch to English" : "التبديل إلى العربية"}
 		>
-			{isRtl ? "EN" : "عربي"}
-		</Button>
+			<Globe className="w-3.5 h-3.5" />
+			<span>{isRtl ? "English" : "العربية"}</span>
+		</button>
 	);
 };
 

@@ -1,35 +1,63 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Icon } from "@/components/ui/Icon";
+
+/**
+ * HeaderActions Component
+ * Icon + Text buttons for Wishlist and Cart (matching reference design).
+ */
+
+const ActionButton = ({ to, icon, label, count, className }) => {
+	const { language } = useLanguage();
+	const isRtl = language === "ar";
+	
+	return (
+		<Link
+			to={to}
+			className={cn(
+				"flex items-center gap-2 p-2 rounded-[14px] text-text-secondary hover:text-primary transition-colors duration-200 group select-none",
+				className
+			)}
+			aria-label={label}
+		>
+			<div className="relative">
+				<Icon name={icon} size="lg" className="text-text group-hover:text-primary transition-colors" />
+				{count > 0 && (
+					<span className="absolute -top-2 -end-2 flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-primary text-white text-[11px] font-bold leading-none shadow-sm">
+						{count > 99 ? "99+" : count}
+					</span>
+				)}
+			</div>
+			<span className="font-semibold text-text group-hover:text-primary transition-colors hidden xl:block">
+				{label}
+			</span>
+		</Link>
+	);
+};
 
 export const HeaderActions = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
 	return (
-		<div className="flex items-center gap-1">
-			{/* Compare Button */}
-			<Button variant="ghost" size="icon-sm" title={isRtl ? "مقارنة المنتجات" : "Compare Products"}>
-				🔄
-			</Button>
+		<div className="flex items-center gap-2 lg:gap-6 shrink-0">
+			{/* Wishlist */}
+			<ActionButton
+				to="/wishlist"
+				icon="Heart"
+				label={isRtl ? "المفضلة" : "Wishlist"}
+				count={0}
+			/>
 
-			{/* Wishlist Button */}
-			<Button variant="ghost" size="icon-sm" title={isRtl ? "المفضلة" : "Wishlist"}>
-				❤️
-			</Button>
-
-			{/* Cart Button */}
-			<Button variant="ghost" size="icon-sm" className="relative" title={isRtl ? "سلة المشتريات" : "Shopping Cart"}>
-				🛒
-				<span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-background text-[10px] font-bold">
-					0
-				</span>
-			</Button>
-
-			{/* Account Button */}
-			<Button variant="ghost" size="icon-sm" title={isRtl ? "حسابي" : "My Account"}>
-				👤
-			</Button>
+			{/* Cart */}
+			<ActionButton
+				to="/cart"
+				icon="ShoppingCart"
+				label={isRtl ? "السلة" : "Cart"}
+				count={2}
+			/>
 		</div>
 	);
 };

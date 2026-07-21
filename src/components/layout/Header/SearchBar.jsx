@@ -1,49 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Icon } from "@/components/ui/Icon";
 
-export const SearchBar = () => {
+/**
+ * SearchBar Component
+ * Matches the reference design: Search input on left, category dropdown on right, big blue search button.
+ */
+
+const CATEGORIES = {
+	en: [
+		{ value: "all", label: "All Categories" },
+		{ value: "devices", label: "Medical Devices" },
+		{ value: "consumables", label: "Consumables" },
+		{ value: "homecare", label: "Home Care" },
+		{ value: "diagnostics", label: "Diagnostics" },
+		{ value: "orthopedics", label: "Orthopedics" },
+	],
+	ar: [
+		{ value: "all", label: "كل الأقسام" },
+		{ value: "devices", label: "الأجهزة الطبية" },
+		{ value: "consumables", label: "المستلزمات" },
+		{ value: "homecare", label: "الرعاية المنزلية" },
+		{ value: "diagnostics", label: "التشخيص" },
+		{ value: "orthopedics", label: "العظام" },
+	],
+};
+
+export const SearchBar = ({ className }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+	const [category, setCategory] = useState("all");
+
+	const categories = CATEGORIES[language] || CATEGORIES.en;
 
 	return (
-		<form 
-			onSubmit={(e) => e.preventDefault()} 
-			className="w-full max-w-2xl flex items-center bg-surface border-2 border-primary/20 hover:border-primary/40 focus-within:border-primary rounded-xl overflow-hidden shadow-sm transition-all duration-fast"
+		<form
+			onSubmit={(e) => e.preventDefault()}
+			className={cn(
+				"flex items-stretch w-full max-w-3xl h-[52px] rounded-[14px] overflow-hidden",
+				"border border-border-normal focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
+				"bg-surface shadow-sm transition-all duration-200",
+				className
+			)}
+			role="search"
+			aria-label={isRtl ? "البحث عن المنتجات" : "Search products"}
 		>
-			{/* Category Selector */}
-			<select
-				className="bg-surface-2 text-text-secondary text-xs font-semibold px-3 py-3 outline-none border-r border-border/20 cursor-pointer hidden sm:block"
-				defaultValue="all"
-			>
-				<option value="all">{isRtl ? "كل الأقسام" : "All Categories"}</option>
-				<option value="devices">{isRtl ? "الأجهزة الطبية" : "Medical Devices"}</option>
-				<option value="consumables">{isRtl ? "المستلزمات الطبية" : "Consumables"}</option>
-				<option value="homecare">{isRtl ? "الرعاية المنزلية" : "Home Care"}</option>
-				<option value="diagnostics">{isRtl ? "أجهزة التشخيص" : "Diagnostics"}</option>
-			</select>
+			{/* Search Input (Left) */}
+			<input
+				type="search"
+				placeholder={
+					isRtl
+						? "ابحث عن الأدوية، الأجهزة، الماركات والمزيد..."
+						: "Search for medicines, devices, brands and more..."
+				}
+				className="flex-1 bg-transparent text-[15px] text-text placeholder:text-text-muted px-5 outline-none min-w-0"
+				aria-label={isRtl ? "حقل البحث" : "Search field"}
+			/>
 
-			{/* Search Input */}
-			<div className="relative flex-1 flex items-center px-3">
-				<span className="text-text-muted text-sm px-1">🔍</span>
-				<input
-					type="search"
-					placeholder={isRtl 
-						? "ابحث عن المنتجات، الماركات، رقم الموديل أو SKU..." 
-						: "Search products, brands, model number or SKU..."
-					}
-					className="w-full py-2.5 text-sm bg-transparent border-none outline-none text-text placeholder:text-text-muted/60"
-				/>
+			{/* Category Selector (Right) */}
+			<div className="relative hidden md:flex items-center border-s border-divider bg-transparent shrink-0">
+				<select
+					value={category}
+					onChange={(e) => setCategory(e.target.value)}
+					className="appearance-none bg-transparent text-text-secondary text-sm font-medium ps-4 pe-9 h-full cursor-pointer outline-none hover:text-text transition-colors"
+				>
+					{categories.map((cat) => (
+						<option key={cat.value} value={cat.value}>
+							{cat.label}
+						</option>
+					))}
+				</select>
+				<Icon name="ChevronDown" size="sm" className="absolute end-3 text-text-muted pointer-events-none" />
 			</div>
 
-			{/* Search Submit Button */}
-			<Button 
-				type="submit" 
-				variant="default" 
-				className="rounded-none px-5 py-3 text-xs font-bold uppercase tracking-wider h-full"
+			{/* Search Button (Far Right) */}
+			<button
+				type="submit"
+				className="flex items-center justify-center w-16 bg-primary hover:bg-primary-hover active:bg-primary-active text-white transition-colors duration-200 shrink-0 cursor-pointer"
+				aria-label={isRtl ? "بحث" : "Search"}
 			>
-				{isRtl ? "بحث" : "Search"}
-			</Button>
+				<Icon name="Search" size={22} strokeWidth={2.5} />
+			</button>
 		</form>
 	);
 };

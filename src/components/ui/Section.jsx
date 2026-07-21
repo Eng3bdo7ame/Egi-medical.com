@@ -1,17 +1,19 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 export const Section = ({
 	as: Component = "section",
-	size = "md",
+	spacing = "md",
 	bg = "default",
-	className = "",
+	className,
 	children,
 	...props
 }) => {
-	const paddingMap = {
-		sm: "py-6 md:py-10",
+	// Relies entirely on Tailwind's native spacing scale for extreme readability
+	const spacingMap = {
+		sm: "py-8 md:py-12",
 		md: "py-12 md:py-20",
-		lg: "py-18 md:py-28",
+		lg: "py-16 md:py-28",
 	};
 
 	const bgMap = {
@@ -20,12 +22,12 @@ export const Section = ({
 		surface: "bg-surface",
 	};
 
-	const paddingClass = paddingMap[size] || paddingMap.md;
+	const paddingClass = spacingMap[spacing] || spacingMap.md;
 	const bgClass = bgMap[bg] || bgMap.default;
 
 	return (
 		<Component
-			className={`${paddingClass} ${bgClass} transition-colors ${className}`}
+			className={cn(paddingClass, bgClass, "transition-colors duration-200", className)}
 			{...props}
 		>
 			{children}

@@ -1,9 +1,9 @@
 export const navigationLinks = [
+	{ name: "Medicines", path: "/category/medicines" },
 	{ name: "Medical Devices", path: "/category/medical-devices" },
-	{ name: "Consumables", path: "/category/consumables" },
-	{ name: "Home Care", path: "/category/home-care" },
-	{ name: "Diagnostics", path: "/category/diagnostics" },
-	{ name: "Orthopedics", path: "/category/orthopedics" },
+	{ name: "Personal Care", path: "/category/personal-care" },
+	{ name: "Baby Care", path: "/category/baby-care" },
+	{ name: "Health Conditions", path: "/category/health-conditions" },
 	{ name: "Brands", path: "/brands" },
 	{ name: "Offers", path: "/products?filter=offers" },
 ];

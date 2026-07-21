@@ -5,38 +5,27 @@ import { Slot } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  // Base Interactive States (Hover, Focus, Pressed, Disabled)
+  // Incorporates the Medical Design Language specifications
+  "group inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-all duration-200 outline-none select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-background hover:opacity-90",
-        outline:
-          "border-border bg-background hover:bg-surface-2 hover:text-foreground aria-expanded:bg-surface-2 aria-expanded:text-foreground dark:border-border dark:bg-surface/30 dark:hover:bg-surface-2",
-        secondary:
-          "bg-secondary text-background hover:opacity-90 aria-expanded:bg-secondary",
-        ghost:
-          "hover:bg-surface-2 hover:text-foreground aria-expanded:bg-surface-2 aria-expanded:text-foreground",
-        destructive:
-          "bg-danger text-white hover:opacity-90 focus-visible:border-danger focus-visible:ring-danger/20",
-        link: "text-primary underline-offset-4 hover:underline",
+        primary: "bg-primary text-primary-foreground border border-transparent hover:bg-primary-hover hover:-translate-y-[1px] hover:shadow-raised",
+        secondary: "bg-surface text-primary border border-primary hover:bg-primary-light hover:-translate-y-[1px]",
+        ghost: "bg-transparent text-text hover:bg-surface-2 hover:text-primary",
+        danger: "bg-danger text-white border border-transparent hover:opacity-90 hover:-translate-y-[1px] hover:shadow-raised focus-visible:ring-danger",
       },
       size: {
-        default:
-          "h-10 gap-1.5 px-4",
-        xs: "h-7 gap-1 rounded-sm px-2 text-xs",
-        sm: "h-8.5 gap-1 rounded-sm px-3 text-xs",
-        lg: "h-11.5 gap-1.5 px-6 text-base",
-        xl: "h-13 gap-2 px-8 text-lg",
-        icon: "size-10",
-        "icon-xs":
-          "size-7 rounded-sm",
-        "icon-sm":
-          "size-8.5 rounded-sm",
-        "icon-lg": "size-11.5",
+        // Core Medical Size: Height 48px, Padding 28px horizontally
+        default: "h-12 px-7 rounded-[14px] text-base font-semibold",
+        sm: "h-10 px-5 rounded-[12px] text-sm font-medium",
+        lg: "h-14 px-8 rounded-[16px] text-lg font-semibold",
+        icon: "h-12 w-12 rounded-[14px]",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
       size: "default",
     },
   }
@@ -44,8 +33,8 @@ const buttonVariants = cva(
 
 function Button({
   className,
-  variant = "default",
-  size = "default",
+  variant,
+  size,
   asChild = false,
   loading = false,
   children,
@@ -57,16 +46,15 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      data-variant={variant}
-      data-size={size}
+      data-variant={variant || "primary"}
+      data-size={size || "default"}
       disabled={disabled || loading}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
       {loading ? (
         <span className="flex items-center gap-2">
-          {/* Spinner Icon */}
-          <svg className="animate-spin h-4 w-4 text-current" fill="none" viewBox="0 0 24 24">
+          <svg className="animate-spin h-5 w-5 text-current" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>

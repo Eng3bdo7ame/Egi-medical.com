@@ -1,67 +1,85 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { navigationLinks } from "@/config/navigation";
 import { useLanguage } from "@/app/providers/I18nProvider";
+import { navigationLinks } from "@/config/navigation";
 import Container from "@/components/ui/Container";
-import Stack from "@/components/ui/Stack";
-import { Button } from "@/components/ui/button";
+import Badge from "@/components/ui/Badge";
+import { cn } from "@/lib/utils";
+import { Icon } from "@/components/ui/Icon";
+
+/**
+ * Navigation Component
+ * Matches the reference design: Blue "All Categories" button with Hamburger icon, followed by specific category links.
+ */
+
+const AR_NAV = {
+	"Medicines": "الأدوية",
+	"Medical Devices": "الأجهزة الطبية",
+	"Personal Care": "العناية الشخصية",
+	"Baby Care": "العناية بالطفل",
+	"Health Conditions": "الحالات الصحية",
+	"Brands": "الماركات",
+	"Offers": "العروض",
+};
 
 export const Navigation = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
 	return (
-		<div className="w-full bg-surface border-b border-border/10 py-3 transition-colors duration-normal hidden lg:block">
+		<div className="w-full bg-surface border-b border-border hidden lg:block">
 			<Container>
-				<Stack direction="row" align="center" justify="between" gap={4}>
-					{/* Left: Main Navigation Categories & Links */}
-					<Stack direction="row" align="center" gap={6}>
-						{/* All Categories Button (Placeholder) */}
-						<Button variant="outline" size="sm" className="gap-2">
-							☰ {isRtl ? "كل الأقسام" : "All Categories"}
-						</Button>
+				<div className="flex items-center gap-2 py-1">
+					{/* All Categories Button */}
+					<button
+						className="inline-flex items-center justify-between min-w-[200px] h-[52px] bg-primary text-white text-[15px] font-semibold px-5 rounded-t-lg hover:bg-primary-hover transition-colors duration-200 cursor-pointer select-none shrink-0"
+						aria-haspopup="true"
+						aria-expanded="false"
+					>
+						<div className="flex items-center gap-3">
+							<Icon name="Menu" size={20} strokeWidth={2.5} />
+							<span>{isRtl ? "كل الأقسام" : "All Categories"}</span>
+						</div>
+						<Icon name="ChevronDown" size={16} className="opacity-80" />
+					</button>
 
-						{/* Links */}
-						<nav className="flex items-center gap-6">
-							{navigationLinks.map((link) => (
+					{/* Navigation Links */}
+					<nav className="flex items-center gap-1 ms-4 flex-1" aria-label="Main navigation">
+						{navigationLinks.map((link) => {
+							const isOffer = link.name === "Offers";
+							const linkName = isRtl ? (AR_NAV[link.name] || link.name) : link.name;
+
+							return (
 								<Link
 									key={link.path}
 									to={link.path}
-									className="text-text-secondary hover:text-primary font-medium text-sm transition-colors duration-fast"
+									className={cn(
+										"relative inline-flex items-center px-3 py-2 text-[15px] font-medium rounded-lg transition-colors duration-200 select-none",
+										isOffer
+											? "text-secondary font-semibold hover:bg-secondary/10"
+											: "text-text-secondary hover:text-primary hover:bg-primary/5"
+									)}
 								>
-									{isRtl ? getArabicName(link.name) : link.name}
+									{linkName}
 								</Link>
-							))}
-						</nav>
-					</Stack>
+							);
+						})}
 
-					{/* Right: Promotion Quick Link */}
-					<div className="hidden xl:block">
+						{/* Consultation Link with Badge */}
 						<Link
-							to="/products?filter=offers"
-							className="text-xs font-bold text-secondary hover:opacity-90 transition-opacity"
+							to="/consultation"
+							className="relative inline-flex items-center gap-2 px-3 py-2 text-[15px] font-semibold text-text-secondary hover:text-primary hover:bg-primary/5 rounded-lg transition-colors duration-200 select-none "
 						>
-							{isRtl ? "⚡ عروض التصفية الكبرى" : "⚡ Super Clearance Offers"}
+							{isRtl ? "الاستشارات" : "Consultation"}
+							<Badge variant="success" size="sm" className="h-5 px-1.5 text-[10px]">
+								{isRtl ? "جديد" : "New"}
+							</Badge>
 						</Link>
-					</div>
-				</Stack>
+					</nav>
+				</div>
 			</Container>
 		</div>
 	);
-};
-
-// Simple translator helper for navigation links
-const getArabicName = (name) => {
-	const translations = {
-		"Medical Devices": "الأجهزة الطبية",
-		"Consumables": "المستلزمات الطبية",
-		"Home Care": "الرعاية المنزلية",
-		"Diagnostics": "أجهزة التشخيص",
-		"Orthopedics": "العظام ومساعدات الحركة",
-		"Brands": "الماركات التجارية",
-		"Offers": "العروض والخصومات",
-	};
-	return translations[name] || name;
 };
 
 export default Navigation;

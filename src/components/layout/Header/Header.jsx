@@ -1,55 +1,69 @@
 import React, { useState, useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
-import TopBar from "./TopBar";
 import MainHeader from "./MainHeader";
 import Navigation from "./Navigation";
 import MobileHeader from "./MobileHeader";
+import { cn } from "@/lib/utils";
 
+/**
+ * Header Component
+ * Top-level orchestrator that composes:
+ *   AnnouncementBar → MainHeader → Navigation (Desktop)
+ *   AnnouncementBar → MobileHeader (Mobile)
+ *
+ * Features:
+ * - Sticky behavior on scroll (MainHeader + Navigation stick, AnnouncementBar scrolls away)
+ * - Smooth shadow transition on scroll
+ * - Backdrop blur for premium feel
+ * Supports RTL/LTR and Light/Dark.
+ */
 export const Header = () => {
 	const [isSticky, setIsSticky] = useState(false);
 
 	useEffect(() => {
+		let ticking = false;
+
 		const handleScroll = () => {
-			if (window.scrollY > 120) {
-				setIsSticky(true);
-			} else {
-				setIsSticky(false);
+			if (!ticking) {
+				window.requestAnimationFrame(() => {
+					setIsSticky(window.scrollY > 60);
+					ticking = false;
+				});
+				ticking = true;
 			}
 		};
 
-		window.addEventListener("scroll", handleScroll);
+		window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
 	return (
-		<div className="w-full flex flex-col z-sticky">
-			{/* Announcement Bar (Top) */}
+		<header className="w-full flex flex-col" role="banner">
+			{/* Announcement Bar — always at the top, scrolls away */}
 			<AnnouncementBar />
 
-			{/* Top Bar (Secondary helpers - Desktop only) */}
-			<TopBar />
-
-			{/* Sticky Wrapper */}
+			{/* Sticky wrapper — sticks on scroll */}
 			<div
-				className={`w-full z-sticky transition-all duration-normal ${
-					isSticky 
-						? "fixed top-0 left-0 bg-surface/95 backdrop-blur-md shadow-md animate-slideDown" 
+				className={cn(
+					"w-full transition-shadow duration-200",
+					isSticky
+						? "fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-surface/95 backdrop-blur-md shadow-md"
 						: "relative"
-				}`}
+				)}
 			>
-				{/* Desktop Main Header */}
+				{/* Desktop: MainHeader + Navigation */}
 				<MainHeader />
-
-				{/* Desktop Navigation Links */}
 				<Navigation />
 
-				{/* Mobile Navigation Header */}
+				{/* Mobile: MobileHeader */}
 				<MobileHeader />
 			</div>
-			
-			{/* Spacer to prevent layout shift when sticky triggers */}
-			{isSticky && <div className="h-[140px] hidden md:block" />}
-		</div>
+
+			{/* Spacer to prevent layout shift when sticky kicks in */}
+			{isSticky && (
+				<div className="h-[110px] md:h-[120px] lg:h-[150px]" aria-hidden="true" />
+			)}
+		</header>
 	);
 };
 
