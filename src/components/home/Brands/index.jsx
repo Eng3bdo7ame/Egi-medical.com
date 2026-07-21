@@ -20,42 +20,30 @@ export const BrandsShowcase = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
-	const title = {
-		en: "Official Partner Brands",
-		ar: "العلامات التجارية الرسمية الشريكة",
-	};
-
 	return (
-		<Section bg="background" className="py-12 md:py-16">
+		<Section spacing="lg">
 			<Container>
-				<SectionHeader title={title} viewAllLink="/brands" />
-				
-				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+				<div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+					<h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2">
+						{isRtl ? "العلامات التجارية الرسمية الشريكة" : "Official Partner Brands"}
+					</h2>
+					<p className="text-slate-500 text-sm">
+						{isRtl ? "نحن وكلاء وموزعون معتمدون لأرقى الماركات الطبية العالمية" : "Authorized distributor for world-leading medical healthcare brands"}
+					</p>
+				</div>
+
+				<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-8 sm:mb-10">
 					{richBrands.map((brand) => (
-						<LocalizedLink key={brand.id} to={`/brand/${brand.id}`} className="group flex flex-col bg-surface border border-border rounded-[20px] overflow-hidden hover:shadow-floating transition-all duration-300">
-							{/* Colored Top Banner */}
-							<div className={`h-16 ${brand.bgClass} relative flex justify-center`}>
-								{/* Verified Badge */}
-								<div className="absolute top-2 ltr:right-2 rtl:left-2 flex items-center gap-1 bg-white/20 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-									<BadgeCheck className="w-3 h-3 text-white" />
-									{isRtl ? "وكيل" : "Official"}
-								</div>
-							</div>
-							
-							{/* Logo Placeholder (Overlap) */}
-							<div className="mx-auto -mt-8 w-16 h-16 bg-white rounded-full border-4 border-surface flex items-center justify-center shadow-sm">
-								<span className="text-primary font-bold text-xs">{brand.logo}</span>
-							</div>
-							
-							{/* Content */}
-							<div className="p-4 text-center pb-6">
-								<h3 className="text-text font-bold text-sm md:text-base mb-1">{brand.name}</h3>
-								<p className="text-text-muted text-xs font-medium">
-									{brand.count} {isRtl ? "منتج" : "Products"}
-								</p>
-							</div>
+						<LocalizedLink key={brand.id} to={`/brand/${brand.id}`} className="group flex items-center justify-center h-20 sm:h-24 bg-white border border-slate-200 rounded-xl sm:rounded-2xl hover:border-primary/50 hover:shadow-md transition-all duration-300 p-3 sm:p-4">
+							<span className="text-slate-700 font-extrabold text-base sm:text-lg group-hover:text-primary transition-colors">{brand.name}</span>
 						</LocalizedLink>
 					))}
+				</div>
+
+				<div className="flex justify-center">
+					<LocalizedLink to="/brands" className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-slate-900 text-white font-bold text-sm hover:bg-primary transition-colors shadow-sm">
+						{isRtl ? "استكشف كل الماركات" : "Explore Brands"}
+					</LocalizedLink>
 				</div>
 			</Container>
 		</Section>
@@ -63,3 +51,5 @@ export const BrandsShowcase = () => {
 };
 
 export default BrandsShowcase;
+
+

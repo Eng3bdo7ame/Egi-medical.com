@@ -36,7 +36,7 @@ export const ServicesSection = () => {
 	];
 
 	return (
-		<Section bg="background" className="py-12 md:py-16">
+		<Section spacing="md">
 			<Container>
 				<SectionHeader title={title} viewAllLink="/services" />
 

@@ -15,18 +15,18 @@ export const CallToAction = ({ title, description, buttonText, buttonLink, iconN
 	const IconComp = Icons[iconName] || Icons.ArrowRight;
 
 	return (
-		<Section bg="background" className="py-12">
+		<Section spacing="sm">
 			<Container>
-				<div className="relative overflow-hidden rounded-[32px] bg-primary text-white p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10 shadow-lg">
+				<div className="relative overflow-hidden rounded-2xl sm:rounded-[32px] bg-primary text-white p-6 sm:p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10 shadow-lg">
 					{/* Decorative background circle */}
 					<div className="absolute top-0 ltr:right-0 rtl:left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
 					
 					<div className="relative z-10 max-w-xl text-center md:ltr:text-left md:rtl:text-right">
-						<h2 className="text-h2 font-bold mb-4">
+						<h2 className="text-xl sm:text-h2 font-bold mb-3 sm:mb-4">
 							{title[language]}
 						</h2>
 						{description && (
-							<p className="text-white/80 text-lg leading-relaxed">
+							<p className="text-white/80 text-sm sm:text-base lg:text-lg leading-relaxed">
 								{description[language]}
 							</p>
 						)}
@@ -47,3 +47,5 @@ export const CallToAction = ({ title, description, buttonText, buttonLink, iconN
 };
 
 export default CallToAction;
+
+

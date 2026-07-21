@@ -9,9 +9,9 @@ import HeroFeatures from "./HeroFeatures";
  */
 export const HeroContent = ({ slide, language, textVariants }) => {
 	return (
-		<div className="flex flex-col items-start justify-center z-10 w-full h-full pt-10 pb-16 lg:py-0">
+		<div className="flex flex-col items-start justify-center z-10 w-full h-full pt-8 pb-4 sm:pt-10 sm:pb-8 lg:py-0">
 			<motion.div
-				className="space-y-6 max-w-xl"
+				className="space-y-4 sm:space-y-6 max-w-xl"
 				initial="hidden"
 				animate="visible"
 				exit="exit"
@@ -20,7 +20,7 @@ export const HeroContent = ({ slide, language, textVariants }) => {
 				<motion.h1
 					custom={0}
 					variants={textVariants}
-					className="text-display text-text leading-[1.15]"
+					className="text-2xl sm:text-3xl md:text-4xl lg:text-display font-extrabold text-text leading-[1.15]"
 					dangerouslySetInnerHTML={{ __html: slide.title[language] }}
 				/>
 
@@ -28,7 +28,7 @@ export const HeroContent = ({ slide, language, textVariants }) => {
 				<motion.p
 					custom={1}
 					variants={textVariants}
-					className="text-body-large text-text-secondary leading-relaxed max-w-[90%]"
+					className="text-sm sm:text-base lg:text-body-large text-text-secondary leading-relaxed max-w-[95%] sm:max-w-[90%]"
 				>
 					{slide.subtitle[language]}
 				</motion.p>
@@ -47,9 +47,9 @@ export const HeroContent = ({ slide, language, textVariants }) => {
 					/>
 				</motion.div>
 
-				{/* Features / Trust Indicators */}
+				{/* Features / Trust Indicators - Hide on very small screens */}
 				{slide.features && (
-					<motion.div custom={3} variants={textVariants}>
+					<motion.div custom={3} variants={textVariants} className="hidden sm:block">
 						<HeroFeatures features={slide.features} language={language} />
 					</motion.div>
 				)}

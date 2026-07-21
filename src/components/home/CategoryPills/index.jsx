@@ -22,7 +22,7 @@ export const CategoriesSection = () => {
 	);
 
 	return (
-		<Section bg="surface" className="py-6 md:py-8 border-b border-border/40 overflow-hidden">
+		<Section bg="surface" spacing="xs" className="border-b border-border/40 overflow-hidden">
 			<Container>
 				{/* 6-Items Per Screen Slider */}
 				<div className="w-full relative" dir={isRtl ? "rtl" : "ltr"}>
@@ -45,3 +45,5 @@ export const CategoriesSection = () => {
 };
 
 export default CategoriesSection;
+
+

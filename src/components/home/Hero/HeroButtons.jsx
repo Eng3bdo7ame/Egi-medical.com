@@ -11,11 +11,11 @@ export const HeroButtons = ({ primary, secondary }) => {
 	if (!primary && !secondary) return null;
 
 	return (
-		<div className="flex flex-wrap items-center gap-4 pt-4">
+		<div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 sm:pt-4">
 			{primary && (
 				<Button
 					asChild
-					className="min-w-[160px] h-12 !rounded-[8px] shadow-none hover:shadow-md transition-shadow font-semibold text-[15px]"
+					className="min-w-[130px] sm:min-w-[160px] h-10 sm:h-12 !rounded-[8px] shadow-none hover:shadow-md transition-shadow font-semibold text-sm sm:text-[15px]"
 				>
 					<LocalizedLink to={primary.link}>{primary.label}</LocalizedLink>
 				</Button>
@@ -25,7 +25,7 @@ export const HeroButtons = ({ primary, secondary }) => {
 				<Button
 					asChild
 					variant="secondary"
-					className="min-w-[160px] h-12 !rounded-[8px] font-semibold text-[15px] bg-white hover:bg-primary/5"
+					className="min-w-[130px] sm:min-w-[160px] h-10 sm:h-12 !rounded-[8px] font-semibold text-sm sm:text-[15px] bg-white hover:bg-primary/5"
 				>
 					<LocalizedLink to={secondary.link}>{secondary.label}</LocalizedLink>
 				</Button>

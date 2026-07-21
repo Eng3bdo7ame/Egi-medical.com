@@ -26,7 +26,7 @@ export const CategoriesShowcase = () => {
 	};
 
 	return (
-		<Section bg="surface" className="py-12 md:py-16">
+		<Section bg="surface" spacing="md">
 			<Container>
 				<SectionHeader title={title} viewAllLink="/categories" />
 				
@@ -70,3 +70,5 @@ export const CategoriesShowcase = () => {
 };
 
 export default CategoriesShowcase;
+
+

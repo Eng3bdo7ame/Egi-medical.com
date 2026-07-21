@@ -1,7 +1,7 @@
 export const heroSlides = [
 	{
 		id: 1,
-		brand: "Medical Store", // For the generic first slide
+		brand: "Medical Store",
 		title: {
 			en: "Everything You Need for Better <span class='text-primary'>Healthcare</span>",
 			ar: "كل ما تحتاجه لرعاية صحية <span class='text-primary'>أفضل</span>",
@@ -19,8 +19,8 @@ export const heroSlides = [
 			{ icon: "Lock", title: { en: "Secure Payment", ar: "دفع آمن" }, subtitle: { en: "100% Secure", ar: "آمن 100%" } },
 			{ icon: "Truck", title: { en: "Fast Delivery", ar: "توصيل سريع" }, subtitle: { en: "On Time Delivery", ar: "توصيل في الموعد" } },
 		],
-		image: "/images/hero/composite-medical.png", // Will be placeholder in code
-		background: "bg-[#F4F7FC]", // Extracted from image background color
+		image: "/images/home/hero1.png",
+		background: "bg-[#F4F7FC]",
 	},
 	{
 		id: 2,
@@ -41,7 +41,29 @@ export const heroSlides = [
 			{ icon: "Activity", title: { en: "Clinically Validated", ar: "معتمد طبياً" }, subtitle: { en: "High Accuracy", ar: "دقة عالية" } },
 			{ icon: "Heart", title: { en: "Heart Tracking", ar: "تتبع القلب" }, subtitle: { en: "Smart Sync", ar: "مزامنة ذكية" } },
 		],
-		image: "/images/hero/omron-monitor.png",
+		image: "/images/home/hero2.png",
+		background: "bg-[#F4F7FC]",
+	},
+	{
+		id: 3,
+		brand: "Medical Essentials",
+		title: {
+			en: "Professional Home & Hospital <span class='text-primary'>Equipment</span>",
+			ar: "معدات طبية للمنازل والمستشفيات <span class='text-primary'>بأعلى جودة</span>",
+		},
+		subtitle: {
+			en: "Discover our high-standard medical equipment curated for home care and healthcare providers.",
+			ar: "اكتشف تشكيلة واسعة من الأجهزة والمعدات الطبية المعتمدة لرعاية منزلية وطبية متكاملة.",
+		},
+		buttons: {
+			primary: { en: "Explore Collection", ar: "استكشف التشكيلة", link: "/collections" },
+			secondary: { en: "Contact Us", ar: "تواصل معنا", link: "/contact" },
+		},
+		features: [
+			{ icon: "ShieldCheck", title: { en: "Certified Quality", ar: "جودة معتمدة" }, subtitle: { en: "ISO Certified", ar: "مطابق للمواصفات" } },
+			{ icon: "Truck", title: { en: "Express Shipping", ar: "شحن سريع" }, subtitle: { en: "All Regions", ar: "جميع المحافظات" } },
+		],
+		image: "/images/home/hero3.png",
 		background: "bg-[#F4F7FC]",
 	},
 ];

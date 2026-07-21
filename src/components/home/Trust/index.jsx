@@ -17,7 +17,7 @@ export const TrustSection = () => {
 	];
 
 	return (
-		<Section bg="primary" className="py-16 md:py-24 text-white overflow-hidden relative">
+		<Section bg="primary" spacing="lg" className="text-white overflow-hidden relative">
 			{/* Decorative Elements */}
 			<div className="absolute top-0 ltr:-right-40 rtl:-left-40 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
 			<div className="absolute bottom-0 ltr:-left-40 rtl:-right-40 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
@@ -30,7 +30,7 @@ export const TrustSection = () => {
 							<ShieldCheck className="w-4 h-4 text-white" />
 							{isRtl ? "الموزع الرسمي المعتمد في مصر" : "Authorized Official Distributor in Egypt"}
 						</div>
-						
+
 						<h2 className="text-display font-bold leading-tight">
 							{isRtl ? (
 								<>شريكك الموثوق <span className="text-primary-light">Mootah</span> للأجهزة الطبية العالمية</>
@@ -38,7 +38,7 @@ export const TrustSection = () => {
 								<>Your Trusted <span className="text-primary-light">Mootah</span> Partner for Global Medical Devices</>
 							)}
 						</h2>
-						
+
 						<p className="text-white/80 text-lg leading-relaxed max-w-xl">
 							{isRtl
 								? "نحن نفخر بكوننا الموزع الرسمي والوكيل المعتمد لأكبر العلامات التجارية الطبية العالمية. نضمن لك منتجات أصلية 100%، ضمان الوكيل، ودعم فني متخصص."
@@ -76,7 +76,7 @@ export const TrustSection = () => {
 							<h3 className="text-xl font-bold text-white mb-2">{isRtl ? "ضمان الوكيل" : "Official Warranty"}</h3>
 							<p className="text-white/70 text-sm">{isRtl ? "تغطية شاملة وصيانة معتمدة لجميع الأجهزة" : "Comprehensive coverage & certified maintenance"}</p>
 						</div>
-						
+
 						{/* Cert 2 */}
 						<div className="rounded-[32px] bg-white/5 backdrop-blur-md border border-white/10 p-6 flex flex-col items-center justify-center text-center hover:bg-white/10 transition-colors">
 							<FileBadge className="w-12 h-12 text-primary-light mb-3" />
@@ -98,3 +98,5 @@ export const TrustSection = () => {
 };
 
 export default TrustSection;
+
+

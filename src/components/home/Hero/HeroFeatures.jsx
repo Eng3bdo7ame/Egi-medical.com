@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  * HeroFeatures Component
  * Displays the trust indicators (e.g., 100% Original, Secure Payment) beneath the CTAs.
  */
-export const HeroFeatures = ({ features, language }) => {
+export const HeroFeatures = ({ features, language = "ar" }) => {
 	if (!features || features.length === 0) return null;
 
 	return (
@@ -17,12 +17,16 @@ export const HeroFeatures = ({ features, language }) => {
 						<Icon name={feature.icon} size={24} strokeWidth={1.5} />
 					</div>
 					<div className="flex flex-col leading-tight">
-						<span className="text-[13px] font-bold text-text">
-							{feature.title[language]}
-						</span>
-						<span className="text-[12px] font-medium text-text-muted">
-							{feature.subtitle[language]}
-						</span>
+						{feature.title && (
+							<span className="text-[13px] font-bold text-text">
+								{feature.title[language] || feature.title.ar || feature.title.en}
+							</span>
+						)}
+						{feature.subtitle && (
+							<span className="text-[12px] font-medium text-text-muted">
+								{feature.subtitle[language] || feature.subtitle.ar || feature.subtitle.en}
+							</span>
+						)}
 					</div>
 				</div>
 			))}

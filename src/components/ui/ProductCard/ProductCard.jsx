@@ -77,7 +77,7 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 					{product.reviews ? (
 						<ProductRating rating={product.reviews.rating} count={product.reviews.count} isRtl={isRtl} />
 					) : <div />}
-					<ProductBadges badges={product.badges} isRtl={isRtl} language={language} />
+					<ProductBadges badges={product.badges} isOutOfStock={isOutOfStock} isRtl={isRtl} language={language} />
 				</div>
 
 				{variant === PRODUCT_CARD_VARIANTS.MEDICAL && (
@@ -86,7 +86,7 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 				
 				<div className="mt-auto pt-3">
 					<ProductPrice price={product.price} language={language} />
-					<ProductStatus state={isOutOfStock ? "out-of-stock" : "default"} isRtl={isRtl} />
+					{/* Status removed from here to maintain consistent card height */}
 					<ProductActions 
 						isOutOfStock={isOutOfStock} 
 						isAddingToCart={isAddingToCart} 

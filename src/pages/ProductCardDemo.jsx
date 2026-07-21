@@ -23,7 +23,7 @@ const mockBaseProduct = {
 const ProductCardDemo = () => {
 	return (
 		<AppLayout>
-			<Section className="py-12 bg-surface-2 min-h-screen">
+			<Section bg="muted" spacing="md" className="min-h-screen">
 				<Container>
 					<div className="flex flex-col gap-12">
 						<div>

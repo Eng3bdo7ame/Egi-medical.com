@@ -16,10 +16,10 @@ export const DealButton = ({ deal, language }) => {
 				className="w-full flex items-center justify-center"
 			>
 				{/* Directly render the image designed by the project owner */}
-				<img 
-					src={deal.image} 
-					alt={deal.alt[language]} 
-					className="w-full h-auto object-contain rounded-full shadow-sm group-hover:shadow-md transition-shadow duration-300"
+				<img
+					src={deal.image}
+					alt={deal.alt[language]}
+					className="w-full shadow-sm group-hover:shadow-md transition-shadow duration-300"
 				/>
 			</motion.div>
 		</LocalizedLink>

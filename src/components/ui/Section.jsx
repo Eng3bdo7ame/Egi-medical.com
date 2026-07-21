@@ -9,11 +9,12 @@ export const Section = ({
 	children,
 	...props
 }) => {
-	// Relies entirely on Tailwind's native spacing scale for extreme readability
 	const spacingMap = {
+		none: "",
+		xs: "py-6 md:py-8",
 		sm: "py-8 md:py-12",
-		md: "py-12 md:py-20",
-		lg: "py-16 md:py-28",
+		md: "py-8 md:py-10",
+		lg: "py-16 md:py-24",
 	};
 
 	const bgMap = {

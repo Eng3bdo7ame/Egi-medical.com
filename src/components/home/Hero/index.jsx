@@ -7,6 +7,7 @@ import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
 import HeroImage from "./HeroImage";
 import Container from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
 
 export const Hero = () => {
 	const { language } = useLanguage();
@@ -21,13 +22,13 @@ export const Hero = () => {
 			transition: {
 				duration: 0.35,
 				ease: "easeOut",
-				delay: custom * 0.1, // Staggered delay
+				delay: custom * 0.1,
 			},
 		}),
 		exit: { opacity: 0, transition: { duration: 0.2 } },
 	};
 
-	// Calm motion variants for images (Subtle fade and slide)
+	// Calm motion variants for images
 	const imageVariants = {
 		hidden: { opacity: 0, x: 20 },
 		visible: {
@@ -43,7 +44,7 @@ export const Hero = () => {
 	};
 
 	return (
-		<section className="w-full">
+		<Section spacing="none">
 			<HeroSlider onSlideChange={setActiveIndex}>
 				{heroSlides.map((slide, index) => {
 					const isActive = index === activeIndex;
@@ -51,33 +52,33 @@ export const Hero = () => {
 					return (
 						<div
 							key={slide.id}
-							className="relative flex-[0_0_100%] min-w-0 h-[480px] lg:h-[520px] select-none"
+							className="relative flex-[0_0_100%] min-w-0 h-auto min-h-[520px] sm:min-h-[460px] md:min-h-[480px] lg:h-[520px] select-none"
 						>
 							{/* Background Component (Full width) */}
 							<HeroBackground bgClass={slide.background} />
-							
+
 							<div className="absolute inset-0 z-10 w-full h-full">
 								<Container className="h-full">
-									<div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 h-full items-center">
-										
+									<div className="w-full grid grid-cols-1 lg:grid-cols-2 h-full items-center gap-4">
+
 										{/* Content Side */}
 										<AnimatePresence mode="wait">
 											{isActive && (
-												<HeroContent 
-													slide={slide} 
-													language={language} 
-													textVariants={textVariants} 
+												<HeroContent
+													slide={slide}
+													language={language}
+													textVariants={textVariants}
 												/>
 											)}
 										</AnimatePresence>
 
-										{/* Image Side */}
+										{/* Image Side - Hidden on mobile to prevent overlap */}
 										<AnimatePresence mode="wait">
 											{isActive && (
-												<HeroImage 
-													src={slide.image} 
-													alt={`${slide.brand} product`} 
-													imageVariants={imageVariants} 
+												<HeroImage
+													src={slide.image}
+													alt={`${slide.brand} product`}
+													imageVariants={imageVariants}
 												/>
 											)}
 										</AnimatePresence>
@@ -89,7 +90,7 @@ export const Hero = () => {
 					);
 				})}
 			</HeroSlider>
-		</section>
+		</Section>
 	);
 };
 

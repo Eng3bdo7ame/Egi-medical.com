@@ -9,14 +9,14 @@ export const HeroBackground = ({ className, bgClass = "bg-[#F4F7FC]" }) => {
 	return (
 		<div className={cn("absolute inset-0 z-0 overflow-hidden", bgClass, className)}>
 			{/* Soft Gradient Overlay */}
-			<div className="absolute inset-0 bg-gradient-to-r from-white/60 to-transparent pointer-events-none" />
+			<div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/40 to-transparent pointer-events-none" />
 
 			{/* Dot Grid Pattern (Top Right/End) */}
-			<div className="absolute -top-10 -end-10 w-64 h-64 opacity-20 pointer-events-none">
+			<div className="absolute top-6 end-8 w-36 h-48 opacity-35 pointer-events-none">
 				<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
 					<defs>
-						<pattern id="dotGrid" width="24" height="24" patternUnits="userSpaceOnUse">
-							<circle cx="2" cy="2" r="2" fill="currentColor" className="text-primary" />
+						<pattern id="dotGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+							<circle cx="3" cy="3" r="2" fill="currentColor" className="text-primary" />
 						</pattern>
 					</defs>
 					<rect width="100%" height="100%" fill="url(#dotGrid)" />

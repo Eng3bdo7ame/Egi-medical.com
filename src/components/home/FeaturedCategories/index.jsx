@@ -33,7 +33,7 @@ export const FeaturedCategories = () => {
 	};
 
 	return (
-		<Section bg="surface" className="py-12 md:py-16 border-b border-border/40">
+		<Section bg="surface" spacing="md" className="border-b border-border/40">
 			<Container>
 				<SectionHeader title={headerTitle} subtitle={headerSubtitle} viewAllLink="/categories" />
 				
@@ -62,3 +62,5 @@ export const FeaturedCategories = () => {
 };
 
 export default FeaturedCategories;
+
+

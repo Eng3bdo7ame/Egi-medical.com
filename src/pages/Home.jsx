@@ -3,13 +3,11 @@ import React from "react";
 import Hero from "@/components/home/Hero";
 import CategoryPills from "@/components/home/CategoryPills";
 import PromoSection from "@/components/home/Promo";
-import FeaturedCategories from "@/components/home/FeaturedCategories";
 import ProductSection from "@/components/home/ProductSection";
 import BrandsShowcase from "@/components/home/Brands";
-import TrustSection from "@/components/home/Trust";
-import CategoriesShowcase from "@/components/home/Categories";
-import ServicesSection from "@/components/home/Services";
 import CallToAction from "@/components/home/CTA";
+import ShopByCategory from "@/components/home/ShopByCategory";
+import WhyMootah from "@/components/home/WhyMootah";
 import { homepageConfig } from "@/config/home.config";
 
 const Home = () => {
@@ -23,11 +21,13 @@ const Home = () => {
 						return <CategoryPills key={section.id} />;
 					case "promo":
 						return <PromoSection key={section.id} />;
-					case "featuredCategories":
-						return <FeaturedCategories key={section.id} />;
+					case "shopByCategory":
+						return <ShopByCategory key={section.id} />;
+					case "whyMootah":
+						return <WhyMootah key={section.id} />;
 					case "productSection":
 						return (
-							<ProductSection 
+							<ProductSection
 								key={section.id}
 								variant={section.variant}
 								title={section.title}
@@ -38,15 +38,9 @@ const Home = () => {
 						);
 					case "brands":
 						return <BrandsShowcase key={section.id} />;
-					case "trust":
-						return <TrustSection key={section.id} />;
-					case "categories":
-						return <CategoriesShowcase key={section.id} />;
-					case "services":
-						return <ServicesSection key={section.id} />;
 					case "cta":
 						return (
-							<CallToAction 
+							<CallToAction
 								key={section.id}
 								title={section.title}
 								description={section.description}
