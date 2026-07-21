@@ -1,0 +1,48 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import { useLanguage } from "@/app/providers/I18nProvider";
+import * as Icons from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Section from "@/components/ui/Section";
+import Container from "@/components/ui/Container";
+
+export const CallToAction = ({ title, description, buttonText, buttonLink, iconName = "ArrowRight" }) => {
+	const { language } = useLanguage();
+	const isRtl = language === "ar";
+	
+	// Dynamically load the icon from lucide-react
+	const IconComp = Icons[iconName] || Icons.ArrowRight;
+
+	return (
+		<Section bg="background" className="py-12">
+			<Container>
+				<div className="relative overflow-hidden rounded-[32px] bg-primary text-white p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10 shadow-lg">
+					{/* Decorative background circle */}
+					<div className="absolute top-0 ltr:right-0 rtl:left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+					
+					<div className="relative z-10 max-w-xl text-center md:ltr:text-left md:rtl:text-right">
+						<h2 className="text-h2 font-bold mb-4">
+							{title[language]}
+						</h2>
+						{description && (
+							<p className="text-white/80 text-lg leading-relaxed">
+								{description[language]}
+							</p>
+						)}
+					</div>
+
+					<div className="relative z-10 flex-shrink-0">
+						<Button asChild variant="secondary" size="lg" className="h-14 px-8 text-[15px] shadow-floating gap-3">
+							<Link to={buttonLink}>
+								<IconComp className="w-5 h-5" />
+								{buttonText[language]}
+							</Link>
+						</Button>
+					</div>
+				</div>
+			</Container>
+		</Section>
+	);
+};
+
+export default CallToAction;

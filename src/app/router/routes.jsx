@@ -1,10 +1,12 @@
 import { Navigate } from "react-router-dom";
+import { lazy } from "react";
 import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import EmptyLayout from "@/layouts/EmptyLayout";
 
 // App Pages
-import Home from "@/pages/Home";
+const Home = lazy(() => import("@/pages/Home"));
+const ProductCardDemo = lazy(() => import("@/pages/ProductCardDemo"));
 import About from "@/pages/About";
 import Products from "@/pages/Products";
 import ProductDetails from "@/pages/ProductDetails";
@@ -93,6 +95,12 @@ export const routes = [
 				element: <ForgotPassword />,
 			},
 		],
+	},
+	// Demo Routes
+	// Demo Routes
+	{
+		path: "/product-card-demo",
+		element: <ProductCardDemo />,
 	},
 	// Empty Layout Routes
 	{

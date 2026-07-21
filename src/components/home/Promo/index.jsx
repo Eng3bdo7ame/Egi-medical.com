@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { motion } from "framer-motion";
 import { promoCards } from "./promo.data";
-import { Icon } from "@/components/ui/Icon";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { cn } from "@/lib/utils";
@@ -27,28 +26,47 @@ export const PromoSection = () => {
 							<Link
 								to={promo.link}
 								className={cn(
-									"group relative flex items-center p-6 lg:p-8 rounded-[20px] overflow-hidden transition-shadow duration-300 hover:shadow-floating border border-transparent hover:border-border-normal",
+									"group relative flex flex-col justify-between p-6 lg:p-8 rounded-[20px] overflow-hidden min-h-[220px] transition-all duration-300 hover:shadow-floating hover:scale-[1.02]",
 									promo.bgClass
 								)}
 							>
-								{/* Decorative subtle background icon */}
-								<Icon
-									name={promo.icon}
-									size={120}
-									strokeWidth={1}
-									className="absolute -end-6 -bottom-6 opacity-5 pointer-events-none transform group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500"
-								/>
+								{/* Full Background Image */}
+								<div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+									<img 
+										src={promo.image} 
+										alt="" 
+										className="w-full h-full object-cover mix-blend-multiply opacity-70 transition-transform duration-500 group-hover:scale-105" 
+									/>
+									{/* Gradient overlay for readability */}
+									<div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/40 to-transparent rtl:bg-gradient-to-l" />
+								</div>
 
-								<div className="relative z-10 flex flex-col justify-center gap-2 max-w-[200px]">
-									<div className="w-10 h-10 rounded-full bg-white/40 flex items-center justify-center mb-2 shadow-sm backdrop-blur-sm">
-										<Icon name={promo.icon} size={20} strokeWidth={2.5} />
-									</div>
-									<h3 className="text-xl lg:text-2xl font-bold leading-tight">
+								{/* Content */}
+								<div className="relative z-10 flex flex-col items-start justify-center flex-grow max-w-[65%]">
+									{promo.badge && (
+										<span className={cn(
+											"px-2 py-1 text-[10px] font-bold rounded-[4px] mb-3 inline-block tracking-wider", 
+											promo.badgeClass
+										)}>
+											{promo.badge[language]}
+										</span>
+									)}
+									<h3 className={cn("text-xl lg:text-2xl font-bold leading-tight mb-2", promo.textClass)}>
 										{promo.title[language]}
 									</h3>
-									<p className="text-sm font-medium opacity-80 leading-snug">
-										{promo.subtitle[language]}
-									</p>
+									{promo.subtitle?.[language] && (
+										<p className={cn("text-sm font-medium mb-5 opacity-80 leading-snug line-clamp-2", promo.textClass)}>
+											{promo.subtitle[language]}
+										</p>
+									)}
+									
+									<span className={cn(
+										"mt-auto px-5 py-2.5 text-sm font-bold rounded-lg transition-colors shadow-sm", 
+										promo.btnClass,
+										!promo.subtitle?.[language] && "mt-5"
+									)}>
+										{promo.buttonText[language]}
+									</span>
 								</div>
 							</Link>
 						</motion.div>

@@ -6,6 +6,7 @@ import Container from "@/components/ui/Container";
 import Badge from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
+import MegaMenu from "./MegaMenu";
 
 /**
  * Navigation Component
@@ -25,23 +26,58 @@ const AR_NAV = {
 export const Navigation = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+	const [isMegaMenuOpen, setIsMegaMenuOpen] = React.useState(false);
+	
+	const closeTimeoutRef = React.useRef(null);
+
+	const handleMouseEnter = () => {
+		if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+		setIsMegaMenuOpen(true);
+	};
+
+	const handleMouseLeave = () => {
+		closeTimeoutRef.current = setTimeout(() => {
+			setIsMegaMenuOpen(false);
+		}, 150); // slight debounce to prevent flickering when mouse slips
+	};
 
 	return (
-		<div className="w-full bg-surface border-b border-border hidden lg:block">
-			<Container>
-				<div className="flex items-center gap-2 py-1">
+		<div className="w-full bg-surface border-b border-border hidden lg:block relative z-50">
+			<Container className="relative">
+				<div 
+					className="flex items-center gap-2 py-1 static"
+					onMouseLeave={handleMouseLeave}
+				>
 					{/* All Categories Button */}
-					<button
-						className="inline-flex items-center justify-between min-w-[200px] h-[52px] bg-primary text-white text-[15px] font-semibold px-5 rounded-t-lg hover:bg-primary-hover transition-colors duration-200 cursor-pointer select-none shrink-0"
-						aria-haspopup="true"
-						aria-expanded="false"
+					<div 
+						className="relative"
+						onMouseEnter={handleMouseEnter}
 					>
-						<div className="flex items-center gap-3">
-							<Icon name="Menu" size={20} strokeWidth={2.5} />
-							<span>{isRtl ? "كل الأقسام" : "All Categories"}</span>
-						</div>
-						<Icon name="ChevronDown" size={16} className="opacity-80" />
-					</button>
+						<button
+							className={cn(
+								"inline-flex items-center justify-between min-w-[200px] h-[52px] text-white text-[15px] font-semibold px-5 rounded-t-lg transition-colors duration-200 cursor-pointer select-none shrink-0",
+								isMegaMenuOpen ? "bg-primary-hover" : "bg-primary hover:bg-primary-hover"
+							)}
+							aria-haspopup="true"
+							aria-expanded={isMegaMenuOpen}
+						>
+							<div className="flex items-center gap-3">
+								<Icon name="Menu" size={20} strokeWidth={2.5} />
+								<span>{isRtl ? "كل الأقسام" : "All Categories"}</span>
+							</div>
+							<Icon name="ChevronDown" size={16} className={cn("opacity-80 transition-transform duration-300", isMegaMenuOpen && "rotate-180")} />
+						</button>
+					</div>
+
+					{/* Mega Menu Dropdown */}
+					<div className="absolute top-full left-0 right-0 w-full" onMouseEnter={handleMouseEnter}>
+						<MegaMenu 
+							isOpen={isMegaMenuOpen} 
+							language={language} 
+							isRtl={isRtl} 
+							onClose={() => setIsMegaMenuOpen(false)} 
+						/>
+					</div>
 
 					{/* Navigation Links */}
 					<nav className="flex items-center gap-1 ms-4 flex-1" aria-label="Main navigation">

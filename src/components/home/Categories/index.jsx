@@ -1,52 +1,71 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { motion } from "framer-motion";
-import { categoryPills } from "./categories.data";
-import { Icon } from "@/components/ui/Icon";
-import Container from "@/components/ui/Container";
+import { ArrowRight, ArrowLeft, Heart, Pill, Stethoscope, Baby } from "lucide-react";
 import Section from "@/components/ui/Section";
+import Container from "@/components/ui/Container";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { cn } from "@/lib/utils";
 
-export const CategoriesSection = () => {
+// Mock Rich Categories Data
+const richCategories = [
+	{ id: 1, name: { en: "Medicines", ar: "الأدوية" }, icon: Pill, color: "bg-blue-500", count: "1,200+" },
+	{ id: 2, name: { en: "Medical Devices", ar: "الأجهزة الطبية" }, icon: Stethoscope, color: "bg-teal-500", count: "850+" },
+	{ id: 3, name: { en: "Personal Care", ar: "العناية الشخصية" }, icon: Heart, color: "bg-rose-500", count: "3,400+" },
+	{ id: 4, name: { en: "Baby Care", ar: "العناية بالطفل" }, icon: Baby, color: "bg-purple-500", count: "600+" },
+];
+
+export const CategoriesShowcase = () => {
 	const { language } = useLanguage();
+	const isRtl = language === "ar";
+
+	const title = {
+		en: "Shop by Top Categories",
+		ar: "تسوق حسب أهم الأقسام",
+	};
 
 	return (
-		<Section bg="background" className="py-8 md:py-12 border-b border-border">
+		<Section bg="surface" className="py-12 md:py-16">
 			<Container>
-				<div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
-					{categoryPills.map((category, index) => (
-						<motion.div
-							key={category.id}
-							initial={{ opacity: 0, y: 10 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.3, delay: index * 0.05 }}
-						>
-							<Link
-								to={category.link}
-								className="group flex flex-col items-center gap-3 w-20 md:w-24 outline-none"
-							>
-								<motion.div
-									whileHover={{ y: -4, scale: 1.02 }}
-									whileTap={{ scale: 0.98 }}
-									className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-surface-2 border border-border-light shadow-sm group-hover:shadow-raised group-hover:border-primary/20 transition-all duration-200"
-								>
-									<Icon
-										name={category.icon}
-										size={28}
-										strokeWidth={1.5}
-										className="text-primary/70 group-hover:text-primary transition-colors duration-200"
-									/>
-								</motion.div>
-								<span className="text-xs md:text-sm font-medium text-text-secondary text-center leading-tight group-hover:text-primary transition-colors">
-									{category.name[language]}
-								</span>
+				<SectionHeader title={title} viewAllLink="/categories" />
+				
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+					{richCategories.map((cat) => {
+						const IconComp = cat.icon;
+						return (
+							<Link key={cat.id} to={`/category/${cat.id}`} className="group relative aspect-square w-full rounded-[24px] overflow-hidden bg-surface-2 border border-border flex flex-col justify-end p-6 hover:shadow-floating transition-all duration-300 cursor-pointer">
+								
+								{/* Placeholder Background (would be an image in real app) */}
+								<div className="absolute inset-0 bg-gradient-to-br from-surface-2 to-surface flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+									<IconComp className="w-32 h-32 text-primary/5 -rotate-12" />
+								</div>
+								
+								{/* Gradient Overlay for text readability */}
+								<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-80" />
+								
+								{/* Card Content */}
+								<div className="relative z-10 w-full transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+									<div className="flex items-center justify-between mb-2">
+										<div className={cn("flex items-center justify-center w-10 h-10 rounded-[12px] text-white shadow-sm", cat.color)}>
+											<IconComp className="w-5 h-5" />
+										</div>
+										<span className="text-white/80 text-xs font-medium bg-black/20 px-2 py-1 rounded-full backdrop-blur-md">
+											{cat.count} {isRtl ? "منتج" : "Products"}
+										</span>
+									</div>
+									<h3 className="text-xl font-bold text-white mb-1 drop-shadow-md">{cat.name[language]}</h3>
+									<div className="flex items-center gap-2 text-primary-light text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+										{isRtl ? "تصفح القسم" : "Explore Category"}
+										{isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+									</div>
+								</div>
 							</Link>
-						</motion.div>
-					))}
+						);
+					})}
 				</div>
 			</Container>
 		</Section>
 	);
 };
 
-export default CategoriesSection;
+export default CategoriesShowcase;
