@@ -11,7 +11,7 @@ const Home = lazy(() => import("@/pages/Home"));
 const ProductCardDemo = lazy(() => import("@/pages/ProductCardDemo"));
 import About from "@/pages/About";
 import Products from "@/pages/Products/index";
-import ProductDetails from "@/pages/ProductDetails";
+import ProductDetails from "@/pages/ProductDetails/index";
 import Category from "@/pages/Category/index";
 import Brands from "@/pages/Brands";
 import Cart from "@/pages/Cart";
@@ -41,7 +41,6 @@ export const routes = [
 		children: [
 			// App Layout Routes
 			{
-				path: "",
 				element: <AppLayout />,
 				children: [
 					{
@@ -113,7 +112,6 @@ export const routes = [
 			},
 			// Empty Layout Routes
 			{
-				path: "",
 				element: <EmptyLayout />,
 				children: [
 					{

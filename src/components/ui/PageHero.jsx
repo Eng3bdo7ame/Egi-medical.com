@@ -1,6 +1,7 @@
 import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import Container from "@/components/ui/Container";
+import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { cn } from "@/lib/utils";
 
 /**
@@ -12,8 +13,9 @@ import { cn } from "@/lib/utils";
  * - subtitle: { en, ar } — Optional description
  * - count: number — Optional product/item count badge
  * - countLabel: { en, ar } — Optional label for count (defaults to "Products")
+ * - breadcrumbs: Array — Array of breadcrumb items
  */
-export const PageHero = ({ title, subtitle, count, countLabel, className }) => {
+export const PageHero = ({ title, subtitle, count, countLabel, breadcrumbs, className }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
@@ -39,15 +41,18 @@ export const PageHero = ({ title, subtitle, count, countLabel, className }) => {
 				</svg>
 			</div>
 
-			<Container className="relative z-10 py-8 sm:py-10 md:py-12">
-				<div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-6">
+			<Container className="relative z-10 py-10 sm:py-14 md:py-16 flex flex-col gap-6">
+				{breadcrumbs && breadcrumbs.length > 0 && (
+					<Breadcrumb items={breadcrumbs} className="py-0 border-b-0" />
+				)}
+				<div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6">
 					{/* Title & Subtitle */}
-					<div className="flex flex-col gap-1.5">
-						<h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-text tracking-tight">
+					<div className="flex flex-col gap-2">
+						<h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text tracking-tight">
 							{title?.[language] || title}
 						</h1>
 						{subtitle && (
-							<p className="text-sm sm:text-base text-text-secondary max-w-lg">
+							<p className="text-base sm:text-lg text-text-secondary max-w-2xl leading-relaxed">
 								{subtitle?.[language] || subtitle}
 							</p>
 						)}
@@ -55,8 +60,7 @@ export const PageHero = ({ title, subtitle, count, countLabel, className }) => {
 
 					{/* Product Count Badge */}
 					{count != null && (
-						<div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold shrink-0">
-							<span className="w-2 h-2 rounded-full bg-primary" />
+						<div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm md:text-base font-bold shrink-0 shadow-sm shadow-primary/20">
 							<span>
 								{count.toLocaleString(isRtl ? "ar-EG" : "en-US")} {resolvedCountLabel[language]}
 							</span>

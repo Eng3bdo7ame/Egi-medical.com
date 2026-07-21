@@ -30,7 +30,6 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 		handleMouseEnter,
 		handleMouseLeave,
 		toggleWishlist,
-		toggleCompare,
 		handleAddToCart
 	} = useProductCard(product);
 
@@ -40,7 +39,7 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 
 	return (
 		<LocalizedLink 
-			to={`/product/${product.id}`}
+			to={`/products/${product.id}`}
 			className={cn(
 				"group relative flex flex-col w-full bg-surface border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-border-hover hover:shadow-floating outline-none",
 				variant === PRODUCT_CARD_VARIANTS.COMPACT && "p-2",
@@ -52,18 +51,12 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 		>
 			{/* Top Image Section */}
 			<div className="relative">
-				{discount > 0 && (
-					<div className={cn("absolute top-3 z-10", isRtl ? "right-3" : "left-3")}>
-						<span className="bg-danger text-white text-[10px] font-bold px-2 py-0.5 rounded-[6px]">
-							-{discount}%
-						</span>
-					</div>
-				)}
+				<div className={cn("absolute top-3 z-10 max-w-[60%]", isRtl ? "right-3" : "left-3")}>
+					<ProductBadges badges={product.badges} isOutOfStock={isOutOfStock} isRtl={isRtl} language={language} />
+				</div>
 				<ProductQuickActions 
 					isWishlisted={isWishlisted} 
 					onToggleWishlist={toggleWishlist} 
-					isCompared={isCompared}
-					onToggleCompare={toggleCompare}
 					isRtl={isRtl} 
 				/>
 				<ProductImage 
@@ -84,7 +77,11 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 					{product.reviews ? (
 						<ProductRating rating={product.reviews.rating} count={product.reviews.count} isRtl={isRtl} />
 					) : <div />}
-					<ProductBadges badges={product.badges} isOutOfStock={isOutOfStock} isRtl={isRtl} language={language} />
+					{discount > 0 ? (
+						<span className="bg-danger text-white text-[10px] font-bold px-2 py-0.5 rounded-[6px]">
+							{isRtl ? `خصم ${discount}%` : `${discount}% OFF`}
+						</span>
+					) : <div />}
 				</div>
 
 				{variant === PRODUCT_CARD_VARIANTS.MEDICAL && (

@@ -3,7 +3,7 @@ import { Star, Check } from "lucide-react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { cn } from "@/lib/utils";
 
-export const RatingFilter = ({ stars, selectedRating, onChange, count }) => {
+export const RatingSelector = ({ stars, selectedRating, onChange, count }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const isSelected = selectedRating === stars;
@@ -53,4 +53,4 @@ export const RatingFilter = ({ stars, selectedRating, onChange, count }) => {
 	);
 };
 
-export default RatingFilter;
+export default RatingSelector;

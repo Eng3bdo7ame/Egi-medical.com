@@ -2,7 +2,7 @@ import React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const CheckboxFilter = ({ label, value, checked, onChange, count }) => {
+export const CheckboxGroup = ({ label, value, checked, onChange, count }) => {
 	return (
 		<label className="flex items-center justify-between py-1.5 group cursor-pointer select-none">
 			<div className="flex items-center gap-3">
@@ -40,4 +40,4 @@ export const CheckboxFilter = ({ label, value, checked, onChange, count }) => {
 	);
 };
 
-export default CheckboxFilter;
+export default CheckboxGroup;

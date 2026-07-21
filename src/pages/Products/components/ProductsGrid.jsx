@@ -7,7 +7,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
  * ProductGrid Component
  * Renders products based on the active view mode (grid variants or list).
  */
-export const ProductGrid = ({ products, viewMode }) => {
+export const ProductsGrid = ({ products, viewMode }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
@@ -50,4 +50,4 @@ export const ProductGrid = ({ products, viewMode }) => {
 	);
 };
 
-export default ProductGrid;
+export default ProductsGrid;

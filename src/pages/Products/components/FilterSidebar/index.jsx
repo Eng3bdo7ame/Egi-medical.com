@@ -4,10 +4,14 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { cn } from "@/lib/utils";
 
 // Import sub-components
-import { FilterGroup } from "./FilterGroup";
-import { CheckboxFilter } from "./CheckboxFilter";
-import { RangeFilter } from "./RangeFilter";
-import { RatingFilter } from "./RatingFilter";
+import { FilterSection } from "./FilterSection";
+import { CheckboxGroup } from "./CheckboxGroup";
+import { RadioGroup } from "./RadioGroup";
+import { PriceSlider } from "./PriceSlider";
+import { RatingSelector } from "./RatingSelector";
+import { BrandList } from "./BrandList";
+import { CategoryTree } from "./CategoryTree";
+import { Availability } from "./Availability";
 import { FilterFooter } from "./FilterFooter";
 
 // Create context for any shared state (like mobile drawer open state) if needed deeply
@@ -84,10 +88,14 @@ export const FilterSidebar = ({ children, isOpen, onClose }) => {
 };
 
 // Attach sub-components for the Compound Component pattern
-FilterSidebar.Group = FilterGroup;
-FilterSidebar.Checkbox = CheckboxFilter;
-FilterSidebar.Range = RangeFilter;
-FilterSidebar.Rating = RatingFilter;
+FilterSidebar.Section = FilterSection;
+FilterSidebar.Checkbox = CheckboxGroup;
+FilterSidebar.Radio = RadioGroup;
+FilterSidebar.Price = PriceSlider;
+FilterSidebar.Rating = RatingSelector;
+FilterSidebar.Brands = BrandList;
+FilterSidebar.Categories = CategoryTree;
+FilterSidebar.Availability = Availability;
 FilterSidebar.Footer = FilterFooter;
 
 export default FilterSidebar;

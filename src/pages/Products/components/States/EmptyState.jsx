@@ -7,24 +7,24 @@ export const EmptyState = ({ onClearFilters }) => {
 	const isRtl = language === "ar";
 
 	return (
-		<div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-			<div className="w-24 h-24 bg-surface-2 rounded-full flex items-center justify-center mb-6 relative">
-				<FileQuestion className="w-12 h-12 text-text-secondary opacity-50" strokeWidth={1.5} />
-				<div className="absolute -bottom-2 -right-2 w-8 h-8 bg-background rounded-full flex items-center justify-center">
+		<div className="flex flex-col items-center justify-center py-24 px-4 text-center bg-surface border border-border/40 rounded-3xl w-full my-8">
+			<div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6 relative shadow-inner">
+				<span className="text-5xl drop-shadow-md">🩺</span>
+				<div className="absolute -bottom-1 -right-1 w-8 h-8 bg-background rounded-full flex items-center justify-center shadow-sm">
 					<div className="w-6 h-6 bg-surface-2 rounded-full flex items-center justify-center">
-						<span className="text-lg">😕</span>
+						<span className="text-xs">⚠️</span>
 					</div>
 				</div>
 			</div>
 			
-			<h3 className="text-2xl font-extrabold text-text mb-3">
-				{isRtl ? "لم يتم العثور على منتجات" : "No Products Found"}
+			<h3 className="text-2xl sm:text-3xl font-extrabold text-text mb-3 tracking-tight">
+				{isRtl ? "لم يتم العثور على منتجات طبية" : "No Medical Products Found"}
 			</h3>
 			
-			<p className="text-text-secondary max-w-sm mb-8">
+			<p className="text-text-secondary max-w-sm mb-8 text-base">
 				{isRtl 
-					? "عذراً، لا توجد منتجات تطابق خيارات التصفية الحالية. جرب إزالة بعض الفلاتر للبحث مرة أخرى." 
-					: "Sorry, no products match your current filters. Try removing some filters to search again."}
+					? "عذراً، لا توجد أجهزة طبية أو منتجات تطابق الفلاتر الحالية. جرب تغييرها." 
+					: "Sorry, no medical devices or products match your current filters. Try changing them."}
 			</p>
 
 			{onClearFilters && (

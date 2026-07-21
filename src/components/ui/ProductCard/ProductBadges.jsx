@@ -11,12 +11,12 @@ export const ProductBadges = ({ badges = [], isOutOfStock, isRtl, language }) =>
 	if (!displayBadges.length) return null;
 
 	return (
-		<div className="flex items-center flex-wrap gap-1.5 justify-end">
+		<div className="flex items-start flex-wrap gap-1.5">
 			{displayBadges.map((badge, idx) => (
 				<span 
 					key={idx} 
 					className={cn(
-						"text-[10px] font-bold px-2 py-0.5 rounded-[6px]",
+						"text-[11px] font-extrabold px-2.5 py-1 rounded-md shadow-sm backdrop-blur-md",
 						badge.type === "new" && "bg-success text-white",
 						badge.type === "bestseller" && "bg-warning text-white",
 						badge.type === "sale" && "bg-danger text-white",

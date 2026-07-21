@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 
-export const RangeFilter = ({ min = 0, max = 10000, value, onChange, currency = "EGP" }) => {
+export const PriceSlider = ({ min = 0, max = 10000, value, onChange, currency = "EGP" }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	
@@ -85,4 +85,4 @@ export const RangeFilter = ({ min = 0, max = 10000, value, onChange, currency = 
 	);
 };
 
-export default RangeFilter;
+export default PriceSlider;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const FilterGroup = ({ title, children, defaultOpen = true, activeCount = 0 }) => {
+export const FilterSection = ({ title, children, defaultOpen = true, activeCount = 0 }) => {
 	const [isOpen, setIsOpen] = useState(defaultOpen);
 
 	return (
@@ -39,4 +39,4 @@ export const FilterGroup = ({ title, children, defaultOpen = true, activeCount =
 	);
 };
 
-export default FilterGroup;
+export default FilterSection;
