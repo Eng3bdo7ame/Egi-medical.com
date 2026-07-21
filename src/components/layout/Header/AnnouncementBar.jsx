@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import Container from "@/components/ui/Container";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -66,7 +67,7 @@ export const AnnouncementBar = () => {
 						<span className="hidden sm:block w-px h-5 bg-divider" />
 
 						{/* Login / Register */}
-						<Link
+						<LocalizedLink
 							to="/auth/login"
 							className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
 						>
@@ -74,7 +75,7 @@ export const AnnouncementBar = () => {
 							<span className="hidden sm:inline">
 								{isRtl ? "الدخول / التسجيل" : "Login / Register"}
 							</span>
-						</Link>
+						</LocalizedLink>
 					</div>
 				</div>
 			</Container>

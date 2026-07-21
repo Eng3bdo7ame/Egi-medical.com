@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useLanguage } from "@/app/providers/I18nProvider";
@@ -67,7 +68,7 @@ export const ProductSection = ({ title, subtitle, viewAllLink, variant = "defaul
 					</div>
 
 					{viewAllLink && (
-						<Link
+						<LocalizedLink
 							to={viewAllLink}
 							className={cn(
 								"group inline-flex items-center gap-2 text-sm font-semibold transition-colors",
@@ -80,7 +81,7 @@ export const ProductSection = ({ title, subtitle, viewAllLink, variant = "defaul
 							) : (
 								<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
 							)}
-						</Link>
+						</LocalizedLink>
 					)}
 				</div>
 				{/* Products Layout: Continuous Slider */}

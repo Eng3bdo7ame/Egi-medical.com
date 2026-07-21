@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import * as Icons from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,10 +34,10 @@ export const CallToAction = ({ title, description, buttonText, buttonLink, iconN
 
 					<div className="relative z-10 flex-shrink-0">
 						<Button asChild variant="secondary" size="lg" className="h-14 px-8 text-[15px] shadow-floating gap-3">
-							<Link to={buttonLink}>
+							<LocalizedLink to={buttonLink}>
 								<IconComp className="w-5 h-5" />
 								{buttonText[language]}
-							</Link>
+							</LocalizedLink>
 						</Button>
 					</div>
 				</div>

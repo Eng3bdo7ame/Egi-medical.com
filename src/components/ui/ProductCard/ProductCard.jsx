@@ -1,10 +1,11 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { PRODUCT_CARD_VARIANTS } from "./product-card.constants";
 import { useProductCard } from "./hooks/useProductCard";
 import { cn } from "@/lib/utils";
 
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { ProductImage } from "./ProductImage";
 import { ProductBadges } from "./ProductBadges";
 import { ProductQuickActions } from "./ProductQuickActions";
@@ -37,7 +38,7 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 	const discount = calculateDiscount(product.price?.current, product.price?.original);
 
 	return (
-		<Link 
+		<LocalizedLink 
 			to={`/product/${product.id}`}
 			className={cn(
 				"group relative flex flex-col w-full bg-surface border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-border-hover hover:shadow-floating outline-none",
@@ -94,7 +95,7 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 					/>
 				</div>
 			</div>
-		</Link>
+		</LocalizedLink>
 	);
 };
 

@@ -1,10 +1,11 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 
 export const FeaturedCategoriesCard = ({ category, isRtl, language }) => {
 	return (
-		<Link
+		<LocalizedLink
 			to={category.link}
 			className="group relative w-full aspect-[4/3] rounded-[24px] overflow-hidden bg-surface-2 border border-border shadow-sm hover:shadow-floating transition-all duration-500 focus-visible:ring-2 focus-visible:ring-primary outline-none block"
 		>
@@ -37,7 +38,7 @@ export const FeaturedCategoriesCard = ({ category, isRtl, language }) => {
 					)}
 				</div>
 			</div>
-		</Link>
+		</LocalizedLink>
 	);
 };
 

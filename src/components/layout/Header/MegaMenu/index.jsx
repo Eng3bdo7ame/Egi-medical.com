@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { megaMenuData } from "./megamenu.data";
@@ -96,7 +97,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 											<ul className="flex flex-col gap-1">
 												{subcat.links.map((link, i) => (
 													<li key={i}>
-														<Link
+														<LocalizedLink
 															to={link.path}
 															onClick={onClose}
 															className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 hover:text-primary transition-all duration-200 group"
@@ -111,7 +112,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 															<span className="text-[13px] font-semibold text-slate-600 group-hover:text-primary transition-colors line-clamp-1">
 																{link.name[language]}
 															</span>
-														</Link>
+														</LocalizedLink>
 													</li>
 												))}
 											</ul>

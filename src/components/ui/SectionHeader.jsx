@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -26,7 +27,7 @@ export const SectionHeader = ({ title, subtitle, viewAllLink, viewAllText, class
 			</div>
 
 			{viewAllLink && (
-				<Link
+				<LocalizedLink
 					to={viewAllLink}
 					className="group inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-hover transition-colors"
 				>
@@ -36,7 +37,7 @@ export const SectionHeader = ({ title, subtitle, viewAllLink, viewAllText, class
 					) : (
 						<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
 					)}
-				</Link>
+				</LocalizedLink>
 			)}
 		</div>
 	);

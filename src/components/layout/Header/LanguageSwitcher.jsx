@@ -3,6 +3,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { LANGUAGES } from "@/constants/languages";
 import { Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate, useLocation } from "react-router-dom";
 
 /**
  * LanguageSwitcher Component
@@ -12,11 +13,28 @@ import { cn } from "@/lib/utils";
  */
 export const LanguageSwitcher = ({ variant = "default", className }) => {
 	const { language, toggleLanguage } = useLanguage();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const isRtl = language === "ar";
+
+	const handleLanguageSwitch = () => {
+		const newLang = language === LANGUAGES.AR ? LANGUAGES.EN : LANGUAGES.AR;
+		toggleLanguage();
+		
+		const pathSegments = location.pathname.split('/').filter(Boolean);
+		if (pathSegments.length > 0 && Object.values(LANGUAGES).includes(pathSegments[0])) {
+			pathSegments[0] = newLang;
+		} else {
+			pathSegments.unshift(newLang);
+		}
+		
+		const newPath = '/' + pathSegments.join('/') + location.search + location.hash;
+		navigate(newPath);
+	};
 
 	return (
 		<button
-			onClick={toggleLanguage}
+			onClick={handleLanguageSwitch}
 			className={cn(
 				"inline-flex items-center gap-1.5 text-xs font-medium transition-colors duration-150 cursor-pointer select-none rounded-md focus-visible:ring-2 focus-visible:ring-ring/50 outline-none",
 				variant === "announcement"

@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -16,7 +17,7 @@ export const HeroButtons = ({ primary, secondary }) => {
 					asChild
 					className="min-w-[160px] h-12 !rounded-[8px] shadow-none hover:shadow-md transition-shadow font-semibold text-[15px]"
 				>
-					<Link to={primary.link}>{primary.label}</Link>
+					<LocalizedLink to={primary.link}>{primary.label}</LocalizedLink>
 				</Button>
 			)}
 
@@ -26,7 +27,7 @@ export const HeroButtons = ({ primary, secondary }) => {
 					variant="secondary"
 					className="min-w-[160px] h-12 !rounded-[8px] font-semibold text-[15px] bg-white hover:bg-primary/5"
 				>
-					<Link to={secondary.link}>{secondary.label}</Link>
+					<LocalizedLink to={secondary.link}>{secondary.label}</LocalizedLink>
 				</Button>
 			)}
 		</div>

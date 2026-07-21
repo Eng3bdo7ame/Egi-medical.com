@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { ShieldCheck, Award, FileBadge, Globe, Users, TrendingUp, ArrowRight, ArrowLeft } from "lucide-react";
 import Section from "@/components/ui/Section";
@@ -60,10 +61,10 @@ export const TrustSection = () => {
 
 						{/* Primary CTA */}
 						<div className="pt-4">
-							<Link to="/about" className="inline-flex items-center gap-2 bg-white text-primary hover:bg-surface px-8 py-4 rounded-[14px] font-bold transition-colors">
+							<LocalizedLink to="/about" className="inline-flex items-center gap-2 bg-white text-primary hover:bg-surface px-8 py-4 rounded-[14px] font-bold transition-colors">
 								{isRtl ? "اكتشف قصة نجاحنا" : "Discover Our Story"}
 								{isRtl ? <ArrowLeft className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />}
-							</Link>
+							</LocalizedLink>
 						</div>
 					</div>
 

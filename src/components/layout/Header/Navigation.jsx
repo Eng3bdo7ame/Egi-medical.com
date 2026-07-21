@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { navigationLinks } from "@/config/navigation";
 import Container from "@/components/ui/Container";
@@ -86,7 +87,7 @@ export const Navigation = () => {
 							const linkName = isRtl ? (AR_NAV[link.name] || link.name) : link.name;
 
 							return (
-								<Link
+								<LocalizedLink
 									key={link.path}
 									to={link.path}
 									className={cn(
@@ -97,12 +98,12 @@ export const Navigation = () => {
 									)}
 								>
 									{linkName}
-								</Link>
+								</LocalizedLink>
 							);
 						})}
 
 						{/* Consultation Link with Badge */}
-						<Link
+						<LocalizedLink
 							to="/consultation"
 							className="relative inline-flex items-center gap-2 px-3 py-2 text-[15px] font-semibold text-text-secondary hover:text-primary hover:bg-primary/5 rounded-lg transition-colors duration-200 select-none "
 						>
@@ -110,7 +111,7 @@ export const Navigation = () => {
 							<Badge variant="success" size="sm" className="h-5 px-1.5 text-[10px]">
 								{isRtl ? "جديد" : "New"}
 							</Badge>
-						</Link>
+						</LocalizedLink>
 					</nav>
 				</div>
 			</Container>

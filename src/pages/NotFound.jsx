@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import LocalizedLink from "@/components/ui/LocalizedLink";
+import { } from "react-router-dom";
 import ROUTES from "@/app/router/paths";
 
 const NotFound = () => {
@@ -11,12 +12,12 @@ const NotFound = () => {
 			<p className="text-muted text-lg max-w-md mx-auto">
 				Sorry, we couldn't find the page you are looking for. It might have been moved or deleted.
 			</p>
-			<Link
+			<LocalizedLink
 				to={ROUTES.HOME}
 				className="inline-block px-6 py-3 bg-primary text-background font-bold rounded-lg hover:opacity-90 transition-all"
 			>
 				Go Back Home
-			</Link>
+			</LocalizedLink>
 		</div>
 	);
 };

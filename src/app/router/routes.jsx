@@ -3,6 +3,8 @@ import { lazy } from "react";
 import AppLayout from "@/layouts/AppLayout";
 import AuthLayout from "@/layouts/AuthLayout";
 import EmptyLayout from "@/layouts/EmptyLayout";
+import LanguageGuard from "./LanguageGuard";
+import RootRedirect from "./RootRedirect";
 
 // App Pages
 const Home = lazy(() => import("@/pages/Home"));
@@ -29,98 +31,111 @@ import Maintenance from "@/pages/Maintenance";
 import { ROUTES } from "./paths";
 
 export const routes = [
-	// App Layout Routes
 	{
 		path: "/",
-		element: <AppLayout />,
-		children: [
-			{
-				index: true,
-				element: <Home />,
-			},
-			{
-				path: ROUTES.PRODUCTS.substring(1),
-				element: <Products />,
-			},
-			{
-				path: ROUTES.PRODUCT_DETAILS.substring(1),
-				element: <ProductDetails />,
-			},
-			{
-				path: ROUTES.CATEGORY.substring(1),
-				element: <Category />,
-			},
-			{
-				path: ROUTES.BRANDS.substring(1),
-				element: <Brands />,
-			},
-			{
-				path: ROUTES.CART.substring(1),
-				element: <Cart />,
-			},
-			{
-				path: ROUTES.ABOUT.substring(1),
-				element: <About />,
-			},
-			{
-				path: ROUTES.CONTACT.substring(1),
-				element: <Contact />,
-			},
-			// Protected Routes directly accessible (Guards removed temporarily)
-			{
-				path: ROUTES.CHECKOUT.substring(1),
-				element: <Checkout />,
-			},
-			{
-				path: ROUTES.PROFILE.substring(1),
-				element: <Profile />,
-			},
-		],
+		element: <RootRedirect />,
 	},
-	// Auth Layout Routes (Direct access, GuestGuard removed temporarily)
 	{
-		path: "/auth",
-		element: <AuthLayout />,
+		path: "/:lang",
+		element: <LanguageGuard />,
 		children: [
+			// App Layout Routes
 			{
-				path: ROUTES.LOGIN.replace("/auth/", ""),
-				element: <Login />,
+				path: "",
+				element: <AppLayout />,
+				children: [
+					{
+						index: true,
+						element: <Home />,
+					},
+					{
+						path: ROUTES.PRODUCTS.substring(1),
+						element: <Products />,
+					},
+					{
+						path: ROUTES.PRODUCT_DETAILS.substring(1),
+						element: <ProductDetails />,
+					},
+					{
+						path: ROUTES.CATEGORY.substring(1),
+						element: <Category />,
+					},
+					{
+						path: ROUTES.BRANDS.substring(1),
+						element: <Brands />,
+					},
+					{
+						path: ROUTES.CART.substring(1),
+						element: <Cart />,
+					},
+					{
+						path: ROUTES.ABOUT.substring(1),
+						element: <About />,
+					},
+					{
+						path: ROUTES.CONTACT.substring(1),
+						element: <Contact />,
+					},
+					// Protected Routes directly accessible (Guards removed temporarily)
+					{
+						path: ROUTES.CHECKOUT.substring(1),
+						element: <Checkout />,
+					},
+					{
+						path: ROUTES.PROFILE.substring(1),
+						element: <Profile />,
+					},
+				],
 			},
+			// Auth Layout Routes (Direct access, GuestGuard removed temporarily)
 			{
-				path: ROUTES.REGISTER.replace("/auth/", ""),
-				element: <Register />,
+				path: "auth",
+				element: <AuthLayout />,
+				children: [
+					{
+						path: ROUTES.LOGIN.replace("/auth/", ""),
+						element: <Login />,
+					},
+					{
+						path: ROUTES.REGISTER.replace("/auth/", ""),
+						element: <Register />,
+					},
+					{
+						path: ROUTES.FORGOT_PASSWORD.replace("/auth/", ""),
+						element: <ForgotPassword />,
+					},
+				],
 			},
+			// Demo Routes
 			{
-				path: ROUTES.FORGOT_PASSWORD.replace("/auth/", ""),
-				element: <ForgotPassword />,
+				path: "product-card-demo",
+				element: <ProductCardDemo />,
 			},
-		],
+			// Empty Layout Routes
+			{
+				path: "",
+				element: <EmptyLayout />,
+				children: [
+					{
+						path: ROUTES.NOT_FOUND.substring(1),
+						element: <NotFound />,
+					},
+					{
+						path: ROUTES.MAINTENANCE.substring(1),
+						element: <Maintenance />,
+					},
+					{
+						path: "*",
+						element: <Navigate to={ROUTES.NOT_FOUND} replace />,
+					},
+				],
+			},
+		]
 	},
-	// Demo Routes
-	// Demo Routes
 	{
-		path: "/product-card-demo",
-		element: <ProductCardDemo />,
-	},
-	// Empty Layout Routes
-	{
-		path: "/",
-		element: <EmptyLayout />,
-		children: [
-			{
-				path: ROUTES.NOT_FOUND.substring(1),
-				element: <NotFound />,
-			},
-			{
-				path: ROUTES.MAINTENANCE.substring(1),
-				element: <Maintenance />,
-			},
-			{
-				path: "*",
-				element: <Navigate to={ROUTES.NOT_FOUND} replace />,
-			},
-		],
-	},
+		path: "*",
+		element: <RootRedirect /> // Catch all non-prefixed routes and redirect
+	}
 ];
 
 export default routes;

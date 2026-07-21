@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { motion } from "framer-motion";
 import { promoCards } from "./promo.data";
@@ -23,7 +24,7 @@ export const PromoSection = () => {
 							viewport={{ once: true, margin: "-50px" }}
 							transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
 						>
-							<Link
+							<LocalizedLink
 								to={promo.link}
 								className={cn(
 									"group relative flex flex-col justify-between p-6 lg:p-8 rounded-[20px] overflow-hidden min-h-[220px] transition-all duration-300 hover:shadow-floating hover:scale-[1.02]",
@@ -68,7 +69,7 @@ export const PromoSection = () => {
 										{promo.buttonText[language]}
 									</span>
 								</div>
-							</Link>
+							</LocalizedLink>
 						</motion.div>
 					))}
 				</div>

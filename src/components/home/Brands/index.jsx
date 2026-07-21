@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
@@ -31,7 +32,7 @@ export const BrandsShowcase = () => {
 				
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
 					{richBrands.map((brand) => (
-						<Link key={brand.id} to={`/brand/${brand.id}`} className="group flex flex-col bg-surface border border-border rounded-[20px] overflow-hidden hover:shadow-floating transition-all duration-300">
+						<LocalizedLink key={brand.id} to={`/brand/${brand.id}`} className="group flex flex-col bg-surface border border-border rounded-[20px] overflow-hidden hover:shadow-floating transition-all duration-300">
 							{/* Colored Top Banner */}
 							<div className={`h-16 ${brand.bgClass} relative flex justify-center`}>
 								{/* Verified Badge */}
@@ -53,7 +54,7 @@ export const BrandsShowcase = () => {
 									{brand.count} {isRtl ? "منتج" : "Products"}
 								</p>
 							</div>
-						</Link>
+						</LocalizedLink>
 					))}
 				</div>
 			</Container>

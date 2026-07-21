@@ -1,10 +1,11 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export const DealButton = ({ deal, language }) => {
 	return (
-		<Link
+		<LocalizedLink
 			to={deal.link}
 			className="group flex items-center justify-center w-full outline-none p-1 cursor-pointer select-none"
 		>
@@ -21,7 +22,7 @@ export const DealButton = ({ deal, language }) => {
 					className="w-full h-auto object-contain rounded-full shadow-sm group-hover:shadow-md transition-shadow duration-300"
 				/>
 			</motion.div>
-		</Link>
+		</LocalizedLink>
 	);
 };
 

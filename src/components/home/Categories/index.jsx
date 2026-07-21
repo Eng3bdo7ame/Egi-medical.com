@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { ArrowRight, ArrowLeft, Heart, Pill, Stethoscope, Baby } from "lucide-react";
 import Section from "@/components/ui/Section";
@@ -33,7 +34,7 @@ export const CategoriesShowcase = () => {
 					{richCategories.map((cat) => {
 						const IconComp = cat.icon;
 						return (
-							<Link key={cat.id} to={`/category/${cat.id}`} className="group relative aspect-square w-full rounded-[24px] overflow-hidden bg-surface-2 border border-border flex flex-col justify-end p-6 hover:shadow-floating transition-all duration-300 cursor-pointer">
+							<LocalizedLink key={cat.id} to={`/category/${cat.id}`} className="group relative aspect-square w-full rounded-[24px] overflow-hidden bg-surface-2 border border-border flex flex-col justify-end p-6 hover:shadow-floating transition-all duration-300 cursor-pointer">
 								
 								{/* Placeholder Background (would be an image in real app) */}
 								<div className="absolute inset-0 bg-gradient-to-br from-surface-2 to-surface flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
@@ -59,7 +60,7 @@ export const CategoriesShowcase = () => {
 										{isRtl ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
 									</div>
 								</div>
-							</Link>
+							</LocalizedLink>
 						);
 					})}
 				</div>

@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { Link } from "react-router-dom";
+import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 
 /**
@@ -12,7 +13,7 @@ export const Logo = () => {
 	const isRtl = language === "ar";
 
 	return (
-		<Link
+		<LocalizedLink
 			to="/"
 			className="flex items-center select-none group focus-visible:ring-2 focus-visible:ring-ring/50 rounded-md outline-none shrink-0"
 			aria-label={isRtl ? "مؤتة كير - الصفحة الرئيسية" : "Mootah Care - Home"}
@@ -21,7 +22,7 @@ export const Logo = () => {
 				MootahCare
 				<span className="text-accent text-[32px] font-black relative leading-none -top-0.5 ms-0.5">+</span>
 			</span>
-		</Link>
+		</LocalizedLink>
 	);
 };
 

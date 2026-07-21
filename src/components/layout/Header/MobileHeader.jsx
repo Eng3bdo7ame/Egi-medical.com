@@ -1,5 +1,6 @@
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { navigationLinks } from "@/config/navigation";
 import {
@@ -48,6 +49,23 @@ export const MobileHeader = () => {
 	const { theme, toggleTheme } = useTheme();
 	const isRtl = language === "ar";
 	const [isOpen, setIsOpen] = useState(false);
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	const handleLanguageSwitch = () => {
+		const newLang = language === "ar" ? "en" : "ar";
+		toggleLanguage();
+		
+		const pathSegments = location.pathname.split('/').filter(Boolean);
+		if (pathSegments.length > 0 && ["ar", "en"].includes(pathSegments[0])) {
+			pathSegments[0] = newLang;
+		} else {
+			pathSegments.unshift(newLang);
+		}
+		
+		const newPath = '/' + pathSegments.join('/') + location.search + location.hash;
+		navigate(newPath);
+	};
 
 	// Lock body scroll when drawer is open
 	useEffect(() => {
@@ -97,7 +115,7 @@ export const MobileHeader = () => {
 
 					{/* Right Actions */}
 					<div className="flex items-center gap-0.5">
-						<Link
+						<LocalizedLink
 							to="/cart"
 							className="relative p-2 rounded-lg text-text-secondary hover:text-primary hover:bg-surface-2 transition-colors"
 							aria-label={isRtl ? "السلة" : "Cart"}
@@ -106,7 +124,7 @@ export const MobileHeader = () => {
 							<span className="absolute top-0.5 end-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-secondary text-white text-[10px] font-bold leading-none">
 								2
 							</span>
-						</Link>
+						</LocalizedLink>
 					</div>
 				</div>
 			</Container>
@@ -160,7 +178,7 @@ export const MobileHeader = () => {
 					{/* Drawer Navigation */}
 					<nav className="flex-1 overflow-y-auto py-2" aria-label="Mobile navigation">
 						{navigationLinks.map((link) => (
-							<Link
+							<LocalizedLink
 								key={link.path}
 								to={link.path}
 								onClick={close}
@@ -168,7 +186,7 @@ export const MobileHeader = () => {
 							>
 								<span>{isRtl ? (AR_NAV[link.name] || link.name) : link.name}</span>
 								<ChevronRight className={cn("w-4 h-4 opacity-40", isRtl && "rotate-180")} />
-							</Link>
+							</LocalizedLink>
 						))}
 					</nav>
 
@@ -176,28 +194,28 @@ export const MobileHeader = () => {
 					<div className="p-4 border-t border-border space-y-3">
 						{/* Quick Actions Row */}
 						<div className="flex items-center gap-2">
-							<Link
+							<LocalizedLink
 								to="/wishlist"
 								onClick={close}
 								className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-surface-2 text-text-secondary hover:text-primary text-xs font-medium transition-colors"
 							>
 								<Heart className="w-3.5 h-3.5" />
 								{isRtl ? "المفضلة" : "Wishlist"}
-							</Link>
-							<Link
+							</LocalizedLink>
+							<LocalizedLink
 								to="/profile"
 								onClick={close}
 								className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-surface-2 text-text-secondary hover:text-primary text-xs font-medium transition-colors"
 							>
 								<User className="w-3.5 h-3.5" />
 								{isRtl ? "حسابي" : "Account"}
-							</Link>
+							</LocalizedLink>
 						</div>
 
 						{/* Language & Theme Row */}
 						<div className="flex items-center gap-2">
 							<button
-								onClick={toggleLanguage}
+								onClick={handleLanguageSwitch}
 								className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg bg-surface-2 text-text-secondary hover:text-primary text-xs font-medium transition-colors cursor-pointer"
 							>
 								<Globe className="w-3.5 h-3.5" />
