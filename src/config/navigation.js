@@ -1,14 +1,11 @@
-import { ROUTES } from "@/app/router/paths";
-
 export const navigationLinks = [
-	{ name: "Home", path: ROUTES.HOME },
-	{ name: "Products", path: ROUTES.PRODUCTS },
-	{ name: "Brands", path: ROUTES.BRANDS },
-	{ name: "Cart", path: ROUTES.CART },
-	{ name: "Checkout", path: ROUTES.CHECKOUT },
-	{ name: "Profile", path: ROUTES.PROFILE },
-	{ name: "About", path: ROUTES.ABOUT },
-	{ name: "Contact", path: ROUTES.CONTACT },
+	{ name: "Medical Devices", path: "/category/medical-devices" },
+	{ name: "Consumables", path: "/category/consumables" },
+	{ name: "Home Care", path: "/category/home-care" },
+	{ name: "Diagnostics", path: "/category/diagnostics" },
+	{ name: "Orthopedics", path: "/category/orthopedics" },
+	{ name: "Brands", path: "/brands" },
+	{ name: "Offers", path: "/products?filter=offers" },
 ];
 
 export default navigationLinks;
