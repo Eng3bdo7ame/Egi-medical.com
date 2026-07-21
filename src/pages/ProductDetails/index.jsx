@@ -10,7 +10,7 @@ import ProductVariants from "./components/ProductVariants";
 import ProductActions from "./components/ProductActions";
 import ProductMeta from "./components/ProductMeta";
 import ProductTabs from "./components/ProductTabs";
-import StickyAddToCart from "./components/StickyAddToCart";
+import MobileBottomBar from "./components/MobileBottomBar";
 import RelatedProducts from "./components/RelatedProducts";
 
 // Mocks
@@ -64,7 +64,7 @@ const ProductDetails = () => {
 	return (
 		<div className="flex flex-col w-full min-h-screen bg-background pb-10">
 			
-			<div className="bg-surface border-b border-border/60 py-4 mb-6">
+			<div className="bg-surface border-b border-border/60 py-4 mb-6 relative z-20">
 				<Container>
 					<Breadcrumb items={breadcrumbItems} />
 				</Container>
@@ -72,54 +72,70 @@ const ProductDetails = () => {
 
 			<Container>
 				{/* Top Section: Gallery & Info */}
-				<div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+				<div className="flex flex-col lg:flex-row gap-8 lg:gap-12 relative items-start">
 					
-					{/* Left: Gallery */}
-					<div className="w-full lg:w-[45%] shrink-0">
+					{/* Left Column: Gallery & Tabs (Scrolls normally) */}
+					<div className="w-full lg:w-[50%] xl:w-[55%] shrink-0 flex flex-col gap-8">
 						<ProductGallery images={getActiveImages()} />
+						
+						{/* Desktop: Move Tabs inside left column so right column can stick alongside it */}
+						<div className="hidden lg:block">
+							<ProductTabs 
+								description={product.description} 
+								specifications={product.specifications} 
+								reviews={product.reviewsList} 
+							/>
+						</div>
 					</div>
 
-					{/* Right: Info & Actions */}
-					<div className="w-full lg:w-[55%] flex flex-col">
+					{/* Right Column: Info & Actions (Sticky Desktop Buy Box) */}
+					<div className="w-full lg:w-[50%] xl:w-[45%] flex flex-col lg:sticky lg:top-24 pb-8 z-10">
 						<ProductInfo product={product} />
 
-						<ProductVariants 
-							variants={product.variants} 
-							selectedVariants={selectedVariants} 
-							onVariantChange={handleVariantChange} 
-						/>
-
-						<div className="mt-4">
-							<ProductActions 
-								quantity={quantity}
-								setQuantity={setQuantity}
-								maxQuantity={product.stock?.quantity}
-								onAddToCart={handleAddToCart}
-								isWishlisted={isWishlisted}
-								onToggleWishlist={() => setIsWishlisted(!isWishlisted)}
+						<div className="mt-2">
+							<ProductVariants 
+								variants={product.variants} 
+								selectedVariants={selectedVariants} 
+								onVariantChange={handleVariantChange} 
 							/>
 						</div>
 
-						<ProductMeta sku={product.stock?.sku} categories={product.categories} />
+						<ProductActions 
+							quantity={quantity}
+							setQuantity={setQuantity}
+							maxQuantity={product.stock?.quantity}
+							onAddToCart={handleAddToCart}
+							isWishlisted={isWishlisted}
+							onToggleWishlist={() => setIsWishlisted(!isWishlisted)}
+						/>
+
+						<div className="mt-6">
+							<ProductMeta sku={product.stock?.sku} categories={product.categories} />
+						</div>
 					</div>
 				</div>
 
-				{/* Middle Section: Tabs */}
-				<ProductTabs 
-					description={product.description} 
-					specifications={product.specifications} 
-					reviews={product.reviewsList} 
-				/>
+				{/* Mobile: Tabs below everything else */}
+				<div className="lg:hidden mt-8">
+					<ProductTabs 
+						description={product.description} 
+						specifications={product.specifications} 
+						reviews={product.reviewsList} 
+					/>
+				</div>
 
 				{/* Bottom Section: Related Products */}
-				<RelatedProducts products={relatedProducts} />
+				<div className="mt-16">
+					<RelatedProducts products={relatedProducts} />
+				</div>
 			</Container>
 
-			{/* Sticky Add To Cart (Scroll Aware) */}
-			<StickyAddToCart 
-				product={product} 
-				onAddToCart={handleAddToCart} 
-				showThreshold={600} 
+			{/* Mobile Bottom Buy Bar */}
+			<MobileBottomBar 
+				price={product.price}
+				onAddToCart={handleAddToCart}
+				disabled={!product.stock?.quantity}
+				showThreshold={600}
 			/>
 		</div>
 	);

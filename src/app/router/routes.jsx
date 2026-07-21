@@ -14,8 +14,8 @@ import Products from "@/pages/Products/index";
 import ProductDetails from "@/pages/ProductDetails/index";
 import Category from "@/pages/Category/index";
 import Brands from "@/pages/Brands";
-import Cart from "@/pages/Cart";
-import Checkout from "@/pages/Checkout";
+import Cart from "@/pages/Cart/index";
+import Checkout from "@/pages/Checkout/index";
 import Profile from "@/pages/Profile";
 import Contact from "@/pages/Contact";
 

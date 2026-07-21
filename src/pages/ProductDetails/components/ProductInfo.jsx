@@ -2,7 +2,11 @@ import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { Star, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ProductPrice } from "@/components/ui/ProductCard/ProductPrice";
+
+import PriceBox from "./PriceBox";
+import StockBadge from "./StockBadge";
+import TrustBadges from "./TrustBadges";
+import MedicalDisclaimer from "./MedicalDisclaimer";
 
 export const ProductInfo = ({ product }) => {
 	const { language } = useLanguage();
@@ -11,14 +15,20 @@ export const ProductInfo = ({ product }) => {
 	if (!product) return null;
 
 	return (
-		<div className="flex flex-col gap-4">
-			{/* Brand & Badges */}
-			<div className="flex items-center justify-between gap-4">
-				<div className="flex items-center gap-2 px-3 py-1 bg-surface-2 rounded-full border border-border">
-					<ShieldCheck className="w-4 h-4 text-primary" />
-					<span className="text-xs font-bold text-text-secondary uppercase tracking-wider">
-						{product.brand?.name}
-					</span>
+		<div className="flex flex-col gap-5 w-full">
+			
+			{/* Top Bar: Brand & Badges & Stock */}
+			<div className="flex flex-wrap items-center justify-between gap-3">
+				<div className="flex items-center gap-3">
+					<div className="flex items-center gap-2 px-3 py-1.5 bg-surface-2 rounded-full border border-border/50">
+						<ShieldCheck className="w-4 h-4 text-primary" />
+						<span className="text-xs font-bold text-text-secondary uppercase tracking-wider">
+							{product.brand?.name}
+						</span>
+					</div>
+					
+					{/* Stock Status Badge */}
+					<StockBadge stock={product.stock} />
 				</div>
 
 				{product.badges && product.badges.length > 0 && (
@@ -27,10 +37,10 @@ export const ProductInfo = ({ product }) => {
 							<span 
 								key={idx} 
 								className={cn(
-									"px-2.5 py-1 rounded-[6px] text-[10px] font-extrabold uppercase tracking-wider",
-									badge.type === "sale" ? "bg-danger text-white" :
-									badge.type === "bestseller" ? "bg-warning text-white" :
-									badge.type === "new" ? "bg-success text-white" :
+									"px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest",
+									badge.type === "sale" ? "bg-danger text-white shadow-sm shadow-danger/20" :
+									badge.type === "bestseller" ? "bg-warning text-white shadow-sm shadow-warning/20" :
+									badge.type === "new" ? "bg-success text-white shadow-sm shadow-success/20" :
 									"bg-surface-2 text-text"
 								)}
 							>
@@ -42,11 +52,11 @@ export const ProductInfo = ({ product }) => {
 			</div>
 
 			{/* Title */}
-			<h1 className="text-2xl md:text-3xl font-extrabold text-text leading-tight">
+			<h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-text leading-tight tracking-tight mt-1">
 				{product.title[language]}
 			</h1>
 
-			{/* Ratings */}
+			{/* Ratings Summary Mini */}
 			{product.reviews && (
 				<div className="flex items-center gap-3">
 					<div className="flex items-center gap-1">
@@ -54,35 +64,37 @@ export const ProductInfo = ({ product }) => {
 							<Star 
 								key={i} 
 								className={cn(
-									"w-4 h-4", 
+									"w-5 h-5", 
 									i < Math.floor(product.reviews.rating) 
-										? "fill-warning text-warning" 
+										? "fill-warning text-warning drop-shadow-sm" 
 										: "fill-border text-border"
 								)} 
 							/>
 						))}
 					</div>
 					<div className="flex items-center gap-2 text-sm">
-						<span className="font-bold text-text">{product.reviews.rating}</span>
-						<span className="text-text-muted">
+						<span className="font-extrabold text-text text-lg">{product.reviews.rating}</span>
+						<span className="text-text-secondary font-medium">
 							({product.reviews.count} {isRtl ? "تقييم" : "reviews"})
 						</span>
 					</div>
 				</div>
 			)}
 
-			{/* Price */}
-			<div className="my-2 p-4 bg-surface rounded-xl border border-border/50">
-				<ProductPrice price={product.price} language={language} className="text-3xl" />
-				<span className="text-xs text-text-muted mt-2 block">
-					{isRtl ? "السعر شامل ضريبة القيمة المضافة" : "Price includes VAT"}
-				</span>
-			</div>
-
 			{/* Short Description */}
-			<p className="text-text-secondary text-sm leading-relaxed">
+			<p className="text-text-secondary text-base leading-relaxed my-1">
 				{product.shortDescription?.[language]}
 			</p>
+
+			{/* Premium Price Box */}
+			<PriceBox price={product.price} className="my-2" />
+
+			{/* Trust Badges */}
+			<TrustBadges className="mt-2" />
+
+			{/* Medical Disclaimer */}
+			<MedicalDisclaimer className="mt-2" />
+
 		</div>
 	);
 };

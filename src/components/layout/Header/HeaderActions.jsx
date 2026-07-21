@@ -1,6 +1,5 @@
 import LocalizedLink from "@/components/ui/LocalizedLink";
 import React from "react";
-import { } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
@@ -14,15 +13,8 @@ const ActionButton = ({ to, icon, label, count, className }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	
-	return (
-		<LocalizedLink
-			to={to}
-			className={cn(
-				"flex items-center gap-2 p-2 rounded-[14px] text-text-secondary hover:text-primary transition-colors duration-200 group select-none",
-				className
-			)}
-			aria-label={label}
-		>
+	const content = (
+		<>
 			<div className="relative">
 				<Icon name={icon} size="lg" className="text-text group-hover:text-primary transition-colors" />
 				{count > 0 && (
@@ -34,6 +26,17 @@ const ActionButton = ({ to, icon, label, count, className }) => {
 			<span className="font-semibold text-text group-hover:text-primary transition-colors hidden xl:block">
 				{label}
 			</span>
+		</>
+	);
+
+	const baseClass = cn(
+		"flex items-center gap-2 p-2 rounded-[14px] text-text-secondary hover:text-primary transition-colors duration-200 group select-none",
+		className
+	);
+
+	return (
+		<LocalizedLink to={to} className={baseClass} aria-label={label}>
+			{content}
 		</LocalizedLink>
 	);
 };
@@ -57,7 +60,7 @@ export const HeaderActions = () => {
 				to="/cart"
 				icon="ShoppingCart"
 				label={isRtl ? "السلة" : "Cart"}
-				count={2}
+				count={3} // Hardcoded for mockup
 			/>
 		</div>
 	);
