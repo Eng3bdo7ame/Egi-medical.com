@@ -16,7 +16,8 @@ import Category from "@/pages/Category/index";
 import Brands from "@/pages/Brands";
 import Cart from "@/pages/Cart/index";
 import Checkout from "@/pages/Checkout/index";
-import Profile from "@/pages/Profile";
+import Wishlist from "@/pages/Wishlist/index";
+import Profile from "@/pages/Profile/index";
 import Contact from "@/pages/Contact";
 
 // Auth Pages
@@ -66,6 +67,10 @@ export const routes = [
 					{
 						path: ROUTES.CART.substring(1),
 						element: <Cart />,
+					},
+					{
+						path: ROUTES.WISHLIST.substring(1),
+						element: <Wishlist />,
 					},
 					{
 						path: ROUTES.ABOUT.substring(1),

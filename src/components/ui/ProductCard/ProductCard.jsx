@@ -39,7 +39,7 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 
 	return (
 		<LocalizedLink 
-			to={`/products/${product.id}`}
+			to={`/products/${product.slug}`}
 			className={cn(
 				"group relative flex flex-col w-full bg-surface border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-border-hover hover:shadow-floating outline-none",
 				variant === PRODUCT_CARD_VARIANTS.COMPACT && "p-2",

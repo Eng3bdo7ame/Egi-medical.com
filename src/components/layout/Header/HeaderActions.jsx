@@ -52,7 +52,7 @@ export const HeaderActions = () => {
 				to="/wishlist"
 				icon="Heart"
 				label={isRtl ? "المفضلة" : "Wishlist"}
-				count={0}
+				count={5}
 			/>
 
 			{/* Cart */}

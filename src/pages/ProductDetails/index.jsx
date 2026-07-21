@@ -12,6 +12,7 @@ import ProductMeta from "./components/ProductMeta";
 import ProductTabs from "./components/ProductTabs";
 import MobileBottomBar from "./components/MobileBottomBar";
 import RelatedProducts from "./components/RelatedProducts";
+import RecentlyViewed from "@/components/products/RecentlyViewed";
 
 // Mocks
 import { mockProductDetails } from "./product-details.mock";
@@ -22,9 +23,21 @@ const ProductDetails = () => {
 	const navigate = useNavigate();
 	const { language } = useLanguage();
 
-	// In a real app, you'd fetch the product based on the slug.
-	const product = mockProductDetails;
-	const relatedProducts = mockProducts.slice(0, 8);
+	// Look up product dynamically by slug for realistic mockup experience
+	const matchedProduct = mockProducts.find(p => p.slug === slug);
+	const product = matchedProduct ? {
+		...mockProductDetails,
+		id: matchedProduct.id,
+		title: matchedProduct.title,
+		price: {
+			...mockProductDetails.price,
+			current: matchedProduct.price.current,
+			original: matchedProduct.price.original
+		},
+		images: [matchedProduct.image, ...mockProductDetails.images.slice(1)]
+	} : mockProductDetails;
+
+	const relatedProducts = mockProducts.filter(p => p.id !== product.id).slice(0, 8);
 
 	// Product State
 	const [selectedVariants, setSelectedVariants] = useState({});
@@ -129,6 +142,11 @@ const ProductDetails = () => {
 					<RelatedProducts products={relatedProducts} />
 				</div>
 			</Container>
+
+			{/* Recently Viewed Section (Full width background) */}
+			<div className="mt-16">
+				<RecentlyViewed />
+			</div>
 
 			{/* Mobile Bottom Buy Bar */}
 			<MobileBottomBar 

@@ -4,6 +4,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { Trash2, Heart, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import QuantitySelector from "../../ProductDetails/components/QuantitySelector";
+import { mockProducts } from "@/pages/Products/components/products.mock";
 
 export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) => {
 	const { language } = useLanguage();
@@ -11,6 +12,9 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 
 	const isOutOfStock = item.stockStatus === "out_of_stock";
 	const hasDiscount = item.originalPrice && item.originalPrice > item.price;
+	
+	const matchedProduct = mockProducts.find(p => p.id === item.productId);
+	const productSlug = matchedProduct ? matchedProduct.slug : item.productId;
 
 	return (
 		<div className={cn(
@@ -18,7 +22,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 			isOutOfStock ? "border-danger/30 bg-danger/5" : "border-border/50 hover:border-border"
 		)}>
 			{/* Product Image */}
-			<Link to={`/products/${item.productId}`} className="shrink-0">
+			<Link to={`/products/${productSlug}`} className="shrink-0">
 				<div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl border border-border/50 overflow-hidden bg-white">
 					<img 
 						src={item.image} 
@@ -32,7 +36,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 			<div className="flex-1 flex flex-col justify-between min-w-0">
 				<div className="flex flex-col gap-1">
 					<div className="flex items-start justify-between gap-4">
-						<Link to={`/products/${item.productId}`} className="hover:text-primary transition-colors min-w-0">
+						<Link to={`/products/${productSlug}`} className="hover:text-primary transition-colors min-w-0">
 							<h3 className="font-bold text-text text-base sm:text-lg leading-tight truncate-2-lines">
 								{item.title[language]}
 							</h3>

@@ -1,6 +1,7 @@
 export const mockProducts = [
 	{
 		id: "prod-0",
+		slug: "omron-m2-basic-blood-pressure-monitor",
 		title: { en: "OMRON M2 Basic Blood Pressure Monitor", ar: "جهاز قياس ضغط الدم أومرون M2 الأساسي" },
 		category: { en: "Medical Devices", ar: "أجهزة طبية", id: "cat-1" },
 		brand: "OMRON",
@@ -12,6 +13,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-1",
+		slug: "littmann-classic-iii-stethoscope",
 		title: { en: "Littmann Classic III Stethoscope", ar: "سماعة طبيب ليتمان كلاسيك 3" },
 		category: { en: "Diagnostics", ar: "أجهزة تشخيص", id: "cat-2" },
 		brand: "Littmann",
@@ -23,6 +25,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-2",
+		slug: "surgical-face-masks-box-of-50",
 		title: { en: "Surgical Face Masks (Box of 50)", ar: "كمامات جراحية طبية (علبة 50 قطعة)" },
 		category: { en: "Consumables", ar: "مستهلكات", id: "cat-3" },
 		brand: "SafeMed",
@@ -34,6 +37,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-3",
+		slug: "digital-infrared-thermometer",
 		title: { en: "Digital Infrared Thermometer", ar: "ترمومتر ديجيتال عن بعد للأطفال" },
 		category: { en: "Medical Devices", ar: "أجهزة طبية", id: "cat-1" },
 		brand: "Berrcom",
@@ -45,6 +49,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-4",
+		slug: "standard-folding-wheelchair",
 		title: { en: "Standard Folding Wheelchair", ar: "كرسي متحرك طبي قابل للطي" },
 		category: { en: "Mobility", ar: "أجهزة حركة", id: "cat-4" },
 		brand: "Drive Medical",
@@ -56,6 +61,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-5",
+		slug: "accu-chek-instant-glucometer",
 		title: { en: "Accu-Chek Instant Glucometer", ar: "جهاز قياس سكر الدم أكيو تشيك إنستانت" },
 		category: { en: "Diagnostics", ar: "أجهزة تشخيص", id: "cat-2" },
 		brand: "Roche",
@@ -67,6 +73,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-6",
+		slug: "first-aid-kit-premium",
 		title: { en: "First Aid Kit - Premium", ar: "حقيبة إسعافات أولية متكاملة" },
 		category: { en: "Emergency", ar: "طوارئ", id: "cat-5" },
 		brand: "CarePlus",
@@ -78,6 +85,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-7",
+		slug: "medical-oxygen-cylinder-5l",
 		title: { en: "Medical Oxygen Cylinder 5L", ar: "أسطوانة أكسجين طبي 5 لتر" },
 		category: { en: "Home Care", ar: "رعاية منزلية", id: "cat-6" },
 		brand: "OxyLife",
@@ -89,6 +97,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-8",
+		slug: "nebulizer-compressor-machine",
 		title: { en: "Nebulizer Compressor Machine", ar: "جهاز استنشاق البخار نيبولايزر" },
 		category: { en: "Home Care", ar: "رعاية منزلية", id: "cat-6" },
 		brand: "Philips",
@@ -100,6 +109,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-9",
+		slug: "surgical-gloves-100-pcs",
 		title: { en: "Surgical Gloves (100 pcs)", ar: "قفازات فحص طبية (100 قطعة)" },
 		category: { en: "Consumables", ar: "مستهلكات", id: "cat-3" },
 		brand: "SafeMed",
@@ -111,6 +121,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-10",
+		slug: "pulse-oximeter-fingertip",
 		title: { en: "Pulse Oximeter Fingertip", ar: "جهاز قياس نسبة الأكسجين في الدم" },
 		category: { en: "Diagnostics", ar: "أجهزة تشخيص", id: "cat-2" },
 		brand: "Beurer",
@@ -122,6 +133,7 @@ export const mockProducts = [
 	},
 	{
 		id: "prod-11",
+		slug: "orthopedic-knee-support",
 		title: { en: "Orthopedic Knee Support", ar: "دعامة ركبة طبية مطاطية" },
 		category: { en: "Orthopedic", ar: "عظام وحركة", id: "cat-7" },
 		brand: "Mueller",
