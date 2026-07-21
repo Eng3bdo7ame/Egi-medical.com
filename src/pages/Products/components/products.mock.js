@@ -1,0 +1,134 @@
+export const mockProducts = [
+	{
+		id: "prod-0",
+		title: { en: "OMRON M2 Basic Blood Pressure Monitor", ar: "جهاز قياس ضغط الدم أومرون M2 الأساسي" },
+		category: { en: "Medical Devices", ar: "أجهزة طبية", id: "cat-1" },
+		brand: "OMRON",
+		image: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 35.00, original: 45.00 },
+		reviews: { rating: 4.8, count: 236 },
+		stock: { quantity: 15 },
+		badges: [{ type: "new", label: { en: "New", ar: "جديد" } }]
+	},
+	{
+		id: "prod-1",
+		title: { en: "Littmann Classic III Stethoscope", ar: "سماعة طبيب ليتمان كلاسيك 3" },
+		category: { en: "Diagnostics", ar: "أجهزة تشخيص", id: "cat-2" },
+		brand: "Littmann",
+		image: "https://images.unsplash.com/photo-1584820927498-cafe8c1c969b?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 95.00, original: 110.00 },
+		reviews: { rating: 4.9, count: 512 },
+		stock: { quantity: 8 },
+		badges: [{ type: "bestseller", label: { en: "Best Seller", ar: "الأكثر مبيعاً" } }]
+	},
+	{
+		id: "prod-2",
+		title: { en: "Surgical Face Masks (Box of 50)", ar: "كمامات جراحية طبية (علبة 50 قطعة)" },
+		category: { en: "Consumables", ar: "مستهلكات", id: "cat-3" },
+		brand: "SafeMed",
+		image: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 5.50, original: null },
+		reviews: { rating: 4.5, count: 890 },
+		stock: { quantity: 200 },
+		badges: []
+	},
+	{
+		id: "prod-3",
+		title: { en: "Digital Infrared Thermometer", ar: "ترمومتر ديجيتال عن بعد للأطفال" },
+		category: { en: "Medical Devices", ar: "أجهزة طبية", id: "cat-1" },
+		brand: "Berrcom",
+		image: "https://images.unsplash.com/photo-1632053000676-4d04829379de?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 22.00, original: 30.00 },
+		reviews: { rating: 4.6, count: 124 },
+		stock: { quantity: 0 },
+		badges: [{ type: "sale", label: { en: "Sale", ar: "تخفيض" } }]
+	},
+	{
+		id: "prod-4",
+		title: { en: "Standard Folding Wheelchair", ar: "كرسي متحرك طبي قابل للطي" },
+		category: { en: "Mobility", ar: "أجهزة حركة", id: "cat-4" },
+		brand: "Drive Medical",
+		image: "https://images.unsplash.com/photo-1586776978438-cb0a76a54050?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 150.00, original: 180.00 },
+		reviews: { rating: 4.7, count: 68 },
+		stock: { quantity: 5 },
+		badges: []
+	},
+	{
+		id: "prod-5",
+		title: { en: "Accu-Chek Instant Glucometer", ar: "جهاز قياس سكر الدم أكيو تشيك إنستانت" },
+		category: { en: "Diagnostics", ar: "أجهزة تشخيص", id: "cat-2" },
+		brand: "Roche",
+		image: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 40.00, original: null },
+		reviews: { rating: 4.8, count: 320 },
+		stock: { quantity: 25 },
+		badges: [{ type: "new", label: { en: "New", ar: "جديد" } }]
+	},
+	{
+		id: "prod-6",
+		title: { en: "First Aid Kit - Premium", ar: "حقيبة إسعافات أولية متكاملة" },
+		category: { en: "Emergency", ar: "طوارئ", id: "cat-5" },
+		brand: "CarePlus",
+		image: "https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 28.00, original: 35.00 },
+		reviews: { rating: 4.9, count: 156 },
+		stock: { quantity: 12 },
+		badges: []
+	},
+	{
+		id: "prod-7",
+		title: { en: "Medical Oxygen Cylinder 5L", ar: "أسطوانة أكسجين طبي 5 لتر" },
+		category: { en: "Home Care", ar: "رعاية منزلية", id: "cat-6" },
+		brand: "OxyLife",
+		image: "https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 85.00, original: null },
+		reviews: { rating: 4.4, count: 42 },
+		stock: { quantity: 3 },
+		badges: [{ type: "bestseller", label: { en: "Best Seller", ar: "الأكثر مبيعاً" } }]
+	},
+	{
+		id: "prod-8",
+		title: { en: "Nebulizer Compressor Machine", ar: "جهاز استنشاق البخار نيبولايزر" },
+		category: { en: "Home Care", ar: "رعاية منزلية", id: "cat-6" },
+		brand: "Philips",
+		image: "https://images.unsplash.com/photo-1584308666744-24d5e4a83692?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 55.00, original: 70.00 },
+		reviews: { rating: 4.7, count: 210 },
+		stock: { quantity: 18 },
+		badges: [{ type: "sale", label: { en: "Sale", ar: "تخفيض" } }]
+	},
+	{
+		id: "prod-9",
+		title: { en: "Surgical Gloves (100 pcs)", ar: "قفازات فحص طبية (100 قطعة)" },
+		category: { en: "Consumables", ar: "مستهلكات", id: "cat-3" },
+		brand: "SafeMed",
+		image: "https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 12.00, original: null },
+		reviews: { rating: 4.8, count: 650 },
+		stock: { quantity: 150 },
+		badges: []
+	},
+	{
+		id: "prod-10",
+		title: { en: "Pulse Oximeter Fingertip", ar: "جهاز قياس نسبة الأكسجين في الدم" },
+		category: { en: "Diagnostics", ar: "أجهزة تشخيص", id: "cat-2" },
+		brand: "Beurer",
+		image: "https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 18.00, original: 25.00 },
+		reviews: { rating: 4.5, count: 340 },
+		stock: { quantity: 40 },
+		badges: []
+	},
+	{
+		id: "prod-11",
+		title: { en: "Orthopedic Knee Support", ar: "دعامة ركبة طبية مطاطية" },
+		category: { en: "Orthopedic", ar: "عظام وحركة", id: "cat-7" },
+		brand: "Mueller",
+		image: "https://images.unsplash.com/photo-1586776977607-310e9c725c37?auto=format&fit=crop&q=80&w=400&h=400",
+		price: { current: 25.00, original: null },
+		reviews: { rating: 4.3, count: 85 },
+		stock: { quantity: 22 },
+		badges: []
+	}
+];

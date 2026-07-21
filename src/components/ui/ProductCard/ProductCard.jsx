@@ -30,6 +30,7 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 		handleMouseEnter,
 		handleMouseLeave,
 		toggleWishlist,
+		toggleCompare,
 		handleAddToCart
 	} = useProductCard(product);
 
@@ -58,7 +59,13 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 						</span>
 					</div>
 				)}
-				<ProductQuickActions isWishlisted={isWishlisted} onToggleWishlist={toggleWishlist} isRtl={isRtl} />
+				<ProductQuickActions 
+					isWishlisted={isWishlisted} 
+					onToggleWishlist={toggleWishlist} 
+					isCompared={isCompared}
+					onToggleCompare={toggleCompare}
+					isRtl={isRtl} 
+				/>
 				<ProductImage 
 					image={product.image} 
 					hoverImage={product.hoverImage} 

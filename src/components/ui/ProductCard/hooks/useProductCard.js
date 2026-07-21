@@ -9,6 +9,7 @@ import { PRODUCT_STATES } from "../product-card.constants";
 export const useProductCard = (productData) => {
 	const [isHovered, setIsHovered] = useState(false);
 	const [isWishlisted, setIsWishlisted] = useState(false);
+	const [isCompared, setIsCompared] = useState(false);
 	const [isAddingToCart, setIsAddingToCart] = useState(false);
 
 	const stockState = productData?.stock?.quantity !== undefined 
@@ -27,6 +28,10 @@ export const useProductCard = (productData) => {
 		setIsWishlisted(prev => !prev);
 	}, []);
 
+	const toggleCompare = useCallback(() => {
+		setIsCompared(prev => !prev);
+	}, []);
+
 	const handleAddToCart = useCallback(async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -42,12 +47,14 @@ export const useProductCard = (productData) => {
 	return {
 		isHovered,
 		isWishlisted,
+		isCompared,
 		isAddingToCart,
 		isOutOfStock,
 		stockState,
 		handleMouseEnter,
 		handleMouseLeave,
 		toggleWishlist,
+		toggleCompare,
 		handleAddToCart
 	};
 };
