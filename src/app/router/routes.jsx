@@ -19,6 +19,9 @@ import Checkout from "@/pages/Checkout/index";
 import Wishlist from "@/pages/Wishlist/index";
 import Profile from "@/pages/Profile/index";
 import Contact from "@/pages/Contact";
+import FAQ from "@/pages/FAQ";
+import Privacy from "@/pages/Privacy";
+import Terms from "@/pages/Terms";
 
 // Auth Pages
 import Login from "@/pages/Login";
@@ -28,6 +31,11 @@ import ForgotPassword from "@/pages/ForgotPassword";
 // Status / Empty Pages
 import NotFound from "@/pages/NotFound";
 import Maintenance from "@/pages/Maintenance";
+import ResetPassword from "@/pages/ResetPassword";
+import VerifyOtp from "@/pages/VerifyOtp";
+
+// Auth Guards
+import { AuthGuard, GuestGuard } from "@/features/auth";
 
 import { ROUTES } from "./paths";
 
@@ -80,21 +88,45 @@ export const routes = [
 						path: ROUTES.CONTACT.substring(1),
 						element: <Contact />,
 					},
+					{
+						path: ROUTES.FAQ.substring(1),
+						element: <FAQ />,
+					},
+					{
+						path: ROUTES.PRIVACY.substring(1),
+						element: <Privacy />,
+					},
+					{
+						path: ROUTES.TERMS.substring(1),
+						element: <Terms />,
+					},
 					// Protected Routes directly accessible (Guards removed temporarily)
 					{
 						path: ROUTES.CHECKOUT.substring(1),
-						element: <Checkout />,
+						element: (
+							<AuthGuard>
+								<Checkout />
+							</AuthGuard>
+						),
 					},
 					{
 						path: ROUTES.PROFILE.substring(1),
-						element: <Profile />,
+						element: (
+							<AuthGuard>
+								<Profile />
+							</AuthGuard>
+						),
 					},
 				],
 			},
-			// Auth Layout Routes (Direct access, GuestGuard removed temporarily)
+			// Auth Layout Routes (Direct access, GuestGuard integrated)
 			{
 				path: "auth",
-				element: <AuthLayout />,
+				element: (
+					<GuestGuard>
+						<AuthLayout />
+					</GuestGuard>
+				),
 				children: [
 					{
 						path: ROUTES.LOGIN.replace("/auth/", ""),
@@ -107,6 +139,14 @@ export const routes = [
 					{
 						path: ROUTES.FORGOT_PASSWORD.replace("/auth/", ""),
 						element: <ForgotPassword />,
+					},
+					{
+						path: ROUTES.VERIFY_OTP.replace("/auth/", ""),
+						element: <VerifyOtp />,
+					},
+					{
+						path: ROUTES.RESET_PASSWORD.replace("/auth/", ""),
+						element: <ResetPassword />,
 					},
 				],
 			},

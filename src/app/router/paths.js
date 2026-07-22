@@ -10,10 +10,15 @@ export const ROUTES = {
 	PROFILE: "/profile",
 	ABOUT: "/about",
 	CONTACT: "/contact",
+	FAQ: "/faq",
+	PRIVACY: "/privacy",
+	TERMS: "/terms",
 	// Auth
 	LOGIN: "/auth/login",
 	REGISTER: "/auth/register",
 	FORGOT_PASSWORD: "/auth/forgot-password",
+	VERIFY_OTP: "/auth/verify-otp",
+	RESET_PASSWORD: "/auth/reset-password",
 	// Empty
 	NOT_FOUND: "/404",
 	MAINTENANCE: "/maintenance",

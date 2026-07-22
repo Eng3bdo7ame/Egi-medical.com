@@ -3,7 +3,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { Package, Eye, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Orders = () => {
+export const Orders = ({ onViewOrder }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
@@ -79,7 +79,10 @@ export const Orders = () => {
 
 							{/* Actions */}
 							<div className="flex items-center gap-2 pt-4 sm:pt-0 border-t sm:border-0 border-border/50 w-full sm:w-auto shrink-0 justify-end">
-								<button className="flex items-center gap-2 px-4 py-2 bg-surface-2 hover:bg-primary hover:text-white text-text font-bold rounded-xl transition-colors text-sm">
+								<button 
+									onClick={() => onViewOrder && onViewOrder(order.id)}
+									className="flex items-center gap-2 px-4 py-2 bg-surface-2 hover:bg-primary hover:text-white text-text font-bold rounded-xl transition-colors text-sm"
+								>
 									<Eye className="w-4 h-4" />
 									{isRtl ? "التفاصيل" : "View"}
 								</button>

@@ -3,7 +3,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const RatingSummary = ({ reviews }) => {
+export const RatingSummary = ({ reviews, selectedRating, onRatingSelect }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
@@ -49,10 +49,18 @@ export const RatingSummary = ({ reviews }) => {
 				{[5, 4, 3, 2, 1].map(star => {
 					const count = breakdown[star];
 					const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+					const isSelected = selectedRating === star;
 					return (
-						<div key={star} className="flex items-center gap-3 text-sm">
-							<span className="flex items-center gap-1 w-12 font-bold text-text-secondary">
-								{star} <Star className="w-3 h-3 fill-text-secondary" />
+						<button 
+							key={star} 
+							onClick={() => onRatingSelect && onRatingSelect(isSelected ? null : star)}
+							className={cn(
+								"flex items-center gap-3 text-sm w-full p-1.5 rounded-lg hover:bg-surface-2 transition-colors cursor-pointer text-start",
+								isSelected && "bg-primary/5 ring-1 ring-primary/20"
+							)}
+						>
+							<span className="flex items-center gap-1 w-12 font-bold text-text-secondary shrink-0">
+								{star} <Star className="w-3.5 h-3.5 fill-warning text-warning" />
 							</span>
 							<div className="flex-1 h-2.5 bg-surface-2 rounded-full overflow-hidden">
 								<div 
@@ -60,10 +68,10 @@ export const RatingSummary = ({ reviews }) => {
 									style={{ width: `${percentage}%` }}
 								/>
 							</div>
-							<span className="w-8 text-end text-xs font-medium text-text-muted">
+							<span className="w-8 text-end text-xs font-bold text-text-muted shrink-0">
 								{count}
 							</span>
-						</div>
+						</button>
 					);
 				})}
 			</div>

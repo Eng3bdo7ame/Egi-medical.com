@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { STORAGE_KEYS } from "@/constants/storage";
+import authStorage from "./storage/authStorage";
 
 const initialState = {
-	user: JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || null,
-	token: localStorage.getItem(STORAGE_KEYS.TOKEN) || null,
-	isAuthenticated: !!localStorage.getItem(STORAGE_KEYS.TOKEN),
+	user: authStorage.getUser(),
+	token: authStorage.getAccessToken(),
+	isAuthenticated: !!authStorage.getAccessToken(),
 	loading: false,
 	error: null,
 };
@@ -22,8 +22,6 @@ const authSlice = createSlice({
 			state.user = action.payload.user;
 			state.token = action.payload.token;
 			state.isAuthenticated = true;
-			localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(action.payload.user));
-			localStorage.setItem(STORAGE_KEYS.TOKEN, action.payload.token);
 		},
 		loginFailure: (state, action) => {
 			state.loading = false;
@@ -33,8 +31,7 @@ const authSlice = createSlice({
 			state.user = null;
 			state.token = null;
 			state.isAuthenticated = false;
-			localStorage.removeItem(STORAGE_KEYS.USER);
-			localStorage.removeItem(STORAGE_KEYS.TOKEN);
+			state.error = null;
 		},
 	},
 });

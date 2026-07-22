@@ -5,6 +5,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import Container from "@/components/ui/Container";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { Icon } from "@/components/ui/Icon";
+import { useSelector } from "react-redux";
 
 /**
  * AnnouncementBar Component
@@ -13,6 +14,7 @@ import { Icon } from "@/components/ui/Icon";
 export const AnnouncementBar = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+	const { isAuthenticated, user } = useSelector((state) => state.auth);
 
 	return (
 		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none">
@@ -66,16 +68,28 @@ export const AnnouncementBar = () => {
 
 						<span className="hidden sm:block w-px h-5 bg-divider" />
 
-						{/* Login / Register */}
-						<LocalizedLink
-							to="/auth/login"
-							className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
-						>
-							<Icon name="User" size="sm" className="text-primary shrink-0" />
-							<span className="hidden sm:inline">
-								{isRtl ? "الدخول / التسجيل" : "Login / Register"}
-							</span>
-						</LocalizedLink>
+						{/* Login / Register or Profile */}
+						{isAuthenticated ? (
+							<LocalizedLink
+								to="/profile"
+								className="flex items-center gap-2 font-bold text-primary hover:text-primary-hover transition-colors"
+							>
+								<Icon name="User" size="sm" className="text-primary shrink-0" />
+								<span className="hidden sm:inline">
+									{user?.name || (isRtl ? "حسابي" : "My Account")}
+								</span>
+							</LocalizedLink>
+						) : (
+							<LocalizedLink
+								to="/auth/login"
+								className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
+							>
+								<Icon name="User" size="sm" className="text-primary shrink-0" />
+								<span className="hidden sm:inline">
+									{isRtl ? "الدخول / التسجيل" : "Login / Register"}
+								</span>
+							</LocalizedLink>
+						)}
 					</div>
 				</div>
 			</Container>

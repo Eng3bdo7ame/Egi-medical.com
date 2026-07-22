@@ -11,14 +11,18 @@ import ProfileOverview from "./components/ProfileOverview";
 import Orders from "./components/Orders";
 import Addresses from "./components/Addresses";
 import Settings from "./components/Settings";
+import OrderDetails from "./components/OrderDetails";
+import { useLogout } from "@/features/auth";
 
 const Profile = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
+	const { logout } = useLogout();
 	
 	const activeTab = searchParams.get("tab") || "overview";
+	const orderId = searchParams.get("orderId");
 
 	const tabs = [
 		{ id: "overview", label: { en: "Overview", ar: "لوحة التحكم" }, icon: User },
@@ -77,7 +81,7 @@ const Profile = () => {
 						<nav className="flex flex-col gap-1">
 							{tabs.map(tab => {
 								const Icon = tab.icon;
-								const isActive = activeTab === tab.id;
+								const isActive = activeTab === tab.id || (tab.id === "orders" && activeTab === "order-details");
 								return (
 									<button
 										key={tab.id}
@@ -98,7 +102,13 @@ const Profile = () => {
 
 						<hr className="border-border/50 my-4" />
 
-						<button className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm text-danger hover:bg-danger/10 w-full text-start">
+						<button 
+							onClick={async () => {
+								await logout();
+								navigate(`/${language}`);
+							}}
+							className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm text-danger hover:bg-danger/10 w-full text-start"
+						>
 							<LogOut className="w-5 h-5" />
 							{isRtl ? "تسجيل الخروج" : "Logout"}
 						</button>
@@ -107,7 +117,12 @@ const Profile = () => {
 					{/* Main Content Area */}
 					<div className="flex-1 w-full min-w-0">
 						{activeTab === "overview" && <ProfileOverview />}
-						{activeTab === "orders" && <Orders />}
+						{activeTab === "orders" && (
+							<Orders onViewOrder={(id) => setSearchParams({ tab: "order-details", orderId: id })} />
+						)}
+						{activeTab === "order-details" && (
+							<OrderDetails orderId={orderId} onBack={() => setSearchParams({ tab: "orders" })} />
+						)}
 						{activeTab === "addresses" && <Addresses />}
 						{activeTab === "settings" && <Settings />}
 					</div>
