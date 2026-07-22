@@ -79,7 +79,6 @@ export const CategoriesSection = () => {
 								))}
 							</div>
 						</div>
-
 						{/* Next Arrow inside slider container */}
 						<div className="absolute top-1/2 -translate-y-1/2 right-0 rtl:right-auto rtl:left-0 z-10 hidden sm:flex pointer-events-none">
 							<div
