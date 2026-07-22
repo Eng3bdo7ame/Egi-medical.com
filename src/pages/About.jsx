@@ -54,7 +54,7 @@ export const About = () => {
 				<Container>
 					<Breadcrumb items={breadcrumbItems} className="mb-4" />
 					<h1 className="text-3xl md:text-5xl font-extrabold text-text tracking-tight mb-4">
-						{isRtl ? "من نحن" : "About MootahCare+"}
+						{isRtl ? "من نحن" : "About EG Medical"}
 					</h1>
 					<p className="text-lg text-text-secondary max-w-3xl leading-relaxed">
 						{isRtl 

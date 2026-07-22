@@ -33,9 +33,9 @@ export const TrustSection = () => {
 
 						<h2 className="text-display font-bold leading-tight">
 							{isRtl ? (
-								<>شريكك الموثوق <span className="text-primary-light">Mootah</span> للأجهزة الطبية العالمية</>
+								<>شريكك الموثوق <span className="text-primary-light">EG Medical</span> للأجهزة الطبية العالمية</>
 							) : (
-								<>Your Trusted <span className="text-primary-light">Mootah</span> Partner for Global Medical Devices</>
+								<>Your Trusted <span className="text-primary-light">EG Medical</span> Partner for Global Medical Devices</>
 							)}
 						</h2>
 

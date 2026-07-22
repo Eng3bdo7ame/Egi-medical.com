@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import LanguageSwitcher from "@/components/layout/Header/LanguageSwitcher";
+import LocalizedLink from "@/components/ui/LocalizedLink";
 import { HeartPulse } from "lucide-react";
 
 export const AuthLayout = () => {
@@ -23,7 +24,7 @@ export const AuthLayout = () => {
 					<div className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20">
 						<HeartPulse className="w-6 h-6 animate-pulse" />
 					</div>
-					<span className="text-xl font-black tracking-tight text-text">MootahCare+</span>
+					<span className="text-xl font-black tracking-tight text-text">EG Medical</span>
 				</div>
 
 				{/* Middle Illustration / Slogan */}
@@ -42,7 +43,7 @@ export const AuthLayout = () => {
 
 				{/* Footer branding */}
 				<span className="text-xs text-text-muted font-bold">
-					© 2026 MootahCare. All rights reserved.
+					© 2026 EG Medical. All rights reserved.
 				</span>
 
 			</div>
@@ -51,8 +52,11 @@ export const AuthLayout = () => {
 			<div className="flex-1 flex flex-col justify-between p-6 sm:p-12 relative z-10 w-full min-h-screen lg:min-h-0">
 				
 				{/* Top Actions: Language selection */}
-				<div className="flex justify-end w-full items-center gap-4">
+				<div className="flex justify-between w-full items-center gap-4">
 					<LanguageSwitcher />
+					<LocalizedLink to="/" className="inline-flex items-center gap-2 lg:hidden">
+						<span className="text-xl font-black tracking-tight text-text">EG Medical</span>
+					</LocalizedLink>
 				</div>
 
 				{/* Forms Card */}
@@ -64,7 +68,7 @@ export const AuthLayout = () => {
 							<div className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center shrink-0">
 								<HeartPulse className="w-5 h-5 animate-pulse" />
 							</div>
-							<span className="text-lg font-black tracking-tight text-text">MootahCare+</span>
+							<span className="text-lg font-black tracking-tight text-text">EG Medical</span>
 						</div>
 
 						<Outlet />
@@ -73,7 +77,7 @@ export const AuthLayout = () => {
 
 				{/* Bottom Space / Mobile copyright */}
 				<div className="text-center lg:hidden text-[10px] text-text-muted font-bold select-none py-4">
-					© 2026 MootahCare. All rights reserved.
+					© 2026 EG Medical. All rights reserved.
 				</div>
 
 			</div>

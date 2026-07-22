@@ -28,49 +28,56 @@ export const CategoriesSection = () => {
 	return (
 		<Section bg="background" spacing="xs" className="overflow-hidden">
 			<Container>
-				<div className="bg-[#f8f9fc] rounded-[32px] p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center">
+				<div className="relative rounded-[32px] p-4 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center overflow-hidden border border-slate-100 shadow-sm">
+					{/* Background Image with Light Overlay */}
+					<div
+						className="absolute inset-0 bg-cover bg-center opacity-30"
+						style={{ backgroundImage: "url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=1600')" }}
+					/>
+					<div className="absolute inset-0 bg-white/50 backdrop-blur-[1px]" />
+
 					{/* Text Side */}
-					<div className="w-full md:w-[25%] flex flex-col items-start gap-4">
-						<h2 className="text-2xl md:text-3xl font-extrabold text-text leading-tight">
+					<div className="relative z-10 w-full md:w-[20%] lg:w-[13%] flex flex-col items-start gap-3">
+						<h2 className="text-xl md:text-2xl font-extrabold text-[#0f172a] leading-tight drop-shadow-sm">
 							{isRtl ? "تسوق حسب الاحتياجات الصحية" : "Shop by Health Needs"}
 						</h2>
 						<LocalizedLink
 							to="/categories"
-							className="group inline-flex items-center gap-2 text-primary font-bold text-sm transition-colors hover:text-primary-hover"
+							className="group inline-flex items-center gap-1.5 text-primary font-bold text-xs sm:text-sm transition-colors hover:text-primary-hover mt-1"
 						>
 							{isRtl ? "عرض كل الأقسام" : "View all categories"}
 							{isRtl ? (
-								<ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+								<ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
 							) : (
-								<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+								<ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
 							)}
 						</LocalizedLink>
 					</div>
 
 					{/* Slider Side */}
-					<div className="w-full md:w-[75%] relative" dir={isRtl ? "rtl" : "ltr"}>
+					<div className="relative z-10 w-full md:w-[80%] lg:w-[85%] relative" dir={isRtl ? "rtl" : "ltr"}>
 						<div className="overflow-hidden" ref={emblaRef}>
 							<div className="flex touch-pan-y -ml-4 rtl:-mr-4 rtl:ml-0">
 								{healthNeeds.map((need, index) => (
 									<div
 										key={need.id + index}
-										className="flex-[0_0_40%] sm:flex-[0_0_30%] md:flex-[0_0_22%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
+										className="flex-[0_0_40%] sm:flex-[0_0_30%] md:flex-[0_0_25%] lg:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
 									>
 										<LocalizedLink
 											to={need.link}
-											className="group relative flex flex-col overflow-hidden rounded-[24px] aspect-[4/5] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-floating"
+											className="group relative flex flex-col overflow-hidden rounded-[24px] aspect-[4/5] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
 										>
 											<img
 												src={need.image}
 												alt={need.title[language]}
-												className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+												className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 											/>
 											{/* Bottom Fade for Text */}
-											<div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white/75 to-transparent pointer-events-none" />
+											<div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/80 to-transparent pointer-events-none" />
 
 											{/* Text */}
-											<div className="absolute inset-x-0 bottom-0 p-4 pt-8 flex items-end justify-start">
-												<span className="text-text font-bold text-sm sm:text-base leading-tight">
+											<div className="absolute inset-x-0 bottom-0 p-4 pt-8 flex items-end justify-center text-center">
+												<span className="text-[#0f172a] font-extrabold text-sm sm:text-base leading-tight drop-shadow-sm">
 													{need.title[language]}
 												</span>
 											</div>

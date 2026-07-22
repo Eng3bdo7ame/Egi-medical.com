@@ -16,7 +16,7 @@ export const ProductInfo = ({ product }) => {
 
 	return (
 		<div className="flex flex-col gap-5 w-full">
-			
+
 			{/* Top Bar: Brand & Badges & Stock */}
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<div className="flex items-center gap-3">
@@ -26,7 +26,7 @@ export const ProductInfo = ({ product }) => {
 							{product.brand?.name}
 						</span>
 					</div>
-					
+
 					{/* Stock Status Badge */}
 					<StockBadge stock={product.stock} />
 				</div>
@@ -34,14 +34,14 @@ export const ProductInfo = ({ product }) => {
 				{product.badges && product.badges.length > 0 && (
 					<div className="flex gap-2">
 						{product.badges.map((badge, idx) => (
-							<span 
-								key={idx} 
+							<span
+								key={idx}
 								className={cn(
 									"px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest",
 									badge.type === "sale" ? "bg-danger text-white shadow-sm shadow-danger/20" :
-									badge.type === "bestseller" ? "bg-warning text-white shadow-sm shadow-warning/20" :
-									badge.type === "new" ? "bg-success text-white shadow-sm shadow-success/20" :
-									"bg-surface-2 text-text"
+										badge.type === "bestseller" ? "bg-warning text-white shadow-sm shadow-warning/20" :
+											badge.type === "new" ? "bg-success text-white shadow-sm shadow-success/20" :
+												"bg-surface-2 text-text"
 								)}
 							>
 								{badge.label[language]}
@@ -61,14 +61,14 @@ export const ProductInfo = ({ product }) => {
 				<div className="flex items-center gap-3">
 					<div className="flex items-center gap-1">
 						{Array.from({ length: 5 }).map((_, i) => (
-							<Star 
-								key={i} 
+							<Star
+								key={i}
 								className={cn(
-									"w-5 h-5", 
-									i < Math.floor(product.reviews.rating) 
-										? "fill-warning text-warning drop-shadow-sm" 
+									"w-5 h-5",
+									i < Math.floor(product.reviews.rating)
+										? "fill-warning text-warning drop-shadow-sm"
 										: "fill-border text-border"
-								)} 
+								)}
 							/>
 						))}
 					</div>
@@ -85,16 +85,6 @@ export const ProductInfo = ({ product }) => {
 			<p className="text-text-secondary text-base leading-relaxed my-1">
 				{product.shortDescription?.[language]}
 			</p>
-
-			{/* Premium Price Box */}
-			<PriceBox price={product.price} className="my-2" />
-
-			{/* Trust Badges */}
-			<TrustBadges className="mt-2" />
-
-			{/* Medical Disclaimer */}
-			<MedicalDisclaimer className="mt-2" />
-
 		</div>
 	);
 };

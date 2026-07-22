@@ -77,7 +77,7 @@ export const FAQ = () => {
 				ar: "هل منتجاتكم معتمدة من وزارة الصحة؟"
 			},
 			answer: {
-				en: "Absolutely. All medical devices, instruments, and consumables distributed by MootahCare+ are fully authorized by the Egyptian Drug Authority (EDA) and the Ministry of Health.",
+				en: "Absolutely. All medical devices, instruments, and consumables distributed by EG Medical are fully authorized by the Egyptian Drug Authority (EDA) and the Ministry of Health.",
 				ar: "بالتأكيد. جميع الأجهزة والأدوات الطبية والمستلزمات الموزعة مرخصة بالكامل من هيئة الدواء المصرية (EDA) ووزارة الصحة."
 			}
 		}

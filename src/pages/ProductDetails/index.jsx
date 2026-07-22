@@ -6,7 +6,6 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 
 import ProductGallery from "./components/ProductGallery";
 import ProductInfo from "./components/ProductInfo";
-import ProductVariants from "./components/ProductVariants";
 import ProductActions from "./components/ProductActions";
 import ProductMeta from "./components/ProductMeta";
 import ProductTabs from "./components/ProductTabs";
@@ -40,16 +39,11 @@ const ProductDetails = () => {
 	const relatedProducts = mockProducts.filter(p => p.id !== product.id).slice(0, 8);
 
 	// Product State
-	const [selectedVariants, setSelectedVariants] = useState({});
 	const [quantity, setQuantity] = useState(1);
 	const [isWishlisted, setIsWishlisted] = useState(false);
 
-	const handleVariantChange = (variantId, optionId) => {
-		setSelectedVariants(prev => ({ ...prev, [variantId]: optionId }));
-	};
-
 	const handleAddToCart = () => {
-		console.log("Added to cart:", { product, quantity, selectedVariants });
+		console.log("Added to cart:", { product, quantity });
 		// Usually dispatch to Redux here
 	};
 
@@ -61,22 +55,9 @@ const ProductDetails = () => {
 		{ label: { en: product.title.en, ar: product.title.ar } }
 	];
 
-	// Compute images based on variant selection (e.g., color selection swaps main image)
-	const getActiveImages = () => {
-		const colorVariant = product.variants?.find(v => v.id === "color");
-		if (colorVariant) {
-			const selectedColorOption = colorVariant.options.find(o => o.id === selectedVariants["color"]);
-			if (selectedColorOption?.image) {
-				// Put the variant image first, then the rest
-				return [selectedColorOption.image, ...product.images.filter(img => img !== selectedColorOption.image)];
-			}
-		}
-		return product.images;
-	};
-
 	return (
 		<div className="flex flex-col w-full min-h-screen bg-background pb-10">
-			
+
 			<div className="bg-surface border-b border-border/60 py-4 mb-6 relative z-20">
 				<Container>
 					<Breadcrumb items={breadcrumbItems} />
@@ -86,41 +67,36 @@ const ProductDetails = () => {
 			<Container>
 				{/* Top Section: Gallery & Info */}
 				<div className="flex flex-col lg:flex-row gap-8 lg:gap-12 relative items-start">
-					
+
 					{/* Left Column: Gallery & Tabs (Scrolls normally) */}
-					<div className="w-full lg:w-[50%] xl:w-[55%] shrink-0 flex flex-col gap-8">
-						<ProductGallery images={getActiveImages()} />
-						
+					<div className="w-full lg:w-1/2 shrink-0 flex flex-col gap-8">
+						<ProductGallery images={product.images} />
+
 						{/* Desktop: Move Tabs inside left column so right column can stick alongside it */}
-						<div className="hidden lg:block">
-							<ProductTabs 
-								description={product.description} 
-								specifications={product.specifications} 
-								reviews={product.reviewsList} 
+						<div className="hidden lg:block mt-2">
+							<ProductTabs
+								description={product.description}
+								specifications={product.specifications}
+								reviews={product.reviewsList}
 							/>
 						</div>
 					</div>
 
 					{/* Right Column: Info & Actions (Sticky Desktop Buy Box) */}
-					<div className="w-full lg:w-[50%] xl:w-[45%] flex flex-col lg:sticky lg:top-24 pb-8 z-10">
+					<div className="w-full lg:w-1/2 flex flex-col lg:sticky lg:top-24 pb-8 z-10">
 						<ProductInfo product={product} />
 
-						<div className="mt-2">
-							<ProductVariants 
-								variants={product.variants} 
-								selectedVariants={selectedVariants} 
-								onVariantChange={handleVariantChange} 
+						<div className="mt-6">
+							<ProductActions
+								price={product.price}
+								quantity={quantity}
+								setQuantity={setQuantity}
+								maxQuantity={product.stock?.quantity}
+								onAddToCart={handleAddToCart}
+								isWishlisted={isWishlisted}
+								onToggleWishlist={() => setIsWishlisted(!isWishlisted)}
 							/>
 						</div>
-
-						<ProductActions 
-							quantity={quantity}
-							setQuantity={setQuantity}
-							maxQuantity={product.stock?.quantity}
-							onAddToCart={handleAddToCart}
-							isWishlisted={isWishlisted}
-							onToggleWishlist={() => setIsWishlisted(!isWishlisted)}
-						/>
 
 						<div className="mt-6">
 							<ProductMeta sku={product.stock?.sku} categories={product.categories} />
@@ -130,10 +106,10 @@ const ProductDetails = () => {
 
 				{/* Mobile: Tabs below everything else */}
 				<div className="lg:hidden mt-8">
-					<ProductTabs 
-						description={product.description} 
-						specifications={product.specifications} 
-						reviews={product.reviewsList} 
+					<ProductTabs
+						description={product.description}
+						specifications={product.specifications}
+						reviews={product.reviewsList}
 					/>
 				</div>
 
@@ -149,7 +125,7 @@ const ProductDetails = () => {
 			</div>
 
 			{/* Mobile Bottom Buy Bar */}
-			<MobileBottomBar 
+			<MobileBottomBar
 				price={product.price}
 				onAddToCart={handleAddToCart}
 				disabled={!product.stock?.quantity}

@@ -7,6 +7,8 @@ import SpecificationTable from "./SpecificationTable";
 import RatingSummary from "./RatingSummary";
 import ReviewCard from "./ReviewCard";
 import QnASubtab from "./QnASubtab";
+import TrustBadges from "./TrustBadges";
+import MedicalDisclaimer from "./MedicalDisclaimer";
 
 export const ProductTabs = ({ description, specifications, reviews }) => {
 	const { language } = useLanguage();
@@ -97,9 +99,17 @@ export const ProductTabs = ({ description, specifications, reviews }) => {
 				{/* Description Tab */}
 				<div className={cn(activeTab === "description" ? "block" : "hidden")}>
 					<div 
-						className="prose prose-sm md:prose-base dark:prose-invert max-w-none prose-p:text-text-secondary prose-headings:text-text"
+						className="prose prose-sm md:prose-base dark:prose-invert max-w-none prose-p:text-text-secondary prose-headings:text-text mb-8"
 						dangerouslySetInnerHTML={{ __html: description?.[language] || "" }} 
 					/>
+					
+					<div className="flex flex-col gap-6 pt-6 border-t border-border">
+						<h3 className="text-lg font-bold text-text">
+							{isRtl ? "ميزات إضافية وضمانات" : "Additional Features & Guarantees"}
+						</h3>
+						<TrustBadges />
+						<MedicalDisclaimer />
+					</div>
 				</div>
 
 				{/* Specifications Tab */}

@@ -74,7 +74,7 @@ export const Register = () => {
 					{isRtl ? "إنشاء حساب جديد" : "Create Account"}
 				</h2>
 				<p className="text-sm font-bold text-text-muted">
-					{isRtl ? "انضم لعائلة MootahCare+ الطبية الآن" : "Join Egypt's leading healthcare platform"}
+					{isRtl ? "انضم لعائلة EG Medical الطبية الآن" : "Join Egypt's leading healthcare platform"}
 				</p>
 			</div>
 

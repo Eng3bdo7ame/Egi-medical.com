@@ -62,7 +62,7 @@ export const Footer = () => {
 					<div className="space-y-6">
 						<LocalizedLink to="/" className="inline-block">
 							<span className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-								Moo<span className="text-primary">tah</span>
+								EG <span className="text-primary">Medical</span>
 							</span>
 						</LocalizedLink>
 						<p className="text-slate-400 text-sm leading-relaxed">
@@ -130,7 +130,7 @@ export const Footer = () => {
 							</li>
 							<li className="flex items-center gap-3 text-slate-400">
 								<Mail className="w-5 h-5 text-primary shrink-0" />
-								<span>info@mootah-medical.com</span>
+								<span>info@eg-medical.com</span>
 							</li>
 						</ul>
 					</div>
@@ -140,7 +140,7 @@ export const Footer = () => {
 				{/* Bottom Bar */}
 				<div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
 					<p className="text-slate-500 text-sm">
-						&copy; {new Date().getFullYear()} {isRtl ? "Mootah Medical. جميع الحقوق محفوظة." : "Mootah Medical. All rights reserved."}
+						&copy; {new Date().getFullYear()} {isRtl ? "EG Medical. جميع الحقوق محفوظة." : "EG Medical. All rights reserved."}
 					</p>
 					
 					<div className="flex items-center gap-6 text-sm text-slate-500">

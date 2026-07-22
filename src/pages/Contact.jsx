@@ -194,7 +194,7 @@ export const Contact = () => {
 									</div>
 									<div className="flex flex-col">
 										<span className="text-xs text-text-muted font-bold">{isRtl ? "البريد الإلكتروني" : "Email Address"}</span>
-										<a href="mailto:support@mootahcare.com" className="font-extrabold text-text hover:text-primary transition-colors mt-0.5">support@mootahcare.com</a>
+										<a href="mailto:support@eg-medical.com" className="font-extrabold text-text hover:text-primary transition-colors mt-0.5">support@eg-medical.com</a>
 									</div>
 								</div>
 

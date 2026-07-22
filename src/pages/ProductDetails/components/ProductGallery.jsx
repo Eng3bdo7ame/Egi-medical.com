@@ -64,7 +64,7 @@ export const ProductGallery = ({ images = [] }) => {
 		<div className="flex flex-col gap-4 w-full select-none">
 			
 			{/* Main Image Viewport */}
-			<div className="relative w-full aspect-square md:aspect-[4/3] lg:aspect-square bg-white rounded-2xl border border-border overflow-hidden group">
+			<div className="relative w-full aspect-square bg-white rounded-2xl border border-border overflow-hidden group">
 				<div className="overflow-hidden h-full" ref={mainRef}>
 					<div className="flex h-full rtl:flex-row-reverse">
 						{images.map((img, index) => (
@@ -86,7 +86,7 @@ export const ProductGallery = ({ images = [] }) => {
 									style={{
 										backgroundImage: `url(${img})`,
 										backgroundPosition: isZoomed ? backgroundPosition : "center",
-										backgroundSize: isZoomed ? "200%" : "contain",
+										backgroundSize: isZoomed ? "200%" : "cover",
 										backgroundRepeat: "no-repeat",
 									}}
 								/>

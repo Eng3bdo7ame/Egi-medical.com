@@ -11,13 +11,19 @@ import ProductCard from "@/components/ui/ProductCard";
 import { cn } from "@/lib/utils";
 
 const StaticTimer = () => {
+	const TimeUnit = ({ value }) => (
+		<div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-[6px] bg-danger text-white font-bold text-sm shadow-sm">
+			{value}
+		</div>
+	);
+
 	return (
-		<div className="flex items-center gap-2 ltr:ml-4 rtl:mr-4">
-			<div className="flex items-center justify-center w-8 h-8 rounded-md bg-danger/10 text-danger font-bold text-sm">12</div>
-			<span className="text-danger font-bold">:</span>
-			<div className="flex items-center justify-center w-8 h-8 rounded-md bg-danger/10 text-danger font-bold text-sm">45</div>
-			<span className="text-danger font-bold">:</span>
-			<div className="flex items-center justify-center w-8 h-8 rounded-md bg-danger/10 text-danger font-bold text-sm">30</div>
+		<div className="flex items-center gap-1 ltr:ml-3 rtl:mr-3 mt-1 sm:mt-0 border border-danger p-1 rounded-sm">
+			<TimeUnit value="12" />
+			<span className="text-danger font-bold text-base sm:text-lg mx-0.5 animate-pulse">:</span>
+			<TimeUnit value="45" />
+			<span className="text-danger font-bold text-base sm:text-lg mx-0.5 animate-pulse">:</span>
+			<TimeUnit value="30" />
 		</div>
 	);
 };
@@ -179,8 +185,8 @@ export const ProductSection = ({ title, subtitle, viewAllLink, variant = "defaul
 									badges: [{ type: "bestseller", label: { en: "Best Seller", ar: "الأكثر مبيعاً" } }]
 								}
 							].map((mockProduct, i) => (
-								<div 
-									key={i} 
+								<div
+									key={i}
 									className="flex-[0_0_65%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] xl:flex-[0_0_18%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
 								>
 									<ProductCard product={mockProduct} />

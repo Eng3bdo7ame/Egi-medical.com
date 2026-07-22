@@ -45,7 +45,7 @@ export const WhyMootah = () => {
 			<Container className="relative z-10">
 				<div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14">
 					<h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 sm:mb-4 tracking-tight">
-						{isRtl ? "لماذا تختار Mootah؟" : "Why Choose Mootah?"}
+						{isRtl ? "لماذا تختار EG Medical؟" : "Why Choose EG Medical?"}
 					</h2>
 					<p className="text-slate-400 text-sm sm:text-base lg:text-lg">
 						{isRtl ? "نحن نضع معايير جديدة للثوقية والأمان في توفير المستلزمات والأجهزة الطبية" : "Setting new standards for trust, quality, and safety in medical device distribution"}

@@ -77,7 +77,7 @@ export const Login = () => {
 					{isRtl ? "تسجيل الدخول" : "Welcome Back"}
 				</h2>
 				<p className="text-sm font-bold text-text-muted">
-					{isRtl ? "أهلاً بك مجدداً في منصة MootahCare+" : "Sign in to access your medical account"}
+					{isRtl ? "أهلاً بك مجدداً في منصة EG Medical" : "Sign in to access your medical account"}
 				</p>
 			</div>
 

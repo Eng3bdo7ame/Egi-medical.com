@@ -45,9 +45,9 @@ export const Terms = () => {
 						<div className="flex flex-col gap-1.5">
 							<span className="font-extrabold">{isRtl ? "إخلاء مسؤولية طبي هام جداً" : "CRITICAL Medical Disclaimer"}</span>
 							<p className="text-xs text-text-secondary leading-relaxed">
-								{isRtl
-									? "المعلومات والأجهزة الطبية المعروضة في MootahCare+ لا تغني عن استشارة الطبيب المختص أو مقدم الرعاية الصحية المرخص. يجب دائماً قراءة دليل المستخدم المرفق مع الأجهزة بدقة واتباع إرشادات الطبيب المعالج قبل القياس أو التشخيص الذاتي."
-									: "The information and medical products listed on MootahCare+ are not substitutes for professional medical advice, diagnosis, or treatment. Always read the user manual supplied with the devices carefully and follow your physician's guidance before self-measurement or diagnostics."}
+								{isRtl 
+									? "المعلومات والأجهزة الطبية المعروضة في EG Medical لا تغني عن استشارة الطبيب المختص أو مقدم الرعاية الصحية المرخص. يجب دائماً قراءة دليل المستخدم المرفق مع الأجهزة بدقة واتباع إرشادات الطبيب المعالج قبل القياس أو التشخيص الذاتي."
+									: "The information and medical products listed on EG Medical are not substitutes for professional medical advice, diagnosis, or treatment. Always read the user manual supplied with the devices carefully and follow your physician's guidance before self-measurement or diagnostics."}
 							</p>
 						</div>
 					</div>
@@ -98,8 +98,8 @@ export const Terms = () => {
 							</h2>
 							<p>
 								{isRtl
-									? "لا تتحمل MootahCare+ المسؤولية عن أي أضرار ناتجة عن الاستخدام الخاطئ للأجهزة الطبية، أو عدم اتباع تعليمات الاستخدام والأمان المرفقة من قبل المصنعين."
-									: "MootahCare+ is not liable for any direct or indirect health damages resulting from the misuse of purchased medical devices, or the failure to follow the manufacturer's user manual and safety directions."}
+									? "لا تتحمل EG Medical المسؤولية عن أي أضرار ناتجة عن الاستخدام الخاطئ للأجهزة الطبية، أو عدم اتباع تعليمات الاستخدام والأمان المرفقة من قبل المصنعين."
+									: "EG Medical is not liable for any direct or indirect health damages resulting from the misuse of purchased medical devices, or the failure to follow the manufacturer's user manual and safety directions."}
 							</p>
 						</div>
 

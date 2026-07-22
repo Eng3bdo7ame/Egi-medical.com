@@ -2,7 +2,10 @@ import React from "react";
 import QuantitySelector from "./QuantitySelector";
 import AddToCartBar from "./AddToCartBar";
 
+import PriceBox from "./PriceBox";
+
 export const ProductActions = ({ 
+	price,
 	quantity, 
 	setQuantity, 
 	maxQuantity, 
@@ -13,17 +16,23 @@ export const ProductActions = ({
 	const outOfStock = !maxQuantity || maxQuantity < 1;
 
 	return (
-		<div className="flex flex-col gap-6 mt-4 p-4 bg-surface-2/30 rounded-2xl border border-border/50">
-			{/* Quantity Selection */}
-			{!outOfStock && (
-				<QuantitySelector 
-					quantity={quantity} 
-					setQuantity={setQuantity} 
-					maxQuantity={maxQuantity} 
-				/>
-			)}
+		<div className="flex flex-col gap-5 mt-2 bg-surface rounded-2xl border border-border shadow-sm p-4 sm:p-5">
+			
+			{/* Price & Quantity Section */}
+			<div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-border/60">
+				<PriceBox price={price} className="p-0 border-0 shadow-none bg-transparent" />
+				
+				{/* Quantity Selection */}
+				{!outOfStock && (
+					<QuantitySelector 
+						quantity={quantity} 
+						setQuantity={setQuantity} 
+						maxQuantity={maxQuantity} 
+					/>
+				)}
+			</div>
 
-			{/* Add to Cart, Wishlist, Share */}
+			{/* Add to Cart, Wishlist */}
 			<AddToCartBar 
 				onAddToCart={onAddToCart}
 				isWishlisted={isWishlisted}

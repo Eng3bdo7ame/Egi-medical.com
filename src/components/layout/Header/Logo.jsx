@@ -16,10 +16,10 @@ export const Logo = () => {
 		<LocalizedLink
 			to="/"
 			className="flex items-center select-none group focus-visible:ring-2 focus-visible:ring-ring/50 rounded-md outline-none shrink-0"
-			aria-label={isRtl ? "مؤتة كير - الصفحة الرئيسية" : "Mootah Care - Home"}
+			aria-label={isRtl ? "إيجي ميديكال - الصفحة الرئيسية" : "EG Medical - Home"}
 		>
 			<span className="text-[28px] font-bold tracking-tight text-primary">
-				MootahCare
+				EG<span className="text-primary-hover">Medical</span>
 				<span className="text-accent text-[32px] font-black relative leading-none -top-0.5 ms-0.5">+</span>
 			</span>
 		</LocalizedLink>
