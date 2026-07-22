@@ -27,7 +27,7 @@ export const useProductFilters = () => {
 	// --- Current State Parsed from URL ---
 	const state = useMemo(() => ({
 		// View & Sort
-		viewMode: getStringParam("view", "grid-3"),
+		viewMode: getStringParam("view", "grid-4"),
 		sortOption: getStringParam("sort", "featured"),
 		currentPage: getNumberParam("page", 1),
 		

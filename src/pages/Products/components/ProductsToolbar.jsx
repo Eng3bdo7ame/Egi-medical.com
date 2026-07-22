@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { LayoutGrid, Grip, AlignJustify, ChevronDown, Check } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SORT_OPTIONS = [
@@ -115,69 +115,6 @@ export const ProductsToolbar = ({
 						</div>
 					)}
 				</div>
-
-				{/* Divider */}
-				<div className="hidden sm:block w-px h-8 bg-border/60 mx-1" />
-
-				{/* Premium View Toggles */}
-				<div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto no-scrollbar pb-1 sm:pb-0">
-					{/* Grid 3 / Grid View */}
-					<button
-						onClick={() => onViewModeChange("grid-3")}
-						className={cn(
-							"flex items-center gap-2 h-11 px-4 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
-							viewMode === "grid-3" || viewMode === "grid-2"
-								? "bg-text text-surface shadow-md" 
-								: "bg-surface border border-border/80 text-text-secondary hover:text-text hover:bg-surface-2 hover:border-border"
-						)}
-					>
-						<Grip className="w-4 h-4" />
-						<span className="hidden md:inline-block">{isRtl ? "شبكة" : "Grid"}</span>
-					</button>
-
-					{/* Grid 4 / Comfort View */}
-					<button
-						onClick={() => onViewModeChange("grid-4")}
-						className={cn(
-							"hidden lg:flex items-center gap-2 h-11 px-4 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
-							viewMode === "grid-4" 
-								? "bg-text text-surface shadow-md" 
-								: "bg-surface border border-border/80 text-text-secondary hover:text-text hover:bg-surface-2 hover:border-border"
-						)}
-					>
-						<LayoutGrid className="w-4 h-4" />
-						<span>{isRtl ? "مريح" : "Comfort"}</span>
-					</button>
-
-					{/* Grid 5 / Compact View (Optional, mapped to grid-5 or grid-4 depending on space) */}
-					<button
-						onClick={() => onViewModeChange("grid-5")}
-						className={cn(
-							"hidden xl:flex items-center gap-2 h-11 px-4 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
-							viewMode === "grid-5" 
-								? "bg-text text-surface shadow-md" 
-								: "bg-surface border border-border/80 text-text-secondary hover:text-text hover:bg-surface-2 hover:border-border"
-						)}
-					>
-						<LayoutGrid className="w-4 h-4 opacity-70" />
-						<span>{isRtl ? "مضغوط" : "Compact"}</span>
-					</button>
-
-					{/* List View */}
-					<button
-						onClick={() => onViewModeChange("list")}
-						className={cn(
-							"flex items-center gap-2 h-11 px-4 rounded-xl font-bold text-sm transition-all whitespace-nowrap",
-							viewMode === "list" 
-								? "bg-text text-surface shadow-md" 
-								: "bg-surface border border-border/80 text-text-secondary hover:text-text hover:bg-surface-2 hover:border-border"
-						)}
-					>
-						<AlignJustify className="w-4 h-4" />
-						<span className="hidden md:inline-block">{isRtl ? "قائمة" : "List"}</span>
-					</button>
-				</div>
-				
 			</div>
 		</div>
 	);
