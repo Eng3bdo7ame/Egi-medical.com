@@ -40,8 +40,10 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 								const IconComp = category.icon;
 								const isActive = category.id === activeCategoryId;
 								return (
-									<button
+									<LocalizedLink
 										key={category.id}
+										to={`/category/${category.id}`}
+										onClick={onClose}
 										onMouseEnter={() => setActiveCategoryId(category.id)}
 										className={cn(
 											"w-full flex items-center justify-between px-6 py-3.5 text-start transition-all duration-200 group relative",
@@ -72,7 +74,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 										) : (
 											<ChevronRight className={cn("w-4 h-4 transition-all", isActive ? "text-primary opacity-100" : "text-slate-400 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0")} />
 										)}
-									</button>
+									</LocalizedLink>
 								);
 							})}
 						</div>

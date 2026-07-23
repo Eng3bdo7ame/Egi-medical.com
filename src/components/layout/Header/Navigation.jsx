@@ -14,16 +14,6 @@ import MegaMenu from "./MegaMenu";
  * Matches the reference design: Blue "All Categories" button with Hamburger icon, followed by specific category links.
  */
 
-const AR_NAV = {
-	"Medicines": "الأدوية",
-	"Medical Devices": "الأجهزة الطبية",
-	"Personal Care": "العناية الشخصية",
-	"Baby Care": "العناية بالطفل",
-	"Health Conditions": "الحالات الصحية",
-	"Brands": "الماركات",
-	"Offers": "العروض",
-};
-
 export const Navigation = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
@@ -81,37 +71,30 @@ export const Navigation = () => {
 					</div>
 
 					{/* Navigation Links */}
-					<nav className="flex items-center gap-1 ms-4 flex-1" aria-label="Main navigation">
+					<nav className="flex items-center gap-1.5 ms-4 flex-1" aria-label="Main navigation">
 						{navigationLinks.map((link) => {
-							const isOffer = link.name === "Offers";
-							const linkName = isRtl ? (AR_NAV[link.name] || link.name) : link.name;
+							const linkName = link.name[language] || link.name.en;
 
 							return (
 								<LocalizedLink
-									key={link.path}
+									key={link.id || link.path}
 									to={link.path}
 									className={cn(
-										"relative inline-flex items-center px-3 py-2 text-[15px] font-medium rounded-lg transition-colors duration-200 select-none",
-										isOffer
-											? "text-secondary font-semibold hover:bg-secondary/10"
+										"relative inline-flex items-center gap-1.5 px-3 py-2 text-[15px] font-semibold rounded-lg transition-all duration-200 select-none whitespace-nowrap",
+										link.isOffer
+											? "text-secondary font-bold hover:bg-secondary/10"
 											: "text-text-secondary hover:text-primary hover:bg-primary/5"
 									)}
 								>
-									{linkName}
+									<span>{linkName}</span>
+									{link.badge && (
+										<Badge variant={link.badgeVariant || "primary"} size="sm" className="h-5 px-1.5 text-[10px] font-extrabold">
+											{link.badge[language]}
+										</Badge>
+									)}
 								</LocalizedLink>
 							);
 						})}
-
-						{/* Consultation Link with Badge */}
-						<LocalizedLink
-							to="/consultation"
-							className="relative inline-flex items-center gap-2 px-3 py-2 text-[15px] font-semibold text-text-secondary hover:text-primary hover:bg-primary/5 rounded-lg transition-colors duration-200 select-none "
-						>
-							{isRtl ? "الاستشارات" : "Consultation"}
-							<Badge variant="success" size="sm" className="h-5 px-1.5 text-[10px]">
-								{isRtl ? "جديد" : "New"}
-							</Badge>
-						</LocalizedLink>
 					</nav>
 				</div>
 			</Container>

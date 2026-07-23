@@ -65,7 +65,19 @@ export const routes = [
 						element: <ProductDetails />,
 					},
 					{
-						path: ROUTES.CATEGORY.substring(1),
+						path: "category/:slug",
+						element: <Category />,
+					},
+					{
+						path: "category/*",
+						element: <Category />,
+					},
+					{
+						path: "categories",
+						element: <Category />,
+					},
+					{
+						path: "categories/*",
 						element: <Category />,
 					},
 					{

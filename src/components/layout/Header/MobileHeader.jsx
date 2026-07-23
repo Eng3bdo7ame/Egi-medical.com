@@ -33,17 +33,6 @@ import { cn } from "@/lib/utils";
  * Supports RTL/LTR and Light/Dark.
  */
 
-/** Arabic translations map */
-const AR_NAV = {
-	"Medical Devices": "الأجهزة الطبية",
-	"Consumables": "المستلزمات الطبية",
-	"Home Care": "الرعاية المنزلية",
-	"Diagnostics": "أجهزة التشخيص",
-	"Orthopedics": "العظام والحركة",
-	"Brands": "الماركات",
-	"Offers": "العروض",
-};
-
 export const MobileHeader = () => {
 	const { language, toggleLanguage } = useLanguage();
 	const { theme, toggleTheme } = useTheme();
@@ -175,16 +164,15 @@ export const MobileHeader = () => {
 						</div>
 					</div>
 
-					{/* Drawer Navigation */}
 					<nav className="flex-1 overflow-y-auto py-2" aria-label="Mobile navigation">
 						{navigationLinks.map((link) => (
 							<LocalizedLink
-								key={link.path}
+								key={link.id || link.path}
 								to={link.path}
 								onClick={close}
 								className="flex items-center justify-between px-4 py-3 text-sm font-medium text-text-secondary hover:text-primary hover:bg-primary/5 transition-colors"
 							>
-								<span>{isRtl ? (AR_NAV[link.name] || link.name) : link.name}</span>
+								<span>{link.name[language] || link.name.en}</span>
 								<ChevronRight className={cn("w-4 h-4 opacity-40", isRtl && "rotate-180")} />
 							</LocalizedLink>
 						))}

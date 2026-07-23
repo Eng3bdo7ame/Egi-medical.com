@@ -24,20 +24,27 @@ import useProductFilters from "@/components/products/hooks/useProductFilters";
 import { mockProducts } from "../Products/components/products.mock";
 
 const Category = () => {
-	const { slug } = useParams();
+	const params = useParams();
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
-	
+
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+	// Extract slug from route params (handles :slug and wildcard *)
+	const rawSlug = params["*"]
+		? params["*"].split('/').filter(Boolean).pop()
+		: params.slug || "all-categories";
 
 	// Custom Hook for URL State Sync
 	const { state, updateParams, toggleArrayItem, clearAllFilters } = useProductFilters();
 	const { viewMode, sortOption, currentPage, availability, brands, rating, price } = state;
 
-	// In a real app, you'd fetch the category object by slug here
-	const fakeCategoryName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+	// Format category display title dynamically
+	const fakeCategoryName = rawSlug
+		? rawSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+		: (isRtl ? "جميع الأقسام" : "All Categories");
 
 	// Fake initial loading (Simulating API fetch dependent on URL state)
 	useEffect(() => {
@@ -45,16 +52,16 @@ const Category = () => {
 		setError(null);
 		const timer = setTimeout(() => setIsLoading(false), 800);
 		return () => clearTimeout(timer);
-	}, [state, slug]); 
-	
-	const itemsPerPage = 12; 
-	const totalItems = 45; 
-	
+	}, [state, rawSlug]);
+
+	const itemsPerPage = 12;
+	const totalItems = 45;
+
 	// Breadcrumb mapping
 	const breadcrumbItems = [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
 		{ label: { en: "Categories", ar: "الأقسام" }, link: "/categories" },
-		{ label: fakeCategoryName } 
+		{ label: { en: fakeCategoryName, ar: fakeCategoryName } }
 	];
 
 	// Fake Filter Options (Would come from API)
@@ -101,7 +108,7 @@ const Category = () => {
 		<>
 			{/* No Category filter because we are already inside a Category context */}
 			<FilterSidebar.Section title={isRtl ? "التوفر" : "Availability"} activeCount={availability.length}>
-				<FilterSidebar.Availability 
+				<FilterSidebar.Availability
 					selectedOptions={availability}
 					onChange={(val) => toggleArrayItem("availability", val)}
 					counts={filterOptions.availability}
@@ -109,15 +116,15 @@ const Category = () => {
 			</FilterSidebar.Section>
 
 			<FilterSidebar.Section title={isRtl ? "السعر" : "Price"} activeCount={(price[0] > 0 || price[1] < 10000) ? 1 : 0}>
-				<FilterSidebar.Price 
-					min={0} max={10000} 
-					value={price} 
-					onChange={(range) => updateParams({ price: range })} 
+				<FilterSidebar.Price
+					min={0} max={10000}
+					value={price}
+					onChange={(range) => updateParams({ price: range })}
 				/>
 			</FilterSidebar.Section>
 
 			<FilterSidebar.Section title={isRtl ? "العلامات التجارية" : "Brands"} activeCount={brands.length}>
-				<FilterSidebar.Brands 
+				<FilterSidebar.Brands
 					brands={filterOptions.brands}
 					selectedBrands={brands}
 					onChange={(val) => toggleArrayItem("brands", val)}
@@ -126,19 +133,19 @@ const Category = () => {
 
 			<FilterSidebar.Section title={isRtl ? "التقييم" : "Rating"} activeCount={rating ? 1 : 0}>
 				{[5, 4, 3, 2, 1].map(stars => (
-					<FilterSidebar.Rating 
-						key={stars} 
-						stars={stars} 
+					<FilterSidebar.Rating
+						key={stars}
+						stars={stars}
 						selectedRating={rating}
-						onChange={(val) => updateParams({ rating: val })} 
+						onChange={(val) => updateParams({ rating: val })}
 					/>
 				))}
 			</FilterSidebar.Section>
 
-			<FilterSidebar.Footer 
-				activeCount={activeFiltersList.length} 
+			<FilterSidebar.Footer
+				activeCount={activeFiltersList.length}
 				onClear={clearAllFilters}
-				onApply={() => setIsMobileFilterOpen(false)} 
+				onApply={() => setIsMobileFilterOpen(false)}
 			/>
 		</>
 	);
@@ -156,7 +163,7 @@ const Category = () => {
 	return (
 		<div className="flex flex-col w-full min-h-screen bg-background pb-10">
 			{/* 1. Internal Hero */}
-			<PageHero 
+			<PageHero
 				title={fakeCategoryName}
 				subtitle={{ en: "Explore our curated selection of high-quality products in this category.", ar: "استكشف تشكيلتنا المختارة من المنتجات عالية الجودة في هذا القسم." }}
 				count={totalItems}
@@ -176,7 +183,7 @@ const Category = () => {
 					</FilterSidebar>
 				}
 				toolbar={
-					<ProductsToolbar 
+					<ProductsToolbar
 						totalItems={totalItems}
 						itemsPerPage={itemsPerPage}
 						currentPage={currentPage}
@@ -188,7 +195,7 @@ const Category = () => {
 					/>
 				}
 				activeFilters={
-					<ActiveFilters 
+					<ActiveFilters
 						activeFilters={activeFiltersList}
 						onRemoveFilter={handleRemoveActiveFilter}
 						onClearAll={clearAllFilters}
@@ -204,12 +211,12 @@ const Category = () => {
 				) : (
 					<ProductsGrid products={mockProducts} viewMode={viewMode} />
 				)}
-				
+
 				{/* Pagination */}
 				{mockProducts.length > 0 && (
-					<ProductsPagination 
+					<ProductsPagination
 						currentPage={currentPage}
-						totalPages={4} 
+						totalPages={4}
 						onPageChange={(page) => updateParams({ page })}
 					/>
 				)}
