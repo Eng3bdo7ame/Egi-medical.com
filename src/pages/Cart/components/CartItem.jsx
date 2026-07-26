@@ -9,12 +9,12 @@ import { mockProducts } from "@/pages/Products/components/products.mock";
 export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+	const product = item.product;
 
-	const isOutOfStock = item.stockStatus === "out_of_stock";
-	const hasDiscount = item.originalPrice && item.originalPrice > item.price;
+	const isOutOfStock = product?.stock?.quantity === 0;
+	const hasDiscount = product?.price?.original > product?.price?.current;
 	
-	const matchedProduct = mockProducts.find(p => p.id === item.productId);
-	const productSlug = matchedProduct ? matchedProduct.slug : item.productId;
+	const productSlug = product?.slug || item.productId;
 
 	return (
 		<div className={cn(
@@ -25,8 +25,8 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 			<Link to={`/products/${productSlug}`} className="shrink-0">
 				<div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl border border-border/50 overflow-hidden bg-white">
 					<img 
-						src={item.image} 
-						alt={item.title[language]} 
+						src={product?.images?.[0] || product?.image} 
+						alt={product?.title?.[language]} 
 						className={cn("w-full h-full object-cover", isOutOfStock && "opacity-50 grayscale")}
 					/>
 				</div>
@@ -38,26 +38,26 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 					<div className="flex items-start justify-between gap-4">
 						<Link to={`/products/${productSlug}`} className="hover:text-primary transition-colors min-w-0">
 							<h3 className="font-bold text-text text-base sm:text-lg leading-tight truncate-2-lines">
-								{item.title[language]}
+								{product?.title?.[language]}
 							</h3>
 						</Link>
 						
 						{/* Mobile Price (Hidden on Desktop, shown below title) */}
 						<div className="sm:hidden flex flex-col items-end shrink-0">
 							<span className="font-extrabold text-primary text-lg">
-								{item.price} {isRtl ? "ج.م" : "EGP"}
+								{item.unitPrice} {isRtl ? "ج.م" : "EGP"}
 							</span>
 							{hasDiscount && (
 								<span className="text-xs text-text-muted line-through">
-									{item.originalPrice} {isRtl ? "ج.م" : "EGP"}
+									{product.price.original} {isRtl ? "ج.م" : "EGP"}
 								</span>
 							)}
 						</div>
 					</div>
 
-					{item.variant && (
+					{item.selectedVariant && (
 						<span className="text-sm text-text-secondary mt-1">
-							{item.variant[language]}
+							{item.selectedVariant[language]}
 						</span>
 					)}
 
@@ -73,7 +73,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 				<div className="flex items-center justify-between mt-4">
 					<div className="flex items-center gap-2 sm:gap-4">
 						<button 
-							onClick={() => onRemove(item.id)}
+							onClick={() => onRemove(item.productId, item.selectedVariant)}
 							className="flex items-center gap-1.5 text-sm font-bold text-text-secondary hover:text-danger transition-colors p-2 -ml-2 rounded-lg hover:bg-danger/10"
 						>
 							<Trash2 className="w-4 h-4" />
@@ -81,7 +81,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 						</button>
 						<div className="w-px h-4 bg-border/60 hidden sm:block" />
 						<button 
-							onClick={() => onSaveForLater(item.id)}
+							onClick={() => onSaveForLater(item.productId, item.selectedVariant)}
 							className="flex items-center gap-1.5 text-sm font-bold text-text-secondary hover:text-primary transition-colors p-2 rounded-lg hover:bg-primary/10"
 						>
 							<Heart className="w-4 h-4" />
@@ -93,8 +93,8 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 						<div className="scale-90 origin-right sm:scale-100 sm:origin-center">
 							<QuantitySelector 
 								quantity={item.quantity} 
-								setQuantity={(q) => onUpdateQuantity(item.id, q)} 
-								maxQuantity={item.maxQuantity}
+								setQuantity={(q) => onUpdateQuantity(item.productId, q, item.selectedVariant)} 
+								maxQuantity={product?.stock?.quantity}
 							/>
 						</div>
 					)}
@@ -104,15 +104,15 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 			{/* Desktop Price */}
 			<div className="hidden sm:flex flex-col items-end shrink-0 pl-4 border-l border-border/50 min-w-[120px]">
 				<span className="font-extrabold text-primary text-xl">
-					{item.price * item.quantity} {isRtl ? "ج.م" : "EGP"}
+					{item.subtotal} {isRtl ? "ج.م" : "EGP"}
 				</span>
 				{hasDiscount && (
 					<span className="text-sm text-text-muted line-through mt-1">
-						{item.originalPrice * item.quantity} {isRtl ? "ج.م" : "EGP"}
+						{product.price.original * item.quantity} {isRtl ? "ج.م" : "EGP"}
 					</span>
 				)}
 				<span className="text-xs text-text-secondary mt-2">
-					{item.quantity} × {item.price}
+					{item.quantity} × {item.unitPrice}
 				</span>
 			</div>
 		</div>

@@ -8,15 +8,24 @@ import { ShoppingCart } from "lucide-react";
 import CartItem from "./components/CartItem";
 import CartSummary from "./components/CartSummary";
 import EmptyCartState from "./components/EmptyCartState";
-
-import { mockCartItems, mockCartSummary } from "./components/cart.mock";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { selectCartItems, selectCartSubtotal, selectCartShipping, selectCartDiscount, selectCartTotal, removeFromCart, updateQuantity } from "@/features/cart/cartSlice";
+import { toast } from "sonner";
 
 const Cart = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
-	const [items, setItems] = useState(mockCartItems);
-	const [summary, setSummary] = useState(mockCartSummary);
+	const dispatch = useAppDispatch();
+	const items = useAppSelector(selectCartItems);
+	
+	const summary = {
+		subtotal: useAppSelector(selectCartSubtotal),
+		shipping: useAppSelector(selectCartShipping),
+		discount: useAppSelector(selectCartDiscount),
+		total: useAppSelector(selectCartTotal),
+	};
+	
 	const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
 	const breadcrumbItems = [
@@ -24,33 +33,25 @@ const Cart = () => {
 		{ label: { en: "Shopping Cart", ar: "سلة المشتريات" } }
 	];
 
-	const handleUpdateQuantity = (id, newQuantity) => {
-		setItems(prev => prev.map(item => 
-			item.id === id ? { ...item, quantity: newQuantity } : item
-		));
-		// In a real app, you would recalculate summary here or via backend
+	const handleUpdateQuantity = (productId, newQuantity, selectedVariant = null) => {
+		dispatch(updateQuantity({ productId, quantity: newQuantity, selectedVariant }));
 	};
 
-	const handleRemoveItem = (id) => {
-		setItems(prev => prev.filter(item => item.id !== id));
-		// Recalculate summary in real app
+	const handleRemoveItem = (productId, selectedVariant = null) => {
+		dispatch(removeFromCart({ productId, selectedVariant }));
+		toast.info(isRtl ? "تم إزالة المنتج من السلة" : "Item removed from cart");
 	};
 
-	const handleSaveForLater = (id) => {
-		console.log("Saved for later:", id);
-		handleRemoveItem(id);
+	const handleSaveForLater = (productId, selectedVariant = null) => {
+		console.log("Saved for later:", productId);
+		handleRemoveItem(productId, selectedVariant);
 	};
 
 	const handleApplyCoupon = (code) => {
 		setIsValidatingCoupon(true);
 		setTimeout(() => {
 			setIsValidatingCoupon(false);
-			// Fake success: add discount
-			setSummary(prev => ({
-				...prev,
-				discount: 50.00,
-				total: prev.total - 50.00
-			}));
+			toast.success(isRtl ? "تم تطبيق الكوبون" : "Coupon applied successfully");
 		}, 800);
 	};
 
@@ -97,7 +98,7 @@ const Cart = () => {
 							<div className="flex flex-col gap-4">
 								{items.map(item => (
 									<CartItem 
-										key={item.id}
+										key={`${item.productId}-${JSON.stringify(item.selectedVariant)}`}
 										item={item}
 										onUpdateQuantity={handleUpdateQuantity}
 										onRemove={handleRemoveItem}

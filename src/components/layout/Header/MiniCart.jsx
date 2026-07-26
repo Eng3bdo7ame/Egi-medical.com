@@ -3,17 +3,20 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { ShoppingCart, X, ArrowRight, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-import { mockCartItems, mockCartSummary } from "@/pages/Cart/components/cart.mock";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { selectCartItems, selectCartTotal, selectCartCount, removeFromCart } from "@/features/cart/cartSlice";
 
 export const MiniCart = ({ isOpen, onClose }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+	const dispatch = useAppDispatch();
 	
-	const [items, setItems] = useState(mockCartItems);
+	const items = useAppSelector(selectCartItems);
+	const totalItems = useAppSelector(selectCartCount);
+	const total = useAppSelector(selectCartTotal);
 
-	const handleRemove = (id) => {
-		setItems(items.filter(i => i.id !== id));
+	const handleRemove = (id, selectedVariant = null) => {
+		dispatch(removeFromCart({ productId: id, selectedVariant }));
 	};
 
 	if (!isOpen) return null;
@@ -40,7 +43,7 @@ export const MiniCart = ({ isOpen, onClose }) => {
 							{isRtl ? "سلة المشتريات" : "Your Cart"}
 						</h2>
 						<span className="px-2 py-0.5 bg-surface-2 rounded-full text-xs font-bold text-text-secondary">
-							{items.length}
+							{totalItems}
 						</span>
 					</div>
 					<button 
@@ -60,20 +63,20 @@ export const MiniCart = ({ isOpen, onClose }) => {
 						</div>
 					) : (
 						items.map(item => (
-							<div key={item.id} className="flex gap-4 p-3 bg-surface-2/30 border border-border/50 rounded-xl relative group">
-								<img src={item.image} alt={item.title[language]} className="w-20 h-20 rounded-lg object-cover bg-white" />
+							<div key={`${item.productId}-${JSON.stringify(item.selectedVariant)}`} className="flex gap-4 p-3 bg-surface-2/30 border border-border/50 rounded-xl relative group">
+								<img src={item.product.images?.[0] || item.product.image} alt={item.product.title?.[language]} className="w-20 h-20 rounded-lg object-cover bg-white" />
 								<div className="flex flex-col flex-1 min-w-0 justify-center">
-									<h4 className="font-bold text-sm text-text truncate-2-lines mb-1">{item.title[language]}</h4>
-									<span className="text-xs text-text-secondary mb-2">{item.variant?.[language]}</span>
+									<h4 className="font-bold text-sm text-text truncate-2-lines mb-1">{item.product.title?.[language]}</h4>
+									<span className="text-xs text-text-secondary mb-2">{item.selectedVariant?.[language] || ""}</span>
 									<div className="flex items-center justify-between">
-										<span className="font-extrabold text-primary text-sm">{item.price} {isRtl ? "ج.م" : "EGP"}</span>
+										<span className="font-extrabold text-primary text-sm">{item.unitPrice} {isRtl ? "ج.م" : "EGP"}</span>
 										<span className="text-xs font-bold text-text-secondary">Qty: {item.quantity}</span>
 									</div>
 								</div>
 								
 								{/* Remove Button */}
 								<button 
-									onClick={() => handleRemove(item.id)}
+									onClick={() => handleRemove(item.productId, item.selectedVariant)}
 									className="absolute top-2 right-2 (ltr) left-2 (rtl) p-1.5 bg-surface rounded-full text-text-muted hover:text-danger hover:bg-danger/10 opacity-0 group-hover:opacity-100 transition-all shadow-sm"
 								>
 									<Trash2 className="w-3 h-3" />
@@ -88,7 +91,7 @@ export const MiniCart = ({ isOpen, onClose }) => {
 					<div className="p-4 border-t border-border/60 bg-surface shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
 						<div className="flex justify-between items-center mb-4">
 							<span className="font-bold text-text-secondary">{isRtl ? "المجموع الفرعي" : "Subtotal"}</span>
-							<span className="font-extrabold text-text text-lg">{mockCartSummary.subtotal} {isRtl ? "ج.م" : "EGP"}</span>
+							<span className="font-extrabold text-text text-lg">{total} {isRtl ? "ج.م" : "EGP"}</span>
 						</div>
 						<div className="flex flex-col gap-2">
 							<Link 

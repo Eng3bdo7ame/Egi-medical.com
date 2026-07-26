@@ -1,15 +1,24 @@
 import { useState, useCallback } from "react";
 import { getStockState } from "../utils/product-card.helpers";
-import { PRODUCT_STATES } from "../product-card.constants";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { addToCart } from "@/features/cart/cartSlice";
+import { toggleWishlist, selectIsWishlisted } from "@/features/wishlist/wishlistSlice";
+import { toast } from "sonner";
+import { useLanguage } from "@/app/providers/I18nProvider";
 
 /**
  * Hook to manage the internal state of a Product Card
  * Handles hover states, wishlist toggling, and quick actions
  */
 export const useProductCard = (productData) => {
+	const { language } = useLanguage();
+	const isRtl = language === "ar";
+	const dispatch = useAppDispatch();
+	
 	const [isHovered, setIsHovered] = useState(false);
-	const [isWishlisted, setIsWishlisted] = useState(false);
 	const [isAddingToCart, setIsAddingToCart] = useState(false);
+	
+	const isWishlisted = useAppSelector(selectIsWishlisted(productData?.id));
 
 	const stockState = productData?.stock?.quantity !== undefined 
 		? getStockState(productData.stock.quantity) 
@@ -20,25 +29,36 @@ export const useProductCard = (productData) => {
 	const handleMouseEnter = useCallback(() => setIsHovered(true), []);
 	const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
-	const toggleWishlist = useCallback((e) => {
+	const handleToggleWishlist = useCallback((e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		// TODO: Call API context here
-		setIsWishlisted(prev => !prev);
-	}, []);
+		if (!productData) return;
+		
+		dispatch(toggleWishlist(productData));
+		
+		if (!isWishlisted) {
+			toast.success(isRtl ? "تم الإضافة إلى المفضلة" : "Added to Wishlist");
+		} else {
+			toast.info(isRtl ? "تم الإزالة من المفضلة" : "Removed from Wishlist");
+		}
+	}, [dispatch, productData, isWishlisted, isRtl]);
 
 
 	const handleAddToCart = useCallback(async (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (isOutOfStock) return;
+		if (isOutOfStock || !productData) return;
 		
 		setIsAddingToCart(true);
-		// Mock API call
-		await new Promise(resolve => setTimeout(resolve, 600));
+		
+		// Simulate a short network delay for better UX
+		await new Promise(resolve => setTimeout(resolve, 400));
+		
+		dispatch(addToCart({ product: productData, quantity: 1 }));
+		
 		setIsAddingToCart(false);
-		// TODO: Trigger global cart update & toast
-	}, [isOutOfStock]);
+		toast.success(isRtl ? "تم إضافة المنتج للسلة بنجاح" : "Product added to cart successfully");
+	}, [dispatch, isOutOfStock, productData, isRtl]);
 
 	return {
 		isHovered,
@@ -48,7 +68,7 @@ export const useProductCard = (productData) => {
 		stockState,
 		handleMouseEnter,
 		handleMouseLeave,
-		toggleWishlist,
+		toggleWishlist: handleToggleWishlist,
 		handleAddToCart
 	};
 };

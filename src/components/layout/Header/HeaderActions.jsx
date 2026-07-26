@@ -3,6 +3,9 @@ import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
+import { useAppSelector } from "@/app/store/hooks";
+import { selectCartCount } from "@/features/cart/cartSlice";
+import { selectWishlistCount } from "@/features/wishlist/wishlistSlice";
 
 /**
  * HeaderActions Component
@@ -44,6 +47,9 @@ const ActionButton = ({ to, icon, label, count, className }) => {
 export const HeaderActions = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+	
+	const cartCount = useAppSelector(selectCartCount);
+	const wishlistCount = useAppSelector(selectWishlistCount);
 
 	return (
 		<div className="flex items-center gap-2 lg:gap-6 shrink-0">
@@ -52,7 +58,7 @@ export const HeaderActions = () => {
 				to="/wishlist"
 				icon="Heart"
 				label={isRtl ? "المفضلة" : "Wishlist"}
-				count={5}
+				count={wishlistCount}
 			/>
 
 			{/* Cart */}
@@ -60,7 +66,7 @@ export const HeaderActions = () => {
 				to="/cart"
 				icon="ShoppingCart"
 				label={isRtl ? "السلة" : "Cart"}
-				count={3} // Hardcoded for mockup
+				count={cartCount}
 			/>
 		</div>
 	);

@@ -3,7 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import Container from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { useLanguage } from "@/app/providers/I18nProvider";
-
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { addToCart } from "@/features/cart/cartSlice";
+import { toggleWishlist, selectIsWishlisted } from "@/features/wishlist/wishlistSlice";
+import { toast } from "sonner";
 import ProductGallery from "./components/ProductGallery";
 import ProductInfo from "./components/ProductInfo";
 import ProductActions from "./components/ProductActions";
@@ -40,11 +43,23 @@ const ProductDetails = () => {
 
 	// Product State
 	const [quantity, setQuantity] = useState(1);
-	const [isWishlisted, setIsWishlisted] = useState(false);
+	const dispatch = useAppDispatch();
+	const isWishlisted = useAppSelector(selectIsWishlisted(product.id));
+	const isRtl = language === "ar";
 
 	const handleAddToCart = () => {
-		console.log("Added to cart:", { product, quantity });
-		// Usually dispatch to Redux here
+		if (!product.stock?.quantity) return;
+		dispatch(addToCart({ product, quantity }));
+		toast.success(isRtl ? "تم إضافة المنتج للسلة بنجاح" : "Product added to cart successfully");
+	};
+
+	const handleToggleWishlist = () => {
+		dispatch(toggleWishlist(product));
+		if (!isWishlisted) {
+			toast.success(isRtl ? "تم الإضافة إلى المفضلة" : "Added to Wishlist");
+		} else {
+			toast.info(isRtl ? "تم الإزالة من المفضلة" : "Removed from Wishlist");
+		}
 	};
 
 	// Breadcrumb mapping
@@ -94,7 +109,7 @@ const ProductDetails = () => {
 								maxQuantity={product.stock?.quantity}
 								onAddToCart={handleAddToCart}
 								isWishlisted={isWishlisted}
-								onToggleWishlist={() => setIsWishlisted(!isWishlisted)}
+								onToggleWishlist={handleToggleWishlist}
 							/>
 						</div>
 

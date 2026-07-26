@@ -1,8 +1,23 @@
 import React from "react";
+import { Toaster as SonnerToaster } from "sonner";
+import { useLanguage } from "@/app/providers/I18nProvider";
 
 export const Toaster = () => {
-	// Placeholder container for global toast notifications
-	return <div id="global-toaster" aria-live="polite" className="fixed bottom-4 right-4 z-toast pointer-events-none" />;
+	const { language } = useLanguage();
+	const isRtl = language === "ar";
+	
+	return (
+		<SonnerToaster 
+			position={isRtl ? "bottom-left" : "bottom-right"} 
+			richColors 
+			dir={isRtl ? "rtl" : "ltr"}
+			toastOptions={{
+				style: {
+					fontFamily: "var(--font-geist-sans)",
+				}
+			}}
+		/>
+	);
 };
 
 export default Toaster;
