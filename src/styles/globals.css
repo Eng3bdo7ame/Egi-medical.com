@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Outfit:wght@300;400;650;700;900&display=swap');
 
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -62,7 +63,7 @@ body {
   --breakpoint-2xl: 1440px; /* strict container size */
 
   /* ── Fonts ── */
-  --font-sans: 'Geist Variable', "Inter", "IBM Plex Sans Arabic", sans-serif;
+  --font-sans: 'Outfit', 'Cairo', 'Geist Variable', "Inter", sans-serif;
   --font-heading: var(--font-sans);
   
   /* ── Core Base ── */
@@ -367,5 +368,14 @@ body {
   }
   html {
     @apply font-sans;
+  }
+
+  /* Fix for browser autofill changing input background to white in dark mode */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active {
+    transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+    -webkit-text-fill-color: white !important;
   }
 }

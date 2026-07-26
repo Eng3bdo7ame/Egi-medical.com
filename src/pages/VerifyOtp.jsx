@@ -68,13 +68,13 @@ export const VerifyOtp = () => {
 	};
 
 	return (
-		<div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
+		<div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
 			{/* Page Header */}
-			<div className="flex flex-col gap-1.5 text-center sm:text-start">
-				<h2 className="text-2xl sm:text-3xl font-black text-text">
+			<div className="flex flex-col gap-2 text-center sm:text-start">
+				<h2 className="text-3xl sm:text-4xl font-black text-text tracking-tight">
 					{isRtl ? "رمز التحقق OTP" : "Verify Code"}
 				</h2>
-				<p className="text-sm font-bold text-text-muted leading-relaxed">
+				<p className="text-sm font-semibold text-text-muted leading-relaxed">
 					{isRtl 
 						? `أدخل رمز الـ OTP المرسل إلى بريدك: ${email}` 
 						: `Enter the verification code sent to: ${email}`}
@@ -83,14 +83,14 @@ export const VerifyOtp = () => {
 
 			{/* Status Alerts */}
 			{success && (
-				<div className="p-4 bg-success/5 border border-success/20 rounded-xl flex items-center gap-3 text-success">
+				<div className="p-4 bg-success/10 border border-success/30 rounded-2xl flex items-center gap-3 text-success animate-in fade-in zoom-in-95 duration-300 shadow-sm shadow-success/10">
 					<CheckCircle2 className="w-5 h-5 shrink-0" />
 					<span className="text-sm font-bold">{success}</span>
 				</div>
 			)}
 
 			{error && (
-				<div className="p-4 bg-danger/5 border border-danger/20 rounded-xl flex items-center gap-3 text-danger">
+				<div className="p-4 bg-danger/10 border border-danger/30 rounded-2xl flex items-center gap-3 text-danger animate-in fade-in zoom-in-95 duration-300 shadow-sm shadow-danger/10">
 					<AlertCircle className="w-5 h-5 shrink-0" />
 					<span className="text-sm font-bold">{error}</span>
 				</div>
@@ -104,7 +104,7 @@ export const VerifyOtp = () => {
 				{/* Timer & Resend */}
 				<div className="flex justify-center items-center text-xs font-bold mt-2">
 					{timer > 0 ? (
-						<span className="text-text-muted">
+						<span className="text-text-muted bg-surface-2 px-3 py-1.5 rounded-full border border-border/50">
 							{isRtl 
 								? `إعادة إرسال الرمز خلال ${timer} ثانية` 
 								: `Resend code in ${timer}s`}
@@ -113,7 +113,7 @@ export const VerifyOtp = () => {
 						<button 
 							type="button"
 							onClick={handleResend}
-							className="text-primary hover:underline flex items-center gap-1.5 cursor-pointer"
+							className="text-primary hover:text-primary-hover hover:underline flex items-center gap-1.5 cursor-pointer transition-colors"
 						>
 							<RotateCw className="w-3.5 h-3.5" />
 							{isRtl ? "إعادة إرسال الرمز" : "Resend Code"}
@@ -124,15 +124,16 @@ export const VerifyOtp = () => {
 				<button
 					type="submit"
 					disabled={loading}
-					className="h-12 px-6 bg-primary hover:bg-primary-hover text-white font-extrabold rounded-xl transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50"
+					className="h-12 px-6 bg-gradient-to-r from-primary to-primary-hover hover:to-primary text-white font-extrabold rounded-xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/40 flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 cursor-pointer overflow-hidden relative group"
 				>
+					<div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 rounded-xl pointer-events-none" />
 					{loading ? (
 						<>
-							<Loader2 className="w-5 h-5 animate-spin" />
-							<span>{isRtl ? "جاري التحقق..." : "Verifying..."}</span>
+							<Loader2 className="w-5 h-5 animate-spin relative z-10" />
+							<span className="relative z-10">{isRtl ? "جاري التحقق..." : "Verifying..."}</span>
 						</>
 					) : (
-						<span>{isRtl ? "تأكيد الرمز" : "Verify Code"}</span>
+						<span className="relative z-10 tracking-wide">{isRtl ? "تأكيد الرمز" : "Verify Code"}</span>
 					)}
 				</button>
 			</form>

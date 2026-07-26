@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { MapPin, Plus, Edit2, Trash2 } from "lucide-react";
+import { MapPin, Plus, Edit2, Trash2, X, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const Addresses = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
-	const addresses = [
+	// State for addresses
+	const [addresses, setAddresses] = useState([
 		{
 			id: 1,
 			title: { en: "Home", ar: "المنزل" },
@@ -21,7 +23,99 @@ export const Addresses = () => {
 			phone: "+20 111 987 6543",
 			isDefault: false
 		}
-	];
+	]);
+
+	// Modal State
+	const [isOpen, setIsOpen] = useState(false);
+	const [editingAddress, setEditingAddress] = useState(null);
+
+	// Form State
+	const [title, setTitle] = useState("");
+	const [details, setDetails] = useState("");
+	const [phone, setPhone] = useState("");
+	const [isDefault, setIsDefault] = useState(false);
+
+	// Open Modal for Create
+	const handleOpenCreate = () => {
+		setEditingAddress(null);
+		setTitle("");
+		setDetails("");
+		setPhone("");
+		setIsDefault(false);
+		setIsOpen(true);
+	};
+
+	// Open Modal for Edit
+	const handleOpenEdit = (address) => {
+		setEditingAddress(address);
+		setTitle(address.title[language]);
+		setDetails(address.details[language]);
+		setPhone(address.phone);
+		setIsDefault(address.isDefault);
+		setIsOpen(true);
+	};
+
+	// Close Modal
+	const handleClose = () => {
+		setIsOpen(false);
+	};
+
+	// Submit Form
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if (!title.trim() || !details.trim() || !phone.trim()) return;
+
+		let updatedList;
+		const addressData = {
+			id: editingAddress ? editingAddress.id : Date.now(),
+			title: editingAddress 
+				? { ...editingAddress.title, [language]: title } 
+				: { en: title, ar: title },
+			details: editingAddress 
+				? { ...editingAddress.details, [language]: details } 
+				: { en: details, ar: details },
+			phone: phone.trim(),
+			isDefault: isDefault
+		};
+
+		if (isDefault) {
+			// Unmark other defaults
+			updatedList = addresses.map(addr => ({
+				...addr,
+				isDefault: false
+			}));
+		} else {
+			updatedList = [...addresses];
+		}
+
+		if (editingAddress) {
+			// Edit Mode
+			updatedList = updatedList.map(addr => 
+				addr.id === editingAddress.id ? addressData : addr
+			);
+		} else {
+			// Create Mode
+			updatedList.push(addressData);
+		}
+
+		// Fallback: If only one address exists, make it default
+		if (updatedList.length === 1) {
+			updatedList[0].isDefault = true;
+		}
+
+		setAddresses(updatedList);
+		setIsOpen(false);
+	};
+
+	// Delete Address
+	const handleDelete = (id) => {
+		const updatedList = addresses.filter(addr => addr.id !== id);
+		// If we deleted the default address and list is not empty, make first address default
+		if (updatedList.length > 0 && !updatedList.some(addr => addr.isDefault)) {
+			updatedList[0].isDefault = true;
+		}
+		setAddresses(updatedList);
+	};
 
 	return (
 		<div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -30,51 +124,186 @@ export const Addresses = () => {
 				<h2 className="text-2xl font-extrabold text-text">
 					{isRtl ? "عناويني" : "My Addresses"}
 				</h2>
-				<button className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl transition-colors text-sm shadow-sm shadow-primary/20">
+				<button 
+					onClick={handleOpenCreate}
+					className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl transition-colors text-sm shadow-sm shadow-primary/20 cursor-pointer"
+				>
 					<Plus className="w-4 h-4" />
-					<span className="hidden sm:inline">{isRtl ? "إضافة عنوان جديد" : "Add New Address"}</span>
+					<span>{isRtl ? "إضافة عنوان جديد" : "Add New Address"}</span>
 				</button>
 			</div>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				{addresses.map(address => (
-					<div key={address.id} className={`bg-surface rounded-2xl border p-6 flex flex-col gap-4 relative transition-colors ${address.isDefault ? 'border-primary' : 'border-border/50 hover:border-primary/50'}`}>
-						
-						{address.isDefault && (
-							<span className="absolute top-4 right-4 (ltr) left-4 (rtl) px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded-md">
-								{isRtl ? "الافتراضي" : "Default"}
-							</span>
-						)}
-
-						<div className="flex items-start gap-4 pr-16 (ltr) pl-16 (rtl)">
-							<div className="w-10 h-10 bg-surface-2 rounded-xl flex items-center justify-center text-text-secondary shrink-0">
-								<MapPin className="w-5 h-5" />
-							</div>
-							<div className="flex flex-col gap-1">
-								<span className="font-bold text-text text-lg">{address.title[language]}</span>
-								<p className="text-sm text-text-secondary leading-relaxed">
-									{address.details[language]}
-								</p>
-								<span className="text-sm font-medium text-text-muted mt-1" dir="ltr">
-									{address.phone}
+			{addresses.length === 0 ? (
+				<div className="bg-surface rounded-2xl border border-border/50 p-8 text-center flex flex-col items-center justify-center gap-3">
+					<MapPin className="w-10 h-10 text-text-muted opacity-30" />
+					<span className="font-bold text-text-secondary">
+						{isRtl ? "لا توجد عناوين مسجلة بعد" : "No saved addresses yet"}
+					</span>
+					<button
+						onClick={handleOpenCreate}
+						className="text-sm font-semibold text-primary hover:underline"
+					>
+						{isRtl ? "أضف عنوانك الأول الآن" : "Add your first address now"}
+					</button>
+				</div>
+			) : (
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					{addresses.map(address => (
+						<div key={address.id} className={`bg-surface rounded-2xl border p-5 flex flex-col gap-4 relative transition-colors ${address.isDefault ? 'border-primary' : 'border-border/50 hover:border-primary/30'}`}>
+							
+							{address.isDefault && (
+								<span className={cn(
+									"absolute top-4 px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-md uppercase tracking-wider",
+									isRtl ? "left-4" : "right-4"
+								)}>
+									{isRtl ? "الافتراضي" : "Default"}
 								</span>
+							)}
+
+							<div className="flex items-start gap-3">
+								<div className="w-10 h-10 bg-surface-2 rounded-xl flex items-center justify-center text-text-secondary shrink-0">
+									<MapPin className="w-5 h-5" />
+								</div>
+								<div className="flex flex-col gap-1 min-w-0 pr-12 rtl:pl-12">
+									<span className="font-bold text-text text-base truncate">{address.title[language] || address.title.en}</span>
+									<p className="text-sm text-text-secondary leading-relaxed line-clamp-2">
+										{address.details[language] || address.details.en}
+									</p>
+									<span className="text-xs font-semibold text-text-muted mt-1" dir="ltr">
+										{address.phone}
+									</span>
+								</div>
 							</div>
+
+							<div className="flex items-center gap-2 mt-auto pt-4 border-t border-border/40">
+								<button 
+									onClick={() => handleOpenEdit(address)}
+									className="flex items-center gap-1.5 px-3 py-1.5 text-text-secondary hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-xs font-bold cursor-pointer"
+								>
+									<Edit2 className="w-3.5 h-3.5" />
+									{isRtl ? "تعديل" : "Edit"}
+								</button>
+								<button 
+									onClick={() => handleDelete(address.id)}
+									className="flex items-center gap-1.5 px-3 py-1.5 text-text-secondary hover:text-danger hover:bg-danger/10 rounded-lg transition-colors text-xs font-bold cursor-pointer"
+								>
+									<Trash2 className="w-3.5 h-3.5" />
+									{isRtl ? "حذف" : "Delete"}
+								</button>
+							</div>
+
+						</div>
+					))}
+				</div>
+			)}
+
+			{/* Form Modal */}
+			{isOpen && (
+				<div className="fixed inset-0 z-[1100] flex items-center justify-center p-4">
+					{/* Backdrop */}
+					<div className="absolute inset-0 bg-black/60 backdrop-blur-xs" onClick={handleClose} />
+
+					{/* Modal Box */}
+					<div className="bg-surface border border-border/80 rounded-2xl max-w-md w-full shadow-2xl z-10 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+						<div className="flex items-center justify-between p-4 border-b border-border bg-surface-2/35">
+							<span className="font-extrabold text-text">
+								{editingAddress 
+									? (isRtl ? "تعديل العنوان" : "Edit Address") 
+									: (isRtl ? "إضافة عنوان جديد" : "Add New Address")}
+							</span>
+							<button 
+								onClick={handleClose}
+								className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface-2 transition-all cursor-pointer"
+							>
+								<X className="w-4 h-4" />
+							</button>
 						</div>
 
-						<div className="flex items-center gap-2 mt-2 pt-4 border-t border-border/50">
-							<button className="flex items-center gap-1.5 px-3 py-1.5 text-text-secondary hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm font-bold">
-								<Edit2 className="w-4 h-4" />
-								{isRtl ? "تعديل" : "Edit"}
-							</button>
-							<button className="flex items-center gap-1.5 px-3 py-1.5 text-text-secondary hover:text-danger hover:bg-danger/10 rounded-lg transition-colors text-sm font-bold">
-								<Trash2 className="w-4 h-4" />
-								{isRtl ? "حذف" : "Delete"}
-							</button>
-						</div>
+						<form onSubmit={handleSubmit} className="p-5 flex flex-col gap-4">
+							{/* Title Input */}
+							<div className="flex flex-col gap-1.5">
+								<label className="text-xs font-bold text-text-secondary">
+									{isRtl ? "اسم العنوان (مثال: المنزل، العمل)" : "Address Title (e.g. Home, Office)"}
+								</label>
+								<input 
+									type="text"
+									required
+									value={title}
+									onChange={(e) => setTitle(e.target.value)}
+									placeholder={isRtl ? "أدخل اسم العنوان" : "Enter address title"}
+									className="w-full bg-surface-2 border border-border/80 rounded-xl px-3.5 py-2.5 text-sm text-text placeholder:text-text-muted/40 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all"
+								/>
+							</div>
 
+							{/* Details Input */}
+							<div className="flex flex-col gap-1.5">
+								<label className="text-xs font-bold text-text-secondary">
+									{isRtl ? "العنوان بالتفصيل" : "Detailed Address"}
+								</label>
+								<textarea 
+									required
+									rows={3}
+									value={details}
+									onChange={(e) => setDetails(e.target.value)}
+									placeholder={isRtl ? "الشارع، رقم المبنى، الحي، المدينة" : "Street, Building, Area, City"}
+									className="w-full bg-surface-2 border border-border/80 rounded-xl px-3.5 py-2.5 text-sm text-text placeholder:text-text-muted/40 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
+								/>
+							</div>
+
+							{/* Phone Input */}
+							<div className="flex flex-col gap-1.5">
+								<label className="text-xs font-bold text-text-secondary">
+									{isRtl ? "رقم الهاتف" : "Phone Number"}
+								</label>
+								<input 
+									type="tel"
+									required
+									value={phone}
+									onChange={(e) => setPhone(e.target.value)}
+									placeholder="+20 100 123 4567"
+									className="w-full bg-surface-2 border border-border/80 rounded-xl px-3.5 py-2.5 text-sm text-text placeholder:text-text-muted/40 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all text-start"
+									dir="ltr"
+								/>
+							</div>
+
+							{/* Default Toggle Checkbox */}
+							<label className="flex items-center gap-2.5 mt-1 select-none cursor-pointer">
+								<div className="relative flex items-center justify-center">
+									<input 
+										type="checkbox"
+										checked={isDefault}
+										onChange={(e) => setIsDefault(e.target.checked)}
+										className="sr-only peer"
+									/>
+									<div className="w-5 h-5 rounded-[6px] border border-border/80 bg-surface-2 peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center">
+										{isDefault && <Check className="w-3.5 h-3.5 text-white stroke-[3px]" />}
+									</div>
+								</div>
+								<span className="text-xs font-semibold text-text-secondary">
+									{isRtl ? "تعيين كعنوان افتراضي للشحن" : "Set as default shipping address"}
+								</span>
+							</label>
+
+							{/* Actions Row */}
+							<div className="flex items-center gap-3 mt-4 pt-4 border-t border-border">
+								<button 
+									type="button"
+									onClick={handleClose}
+									className="flex-1 py-2.5 rounded-xl border border-border/80 hover:bg-surface-2 text-text-secondary text-sm font-bold transition-all cursor-pointer"
+								>
+									{isRtl ? "إلغاء" : "Cancel"}
+								</button>
+								<button 
+									type="submit"
+									className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow-sm shadow-primary/15 transition-all cursor-pointer"
+								>
+									{isRtl ? "حفظ" : "Save"}
+								</button>
+							</div>
+						</form>
 					</div>
-				))}
-			</div>
+				</div>
+			)}
 		</div>
 	);
 };

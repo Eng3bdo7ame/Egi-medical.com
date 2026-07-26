@@ -2,11 +2,12 @@ import React from "react";
 import { getPasswordStrength } from "../validation/authSchemas";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { cn } from "@/lib/utils";
+import { ShieldAlert, ShieldCheck } from "lucide-react";
 
 export const PasswordStrength = ({ password }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
-	const strength = getPasswordStrength(password);
+	const strength = password ? getPasswordStrength(password) : 0;
 
 	const getStrengthText = () => {
 		switch (strength) {
@@ -14,46 +15,56 @@ export const PasswordStrength = ({ password }) => {
 			case 2: return { en: "Fair", ar: "متوسطة" };
 			case 3: return { en: "Good", ar: "جيدة" };
 			case 4: return { en: "Strong", ar: "قوية جداً" };
-			default: return { en: "", ar: "" };
+			default: return { en: "Empty", ar: "فارغة" };
 		}
 	};
 
 	const getStrengthColor = () => {
 		switch (strength) {
-			case 1: return "bg-danger";
-			case 2: return "bg-warning";
-			case 3: return "bg-info";
-			case 4: return "bg-success";
-			default: return "bg-border";
+			case 1: return "bg-red-500";
+			case 2: return "bg-amber-500";
+			case 3: return "bg-emerald-500";
+			case 4: return "bg-blue-500";
+			default: return "bg-slate-800";
 		}
 	};
 
-	if (!password) return null;
-
 	return (
-		<div className="flex flex-col gap-1 w-full">
-			<div className="flex justify-between items-center text-[10px] font-bold text-text-muted">
-				<span>{isRtl ? "قوة كلمة المرور:" : "Password Strength:"}</span>
-				<span className={cn(
-					strength === 1 && "text-danger",
-					strength === 2 && "text-warning",
-					strength === 3 && "text-info",
-					strength === 4 && "text-success"
-				)}>
-					{getStrengthText()[language]}
-				</span>
-			</div>
-			
-			<div className="flex gap-1 h-1.5 w-full bg-surface-2 rounded-full overflow-hidden">
+		<div className="flex items-center justify-between gap-4 w-full mt-1.5 select-none">
+			{/* Segments (Left aligned in RTL, or LTR) */}
+			<div className="flex gap-1.5 flex-1 max-w-[200px] h-1.5">
 				{Array.from({ length: 4 }).map((_, idx) => (
 					<div 
 						key={idx}
 						className={cn(
-							"flex-1 h-full transition-all duration-300",
-							idx < strength ? getStrengthColor() : "bg-border/40"
+							"flex-1 h-full rounded-full transition-all duration-550",
+							idx < strength ? getStrengthColor() : "bg-slate-800"
 						)}
 					/>
 				))}
+			</div>
+
+			{/* Shield & Text (Right aligned in RTL) */}
+			<div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
+				{strength >= 3 ? (
+					<ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+				) : (
+					<ShieldAlert className="w-3.5 h-3.5 text-slate-500" />
+				)}
+				<span>
+					{isRtl ? "قوة كلمة المرور" : "Password Strength"}
+					{strength > 0 && (
+						<span className={cn(
+							"ms-1.5",
+							strength === 1 && "text-red-500",
+							strength === 2 && "text-amber-500",
+							strength === 3 && "text-emerald-500",
+							strength === 4 && "text-blue-500"
+						)}>
+							({getStrengthText()[language]})
+						</span>
+					)}
+				</span>
 			</div>
 		</div>
 	);

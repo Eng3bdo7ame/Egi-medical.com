@@ -50,10 +50,12 @@ const Profile = () => {
 		<div className="flex flex-col w-full min-h-screen bg-background pb-16">
 			
 			{/* Header / Title Area */}
-			<div className="bg-surface border-b border-border/60 py-8 mb-8 relative z-10">
+			<div className="bg-surface border-b border-border/60 py-4 mb-4 md:py-8 md:mb-8 relative z-10">
 				<Container>
-					<Breadcrumb items={breadcrumbItems} className="mb-4" />
-					<h1 className="text-3xl md:text-4xl font-extrabold text-text tracking-tight">
+					<div className="hidden md:block">
+						<Breadcrumb items={breadcrumbItems} className="mb-4" />
+					</div>
+					<h1 className="text-xl md:text-4xl font-extrabold text-text tracking-tight">
 						{isRtl ? "حسابي" : "My Account"}
 					</h1>
 				</Container>
@@ -62,8 +64,8 @@ const Profile = () => {
 			<Container>
 				<div className="flex flex-col md:flex-row gap-8 items-start">
 					
-					{/* Sidebar */}
-					<div className="w-full md:w-64 lg:w-72 shrink-0 bg-surface rounded-2xl border border-border/50 p-4 sticky top-24 shadow-sm">
+					{/* Sidebar (Desktop only) */}
+					<div className="hidden md:block w-64 lg:w-72 shrink-0 bg-surface rounded-2xl border border-border/50 p-4 sticky top-24 shadow-sm">
 						
 						{/* User Mini Profile */}
 						<div className="flex items-center gap-4 mb-6 p-2">
@@ -87,7 +89,7 @@ const Profile = () => {
 										key={tab.id}
 										onClick={() => handleTabChange(tab)}
 										className={cn(
-											"flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm text-start",
+											"flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm text-start cursor-pointer",
 											isActive 
 												? "bg-primary text-white shadow-md shadow-primary/20" 
 												: "text-text-secondary hover:bg-surface-2 hover:text-primary"
@@ -107,11 +109,60 @@ const Profile = () => {
 								await logout();
 								navigate(`/${language}`);
 							}}
-							className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm text-danger hover:bg-danger/10 w-full text-start"
+							className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm text-danger hover:bg-danger/10 w-full text-start cursor-pointer"
 						>
 							<LogOut className="w-5 h-5" />
 							{isRtl ? "تسجيل الخروج" : "Logout"}
 						</button>
+					</div>
+
+					{/* Mobile Navigation Bar */}
+					<div className="w-full md:hidden flex flex-col gap-4 mb-6">
+						{/* User Info Bar */}
+						<div className="flex items-center justify-between bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
+							<div className="flex items-center gap-3">
+								<div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-lg shrink-0">
+									A
+								</div>
+								<div className="flex flex-col min-w-0">
+									<span className="font-bold text-text truncate text-sm">Ahmed Mohamed</span>
+									<span className="text-xs text-text-muted truncate">ahmed@example.com</span>
+								</div>
+							</div>
+							<button 
+								onClick={async () => {
+									await logout();
+									navigate(`/${language}`);
+								}}
+								className="p-2 rounded-xl text-danger hover:bg-danger/10 transition-colors cursor-pointer"
+								aria-label={isRtl ? "تسجيل الخروج" : "Logout"}
+							>
+								<LogOut className="w-5 h-5" />
+							</button>
+						</div>
+
+						{/* Horizontal Scrolling Tabs */}
+						<div className="w-full overflow-x-auto py-1 scrollbar-none flex items-center gap-2">
+							{tabs.map(tab => {
+								const Icon = tab.icon;
+								const isActive = activeTab === tab.id || (tab.id === "orders" && activeTab === "order-details");
+								return (
+									<button
+										key={tab.id}
+										onClick={() => handleTabChange(tab)}
+										className={cn(
+											"flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs whitespace-nowrap transition-all border snap-start cursor-pointer select-none",
+											isActive 
+												? "bg-primary text-white border-primary shadow-sm shadow-primary/15" 
+												: "bg-surface text-text-secondary border-border/60 hover:bg-surface-2"
+										)}
+									>
+										<Icon className={cn("w-4 h-4", isActive ? "text-white" : "text-text-muted")} />
+										<span>{tab.label[language]}</span>
+									</button>
+								);
+							})}
+						</div>
 					</div>
 
 					{/* Main Content Area */}
