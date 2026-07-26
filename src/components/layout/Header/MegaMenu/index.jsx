@@ -1,15 +1,111 @@
 import LocalizedLink from "@/components/ui/LocalizedLink";
 import React, { useState } from "react";
-import { } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { megaMenuData } from "./megamenu.data";
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/hooks/queries/useCategories";
+
+/**
+ * Localize helper to ensure titles and localized values always support { en, ar } structure.
+ */
+const getLocalizedValue = (value) => {
+	if (!value) return { en: "", ar: "" };
+	if (typeof value === "object") {
+		return {
+			en: value.en || value.ar || "",
+			ar: value.ar || value.en || ""
+		};
+	}
+	return { en: value, ar: value };
+};
 
 export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
-	const [activeCategoryId, setActiveCategoryId] = useState(megaMenuData[0].id);
+	const { data: responseData, isLoading } = useCategories();
+	const categories = responseData?.data || (Array.isArray(responseData) ? responseData : []);
 
-	const activeCategory = megaMenuData.find((cat) => cat.id === activeCategoryId) || megaMenuData[0];
+	const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
+	// Fallback to first category if activeCategoryId is not selected yet
+	const activeCategoryId = selectedCategoryId || categories[0]?.id;
+	const activeCategory = categories.find((cat) => cat.id === activeCategoryId) || categories[0];
+
+	const getSubcategories = (category) => {
+		if (!category) return [];
+		const subCats = category.sub_categories || [];
+		if (subCats.length > 0) {
+			return subCats.map(sub => {
+				const subTitle = getLocalizedValue(sub.title || sub.name);
+				return {
+					title: subTitle,
+					links: [
+						{
+							name: { en: `All ${subTitle.en}`, ar: `عرض الكل في ${subTitle.ar}` },
+							path: `/products?category=${sub.id}`
+						}
+					]
+				};
+			});
+		}
+
+		// Fallback explore links for parent categories without subcategories
+		const catTitle = getLocalizedValue(category.title);
+		return [
+			{
+				title: catTitle,
+				links: [
+					{
+						name: { en: "Browse All Products", ar: "تصفح جميع المنتجات" },
+						path: `/products?category=${category.id}`
+					},
+					{
+						name: { en: "New Arrivals", ar: "أحدث المنتجات المضافة" },
+						path: `/products?category=${category.id}&sort=newest`
+					}
+				]
+			}
+		];
+	};
+
+	if (isOpen && isLoading) {
+		return (
+			<AnimatePresence>
+				<div className="absolute top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 bg-slate-900/30 backdrop-blur-md z-40" onClick={onClose} />
+				<motion.div
+					initial={{ opacity: 0, y: -5 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -5 }}
+					className="relative w-full h-[300px] bg-surface rounded-b-xl shadow-2xl z-50 border border-border flex items-center justify-center"
+					onMouseLeave={onClose}
+				>
+					<div className="flex flex-col items-center gap-3 text-text-secondary">
+						<span className="w-8 h-8 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+						<span className="font-bold text-sm">
+							{language === "ar" ? "جاري تحميل الأقسام..." : "Loading categories..."}
+						</span>
+					</div>
+				</motion.div>
+			</AnimatePresence>
+		);
+	}
+
+	if (isOpen && categories.length === 0) {
+		return (
+			<AnimatePresence>
+				<div className="absolute top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 bg-slate-900/30 backdrop-blur-md z-40" onClick={onClose} />
+				<motion.div
+					initial={{ opacity: 0, y: -5 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -5 }}
+					className="relative w-full h-[200px] bg-surface rounded-b-xl shadow-2xl z-50 border border-border flex items-center justify-center"
+					onMouseLeave={onClose}
+				>
+					<span className="text-text-secondary font-bold">
+						{language === "ar" ? "لا توجد أقسام متاحة حالياً" : "No categories available"}
+					</span>
+				</motion.div>
+			</AnimatePresence>
+		);
+	}
 
 	return (
 		<AnimatePresence>
@@ -36,15 +132,15 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 					>
 						{/* Sidebar - Main Categories */}
 						<div className="w-[28%] h-full bg-surface-2 border-e border-border flex flex-col py-3 overflow-y-auto custom-scrollbar">
-							{megaMenuData.map((category) => {
-								const IconComp = category.icon;
+							{categories.map((category) => {
 								const isActive = category.id === activeCategoryId;
+								const categoryTitle = getLocalizedValue(category.title);
 								return (
 									<LocalizedLink
 										key={category.id}
 										to={`/category/${category.id}`}
 										onClick={onClose}
-										onMouseEnter={() => setActiveCategoryId(category.id)}
+										onMouseEnter={() => setSelectedCategoryId(category.id)}
 										className={cn(
 											"w-full flex items-center justify-between px-6 py-3.5 text-start transition-all duration-200 group relative",
 											isActive ? "bg-surface shadow-sm border-y border-transparent" : "hover:bg-surface-2/80 border-y border-transparent"
@@ -57,16 +153,20 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 
 										<div className="flex items-center gap-3">
 											<div className={cn(
-												"p-1.5 rounded-lg transition-colors",
-												isActive ? "bg-primary/10 text-primary" : "bg-surface shadow-sm text-text-muted group-hover:text-primary group-hover:bg-primary/5"
+												"w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center transition-colors bg-white border border-border/40 p-1 shrink-0",
+												isActive ? "border-primary/30 bg-primary/5 text-primary" : "text-text-muted group-hover:text-primary group-hover:bg-primary/5"
 											)}>
-												<IconComp className="w-5 h-5" />
+												{category.image ? (
+													<img src={category.image} alt="" className="w-full h-full object-contain" />
+												) : (
+													<span className="w-2 h-2 rounded-full bg-primary" />
+												)}
 											</div>
 											<span className={cn(
 												"font-bold text-[14px]",
 												isActive ? "text-primary" : "text-text-secondary group-hover:text-primary"
 											)}>
-												{category.title[language]}
+												{categoryTitle[language]}
 											</span>
 										</div>
 										{isRtl ? (
@@ -82,7 +182,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 						{/* Content Area - Subcategories */}
 						<div className="flex-1 h-full p-8 bg-surface overflow-y-auto custom-scrollbar">
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
-								{activeCategory.subcategories.map((subcat, index) => (
+								{getSubcategories(activeCategory).map((subcat, index) => (
 									<div key={index} className="flex flex-col bg-surface border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 group/card">
 										{/* Card Header */}
 										<div className="bg-surface-2/80 border-b border-border/60 px-5 py-3.5 flex items-center gap-3 group-hover/card:bg-primary/5 transition-colors duration-300">
@@ -93,7 +193,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 												{subcat.title[language]}
 											</h3>
 										</div>
-										
+
 										{/* Card Body (Links) */}
 										<div className="p-3">
 											<ul className="flex flex-col gap-1">
@@ -122,22 +222,6 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 									</div>
 								))}
 							</div>
-
-							{/* Optional Banner per Category */}
-							{activeCategory.banner && (
-								<div className="mt-12 rounded-xl overflow-hidden relative group cursor-pointer border border-border">
-									<img 
-										src={activeCategory.banner.image} 
-										alt={activeCategory.banner.title[language]} 
-										className="w-full h-[160px] object-cover group-hover:scale-105 transition-transform duration-700"
-									/>
-									<div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-transparent flex items-center p-8 rtl:bg-gradient-to-l">
-										<h4 className="text-white text-2xl md:text-3xl font-extrabold max-w-[60%] leading-tight drop-shadow-md">
-											{activeCategory.banner.title[language]}
-										</h4>
-									</div>
-								</div>
-							)}
 						</div>
 					</motion.div>
 				</>

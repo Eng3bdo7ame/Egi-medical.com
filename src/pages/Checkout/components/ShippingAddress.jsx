@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { MapPin, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCountries, useGovernorates, useCities } from "@/hooks/queries/useLocations";
 
 const PRE_ENTERED_ADDRESSES = [
 	{
@@ -9,8 +10,9 @@ const PRE_ENTERED_ADDRESSES = [
 		title: { en: "Home Address", ar: "عنوان المنزل" },
 		name: "Ahmed Mohamed",
 		phone: "01001234567",
-		governorate: "cairo",
-		district: "Heliopolis",
+		countryId: 1, // Egypt
+		governorateId: 1, // Cairo
+		cityId: 4, // Heliopolis / مصر الجديدة
 		street: "123 El Thawra St"
 	},
 	{
@@ -18,8 +20,9 @@ const PRE_ENTERED_ADDRESSES = [
 		title: { en: "Office Address", ar: "عنوان العمل" },
 		name: "Ahmed Mohamed",
 		phone: "01119876543",
-		governorate: "cairo",
-		district: "Maadi",
+		countryId: 1, // Egypt
+		governorateId: 1, // Cairo
+		cityId: 2, // Maadi / المعادي
 		street: "45 Maadi Ring Road"
 	}
 ];
@@ -28,21 +31,35 @@ export const ShippingAddress = ({ onNext }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
-	// Form input states (pre-populated with Home Address initially)
+	// Fetch countries, governorates, and cities dynamically
+	const { data: countriesData } = useCountries();
+	const countries = countriesData?.data || (Array.isArray(countriesData) ? countriesData : []);
+
+	// Form input states
 	const [name, setName] = useState(PRE_ENTERED_ADDRESSES[0].name);
 	const [phone, setPhone] = useState(PRE_ENTERED_ADDRESSES[0].phone);
-	const [governorate, setGovernorate] = useState(PRE_ENTERED_ADDRESSES[0].governorate);
-	const [district, setDistrict] = useState(PRE_ENTERED_ADDRESSES[0].district);
+	
+	const [countryId, setCountryId] = useState(PRE_ENTERED_ADDRESSES[0].countryId);
+	const [governorateId, setGovernorateId] = useState(PRE_ENTERED_ADDRESSES[0].governorateId);
+	const [cityId, setCityId] = useState(PRE_ENTERED_ADDRESSES[0].cityId);
 	const [street, setStreet] = useState(PRE_ENTERED_ADDRESSES[0].street);
 	
 	const [selectedQuickId, setSelectedQuickId] = useState(1);
+
+	// Load governorates and cities dynamically based on selected IDs
+	const { data: govData } = useGovernorates(countryId);
+	const governorates = govData?.data || (Array.isArray(govData) ? govData : []);
+
+	const { data: citiesData } = useCities(governorateId);
+	const cities = citiesData?.data || (Array.isArray(citiesData) ? citiesData : []);
 
 	const handleQuickSelect = (address) => {
 		setSelectedQuickId(address.id);
 		setName(address.name);
 		setPhone(address.phone);
-		setGovernorate(address.governorate);
-		setDistrict(address.district);
+		setCountryId(address.countryId);
+		setGovernorateId(address.governorateId);
+		setCityId(address.cityId);
 		setStreet(address.street);
 	};
 
@@ -50,9 +67,23 @@ export const ShippingAddress = ({ onNext }) => {
 		setSelectedQuickId(null);
 		setName("");
 		setPhone("");
-		setGovernorate("");
-		setDistrict("");
+		setCountryId("");
+		setGovernorateId("");
+		setCityId("");
 		setStreet("");
+	};
+
+	const handleCountryChange = (id) => {
+		setCountryId(id);
+		setGovernorateId("");
+		setCityId("");
+		setSelectedQuickId(null);
+	};
+
+	const handleGovernorateChange = (id) => {
+		setGovernorateId(id);
+		setCityId("");
+		setSelectedQuickId(null);
 	};
 
 	return (
@@ -105,7 +136,21 @@ export const ShippingAddress = ({ onNext }) => {
 				className="flex flex-col gap-4" 
 				onSubmit={(e) => { 
 					e.preventDefault(); 
-					onNext({ name, phone, governorate, district, street }); 
+					const selectedCountry = countries.find(c => String(c.id) === String(countryId))?.name || "";
+					const selectedGov = governorates.find(g => String(g.id) === String(governorateId))?.name || "";
+					const selectedCity = cities.find(c => String(c.id) === String(cityId))?.name || "";
+					
+					onNext({ 
+						name, 
+						phone, 
+						country: selectedCountry,
+						governorate: selectedGov, 
+						district: selectedCity, 
+						street,
+						country_id: countryId,
+						governorate_id: governorateId,
+						city_id: cityId
+					}); 
 				}}
 			>
 				<h3 className="text-sm font-extrabold text-text mb-1">
@@ -145,38 +190,59 @@ export const ShippingAddress = ({ onNext }) => {
 					</div>
 				</div>
 
-				{/* City & Area */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+				{/* Dynamic Country, Governorate, City Grid */}
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+					{/* Country */}
+					<div className="flex flex-col gap-2">
+						<label className="text-xs font-bold text-text-secondary">{isRtl ? "البلد" : "Country"}</label>
+						<select 
+							required 
+							value={countryId}
+							onChange={e => handleCountryChange(e.target.value)}
+							className="h-12 px-4 bg-surface-2 border border-border/60 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm font-semibold cursor-pointer"
+						>
+							<option value="">{isRtl ? "اختر البلد" : "Select Country"}</option>
+							{countries.map(c => (
+								<option key={c.id} value={c.id}>{c.name}</option>
+							))}
+						</select>
+					</div>
+
+					{/* Governorate */}
 					<div className="flex flex-col gap-2">
 						<label className="text-xs font-bold text-text-secondary">{isRtl ? "المحافظة" : "Governorate"}</label>
 						<select 
 							required 
-							value={governorate}
-							onChange={e => {
-								setGovernorate(e.target.value);
-								setSelectedQuickId(null);
-							}}
-							className="h-12 px-4 bg-surface-2 border border-border/60 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm font-semibold cursor-pointer"
+							value={governorateId}
+							disabled={!countryId}
+							onChange={e => handleGovernorateChange(e.target.value)}
+							className="h-12 px-4 bg-surface-2 border border-border/60 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm font-semibold cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
 						>
 							<option value="">{isRtl ? "اختر المحافظة" : "Select Governorate"}</option>
-							<option value="cairo">{isRtl ? "القاهرة" : "Cairo"}</option>
-							<option value="giza">{isRtl ? "الجيزة" : "Giza"}</option>
-							<option value="alex">{isRtl ? "الإسكندرية" : "Alexandria"}</option>
+							{governorates.map(g => (
+								<option key={g.id} value={g.id}>{g.name}</option>
+							))}
 						</select>
 					</div>
+
+					{/* City / Area / District */}
 					<div className="flex flex-col gap-2">
 						<label className="text-xs font-bold text-text-secondary">{isRtl ? "المنطقة / الحي" : "Area / District"}</label>
-						<input 
+						<select 
 							required 
-							type="text" 
-							value={district}
+							value={cityId}
+							disabled={!governorateId}
 							onChange={e => {
-								setDistrict(e.target.value);
+								setCityId(e.target.value);
 								setSelectedQuickId(null);
 							}}
-							placeholder={isRtl ? "مثال: المعادي" : "e.g. Maadi"}
-							className="h-12 px-4 bg-surface-2 border border-border/60 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm font-semibold" 
-						/>
+							className="h-12 px-4 bg-surface-2 border border-border/60 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm font-semibold cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+						>
+							<option value="">{isRtl ? "اختر المنطقة" : "Select Area"}</option>
+							{cities.map(c => (
+								<option key={c.id} value={c.id}>{c.name}</option>
+							))}
+						</select>
 					</div>
 				</div>
 

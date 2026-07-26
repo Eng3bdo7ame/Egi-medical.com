@@ -68,7 +68,7 @@ const Checkout = () => {
 				<div className="flex flex-col lg:flex-row gap-8 items-start relative">
 					
 					{/* Left Column: Steps */}
-					<div className="w-full lg:w-[60%] xl:w-[65%] flex flex-col gap-6 shrink-0">
+					<div className="w-full lg:w-[55%] xl:w-[58%] flex flex-col gap-6 shrink-0">
 						
 						{steps.map((step) => {
 							const Icon = step.icon;
@@ -136,7 +136,7 @@ const Checkout = () => {
 					</div>
 
 					{/* Right Column: Order Summary */}
-					<div className="w-full lg:w-[40%] xl:w-[35%] z-10">
+					<div className="w-full lg:w-[45%] xl:w-[42%] z-10 lg:sticky lg:top-8">
 						<OrderSummary />
 					</div>
 
