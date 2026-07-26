@@ -64,7 +64,7 @@ export const ProductGallery = ({ images = [] }) => {
 		<div className="flex flex-col gap-4 w-full select-none">
 			
 			{/* Main Image Viewport */}
-			<div className="relative w-full aspect-square bg-white rounded-2xl border border-border overflow-hidden group">
+			<div className="relative w-full aspect-square bg-white dark:bg-white rounded-2xl border border-border overflow-hidden group">
 				<div className="overflow-hidden h-full" ref={mainRef}>
 					<div className="flex h-full rtl:flex-row-reverse">
 						{images.map((img, index) => (
@@ -98,7 +98,7 @@ export const ProductGallery = ({ images = [] }) => {
 
 				{/* Floating UI on Main Image */}
 				<div className="absolute top-4 ltr:right-4 rtl:left-4 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-					<div className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-text shadow-sm">
+					<div className="w-8 h-8 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm flex items-center justify-center text-text shadow-sm">
 						<Maximize2 className="w-4 h-4" />
 					</div>
 				</div>
@@ -106,13 +106,13 @@ export const ProductGallery = ({ images = [] }) => {
 				{/* Mobile Navigation Arrows (Hidden on Desktop because thumbnails are sufficient) */}
 				<button
 					onClick={() => mainApi?.scrollPrev()}
-					className="md:hidden absolute top-1/2 -translate-y-1/2 ltr:left-2 rtl:right-2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm text-text shadow-sm"
+					className="md:hidden absolute top-1/2 -translate-y-1/2 ltr:left-2 rtl:right-2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm text-text shadow-sm"
 				>
 					{isRtl ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
 				</button>
 				<button
 					onClick={() => mainApi?.scrollNext()}
-					className="md:hidden absolute top-1/2 -translate-y-1/2 ltr:right-2 rtl:left-2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm text-text shadow-sm"
+					className="md:hidden absolute top-1/2 -translate-y-1/2 ltr:right-2 rtl:left-2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm text-text shadow-sm"
 				>
 					{isRtl ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
 				</button>
@@ -130,7 +130,7 @@ export const ProductGallery = ({ images = [] }) => {
 									"relative flex-[0_0_20%] sm:flex-[0_0_18%] min-w-0 aspect-square rounded-xl overflow-hidden border-2 transition-all",
 									index === selectedIndex 
 										? "border-primary ring-2 ring-primary/20 ring-offset-1" 
-										: "border-transparent opacity-60 hover:opacity-100 bg-white"
+										: "border-transparent opacity-60 hover:opacity-100 bg-white dark:bg-white"
 								)}
 							>
 								<img 

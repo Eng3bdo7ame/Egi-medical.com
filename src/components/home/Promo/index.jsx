@@ -60,7 +60,7 @@ export const PromoSection = () => {
 													className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
 												/>
 												{/* Soft gradient from the text side to make text readable without hiding the image */}
-												<div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-transparent rtl:bg-gradient-to-l" />
+												<div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-transparent dark:from-slate-900/95 dark:via-slate-900/70 rtl:bg-gradient-to-l pointer-events-none" />
 											</div>
 
 											{/* Content directly on image */}
@@ -73,11 +73,11 @@ export const PromoSection = () => {
 														{promo.badge[language]}
 													</span>
 												)}
-												<h3 className={cn("text-xl lg:text-3xl font-extrabold leading-tight mb-2 drop-shadow-sm", promo.textClass)}>
+												<h3 className={cn("text-xl lg:text-3xl font-extrabold leading-tight mb-2 drop-shadow-sm", promo.textClass, "dark:text-white")}>
 													{promo.title[language]}
 												</h3>
 												{promo.subtitle?.[language] && (
-													<p className={cn("text-sm font-semibold mb-6 opacity-90 leading-snug line-clamp-2 drop-shadow-sm", promo.textClass)}>
+													<p className={cn("text-sm font-semibold mb-6 opacity-90 leading-snug line-clamp-2 drop-shadow-sm", promo.textClass, "dark:text-slate-200")}>
 														{promo.subtitle[language]}
 													</p>
 												)}

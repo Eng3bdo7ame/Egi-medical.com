@@ -1,4 +1,9 @@
 export const navigationLinks = [
+	{
+		id: "home",
+		name: { en: "Home", ar: "الرئيسية" },
+		path: "/"
+	},
 	{ 
 		id: "flash-deals",
 		name: { en: "Flash Deals", ar: "عروض خاطفة" }, 
@@ -13,18 +18,8 @@ export const navigationLinks = [
 		isOffer: true
 	},
 	{ 
-		id: "brands",
-		name: { en: "Official Brands", ar: "الماركات المعتمدة" }, 
-		path: "/brands" 
-	},
-	{ 
-		id: "products",
-		name: { en: "All Products", ar: "جميع المنتجات" }, 
-		path: "/products" 
-	},
-	{ 
 		id: "about",
-		name: { en: "About Us", ar: "عن الشركة" }, 
+		name: { en: "About Us", ar: "من نحن" }, 
 		path: "/about" 
 	},
 	{ 

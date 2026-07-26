@@ -28,17 +28,17 @@ export const CategoriesSection = () => {
 	return (
 		<Section bg="background" spacing="xs" className="overflow-hidden">
 			<Container>
-				<div className="relative rounded-[32px] p-4 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center overflow-hidden border border-slate-100 shadow-sm">
+				<div className="relative rounded-[32px] p-4 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center overflow-hidden border border-border/60 shadow-sm">
 					{/* Background Image with Light Overlay */}
 					<div
-						className="absolute inset-0 bg-cover bg-center opacity-30"
+						className="absolute inset-0 bg-cover bg-center opacity-30 dark:opacity-15"
 						style={{ backgroundImage: "url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=1600')" }}
 					/>
-					<div className="absolute inset-0 bg-white/50 backdrop-blur-[1px]" />
+					<div className="absolute inset-0 bg-white/50 dark:bg-slate-900/60 backdrop-blur-[1px]" />
 
 					{/* Text Side */}
 					<div className="relative z-10 w-full md:w-[20%] lg:w-[13%] flex flex-col items-start gap-3">
-						<h2 className="text-xl md:text-2xl font-extrabold text-[#0f172a] leading-tight drop-shadow-sm">
+						<h2 className="text-xl md:text-2xl font-extrabold text-text-heading leading-tight drop-shadow-sm">
 							{isRtl ? "تسوق حسب الاحتياجات الصحية" : "Shop by Health Needs"}
 						</h2>
 						<LocalizedLink
@@ -55,7 +55,7 @@ export const CategoriesSection = () => {
 					</div>
 
 					{/* Slider Side */}
-					<div className="relative z-10 w-full md:w-[80%] lg:w-[85%] relative" dir={isRtl ? "rtl" : "ltr"}>
+					<div className="relative z-10 w-full md:w-[80%] lg:w-[85%]" dir={isRtl ? "rtl" : "ltr"}>
 						<div className="overflow-hidden" ref={emblaRef}>
 							<div className="flex touch-pan-y -ml-4 rtl:-mr-4 rtl:ml-0">
 								{healthNeeds.map((need, index) => (
@@ -65,7 +65,7 @@ export const CategoriesSection = () => {
 									>
 										<LocalizedLink
 											to={need.link}
-											className="group relative flex flex-col overflow-hidden rounded-[24px] aspect-[4/5] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+											className="group relative flex flex-col overflow-hidden rounded-[24px] aspect-[4/5] bg-surface border border-border/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
 										>
 											<img
 												src={need.image}
@@ -73,11 +73,11 @@ export const CategoriesSection = () => {
 												className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 											/>
 											{/* Bottom Fade for Text */}
-											<div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/80 to-transparent pointer-events-none" />
+											<div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface via-surface/60 to-transparent pointer-events-none" />
 
 											{/* Text */}
 											<div className="absolute inset-x-0 bottom-0 p-4 pt-8 flex items-end justify-center text-center">
-												<span className="text-[#0f172a] font-extrabold text-sm sm:text-base leading-tight drop-shadow-sm">
+												<span className="text-text font-extrabold text-sm sm:text-base leading-tight drop-shadow-sm">
 													{need.title[language]}
 												</span>
 											</div>
@@ -91,7 +91,7 @@ export const CategoriesSection = () => {
 						<div className="absolute top-1/2 -translate-y-1/2 right-0 rtl:right-auto rtl:left-0 z-10 hidden sm:flex pointer-events-none">
 							<div
 								onClick={scrollNext}
-								className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-primary pointer-events-auto cursor-pointer hover:bg-surface transition-colors transform translate-x-1/3 rtl:-translate-x-1/3"
+								className="w-10 h-10 rounded-full bg-surface shadow-md border border-border/65 flex items-center justify-center text-primary pointer-events-auto cursor-pointer hover:bg-surface-2 transition-colors transform translate-x-1/3 rtl:-translate-x-1/3"
 							>
 								{isRtl ? <ArrowLeft className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />}
 							</div>

@@ -21,7 +21,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.3 }}
-						className="absolute top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 bg-slate-900/5 backdrop-blur-md z-40"
+						className="absolute top-0 w-[100vw] h-[100vh] left-1/2 -translate-x-1/2 bg-slate-900/30 backdrop-blur-md z-40"
 						onClick={onClose}
 					/>
 
@@ -31,11 +31,11 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -5 }}
 						transition={{ duration: 0.2 }}
-						className="relative w-full h-[500px] bg-white rounded-b-xl shadow-2xl z-50 border border-slate-200 overflow-hidden flex"
+						className="relative w-full h-[500px] bg-surface rounded-b-xl shadow-2xl z-50 border border-border overflow-hidden flex"
 						onMouseLeave={onClose}
 					>
 						{/* Sidebar - Main Categories */}
-						<div className="w-[28%] h-full bg-slate-50 border-e border-slate-200 flex flex-col py-3 overflow-y-auto custom-scrollbar">
+						<div className="w-[28%] h-full bg-surface-2 border-e border-border flex flex-col py-3 overflow-y-auto custom-scrollbar">
 							{megaMenuData.map((category) => {
 								const IconComp = category.icon;
 								const isActive = category.id === activeCategoryId;
@@ -47,7 +47,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 										onMouseEnter={() => setActiveCategoryId(category.id)}
 										className={cn(
 											"w-full flex items-center justify-between px-6 py-3.5 text-start transition-all duration-200 group relative",
-											isActive ? "bg-white shadow-sm border-y border-transparent" : "hover:bg-slate-100/80 border-y border-transparent"
+											isActive ? "bg-surface shadow-sm border-y border-transparent" : "hover:bg-surface-2/80 border-y border-transparent"
 										)}
 									>
 										{/* Active Indicator Line */}
@@ -58,21 +58,21 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 										<div className="flex items-center gap-3">
 											<div className={cn(
 												"p-1.5 rounded-lg transition-colors",
-												isActive ? "bg-primary/10 text-primary" : "bg-white text-slate-500 shadow-sm group-hover:text-primary group-hover:bg-primary/5"
+												isActive ? "bg-primary/10 text-primary" : "bg-surface shadow-sm text-text-muted group-hover:text-primary group-hover:bg-primary/5"
 											)}>
 												<IconComp className="w-5 h-5" />
 											</div>
 											<span className={cn(
 												"font-bold text-[14px]",
-												isActive ? "text-primary" : "text-slate-700 group-hover:text-primary"
+												isActive ? "text-primary" : "text-text-secondary group-hover:text-primary"
 											)}>
 												{category.title[language]}
 											</span>
 										</div>
 										{isRtl ? (
-											<ChevronLeft className={cn("w-4 h-4 transition-all", isActive ? "text-primary opacity-100" : "text-slate-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0")} />
+											<ChevronLeft className={cn("w-4 h-4 transition-all", isActive ? "text-primary opacity-100" : "text-text-muted opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0")} />
 										) : (
-											<ChevronRight className={cn("w-4 h-4 transition-all", isActive ? "text-primary opacity-100" : "text-slate-400 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0")} />
+											<ChevronRight className={cn("w-4 h-4 transition-all", isActive ? "text-primary opacity-100" : "text-text-muted opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0")} />
 										)}
 									</LocalizedLink>
 								);
@@ -80,16 +80,16 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 						</div>
 
 						{/* Content Area - Subcategories */}
-						<div className="flex-1 h-full p-8 bg-white overflow-y-auto custom-scrollbar">
+						<div className="flex-1 h-full p-8 bg-surface overflow-y-auto custom-scrollbar">
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
 								{activeCategory.subcategories.map((subcat, index) => (
-									<div key={index} className="flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 group/card">
+									<div key={index} className="flex flex-col bg-surface border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 group/card">
 										{/* Card Header */}
-										<div className="bg-slate-50/80 border-b border-slate-100 px-5 py-3.5 flex items-center gap-3 group-hover/card:bg-primary/5 transition-colors duration-300">
-											<div className="w-7 h-7 shrink-0 rounded-md bg-white shadow-sm border border-slate-200 flex items-center justify-center">
+										<div className="bg-surface-2/80 border-b border-border/60 px-5 py-3.5 flex items-center gap-3 group-hover/card:bg-primary/5 transition-colors duration-300">
+											<div className="w-7 h-7 shrink-0 rounded-md bg-surface-2 shadow-sm border border-border flex items-center justify-center">
 												<span className="w-2.5 h-2.5 rounded-full bg-gradient-to-tr from-primary to-primary/60" />
 											</div>
-											<h3 className="font-extrabold text-[15px] text-slate-800 tracking-tight">
+											<h3 className="font-extrabold text-[15px] text-text tracking-tight">
 												{subcat.title[language]}
 											</h3>
 										</div>
@@ -102,16 +102,16 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 														<LocalizedLink
 															to={link.path}
 															onClick={onClose}
-															className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 hover:text-primary transition-all duration-200 group"
+															className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-2 hover:text-primary transition-all duration-200 group"
 														>
-															<div className="w-5 h-5 shrink-0 rounded bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white group-hover:shadow-sm transition-all duration-200">
+															<div className="w-5 h-5 shrink-0 rounded bg-surface-2 flex items-center justify-center text-text-muted group-hover:bg-primary group-hover:text-white group-hover:shadow-sm transition-all duration-200">
 																{isRtl ? (
 																	<ChevronLeft className="w-3 h-3" />
 																) : (
 																	<ChevronRight className="w-3 h-3" />
 																)}
 															</div>
-															<span className="text-[13px] font-semibold text-slate-600 group-hover:text-primary transition-colors line-clamp-1">
+															<span className="text-[13px] font-semibold text-text-secondary group-hover:text-primary transition-colors line-clamp-1">
 																{link.name[language]}
 															</span>
 														</LocalizedLink>
@@ -125,7 +125,7 @@ export const MegaMenu = ({ isOpen, language, isRtl, onClose }) => {
 
 							{/* Optional Banner per Category */}
 							{activeCategory.banner && (
-								<div className="mt-12 rounded-xl overflow-hidden relative group cursor-pointer border border-slate-200">
+								<div className="mt-12 rounded-xl overflow-hidden relative group cursor-pointer border border-border">
 									<img 
 										src={activeCategory.banner.image} 
 										alt={activeCategory.banner.title[language]} 

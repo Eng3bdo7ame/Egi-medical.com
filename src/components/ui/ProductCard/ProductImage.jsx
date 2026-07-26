@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 export const ProductImage = ({ image, hoverImage, title, isHovered, isOutOfStock }) => {
 	return (
 		<div className={cn(
-			"relative w-full aspect-square bg-surface-2 p-4 flex items-center justify-center overflow-hidden mix-blend-multiply",
+			"relative w-full aspect-square bg-surface-2 p-4 flex items-center justify-center overflow-hidden mix-blend-multiply dark:mix-blend-normal dark:bg-white",
 			isOutOfStock && "grayscale opacity-80"
 		)}>
 			<img 
@@ -20,7 +20,7 @@ export const ProductImage = ({ image, hoverImage, title, isHovered, isOutOfStock
 					src={hoverImage} 
 					alt={title} 
 					className={cn(
-						"absolute inset-0 object-contain w-full h-full p-4 transition-opacity duration-500 bg-surface-2",
+						"absolute inset-0 object-contain w-full h-full p-4 transition-opacity duration-500 bg-surface-2 dark:bg-white",
 						isHovered ? "opacity-100" : "opacity-0"
 					)} 
 				/>

@@ -81,10 +81,10 @@ export const ShopByCategory = () => {
 				{/* Section Header */}
 				<div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
 					<div>
-						<h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 sm:mb-3 tracking-tight">
+						<h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-text-heading mb-2 sm:mb-3 tracking-tight">
 							{isRtl ? "تسوق حسب القسم الرئيسي" : "Featured Categories"}
 						</h2>
-						<p className="text-slate-600 text-sm sm:text-base lg:text-lg">
+						<p className="text-text-secondary text-sm sm:text-base lg:text-lg">
 							{isRtl ? "الأقسام الطبية الشاملة المعتمدة لتسهيل تصفحك" : "Comprehensive certified medical categories for easy navigation"}
 						</p>
 					</div>
@@ -93,14 +93,14 @@ export const ShopByCategory = () => {
 					<div className="flex items-center gap-3">
 						<button
 							onClick={scrollPrev}
-							className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-all duration-300 shadow-sm"
+							className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface border border-border text-text hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-all duration-300 shadow-sm"
 							aria-label="Previous slide"
 						>
 							{isRtl ? <ChevronRight className="w-6 h-6" /> : <ChevronLeft className="w-6 h-6" />}
 						</button>
 						<button
 							onClick={scrollNext}
-							className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-all duration-300 shadow-sm"
+							className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-surface border border-border text-text hover:bg-primary hover:text-white hover:border-primary flex items-center justify-center transition-all duration-300 shadow-sm"
 							aria-label="Next slide"
 						>
 							{isRtl ? <ChevronLeft className="w-6 h-6" /> : <ChevronRight className="w-6 h-6" />}

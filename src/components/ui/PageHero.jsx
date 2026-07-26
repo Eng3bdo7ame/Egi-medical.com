@@ -28,7 +28,7 @@ export const PageHero = ({ title, subtitle, count, countLabel, breadcrumbs, bgIm
 	return (
 		<div
 			className={cn(
-				"relative bg-gradient-to-br from-slate-50 via-blue-50/50 to-slate-100 border-b border-border/40 overflow-hidden",
+				"relative bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 dark:from-slate-950 dark:via-blue-950/20 dark:to-slate-900 border-b border-border/40 overflow-hidden",
 				className
 			)}
 		>
@@ -37,11 +37,13 @@ export const PageHero = ({ title, subtitle, count, countLabel, breadcrumbs, bgIm
 				<img 
 					src={backdropUrl} 
 					alt="" 
-					className="w-full h-full object-cover opacity-35 mix-blend-multiply transition-opacity duration-300"
+					className="w-full h-full object-cover opacity-35 dark:opacity-15 mix-blend-multiply dark:mix-blend-normal transition-opacity duration-300"
 				/>
 				<div className={cn(
 					"absolute inset-0 bg-gradient-to-r",
-					isRtl ? "from-slate-50/90 via-slate-50/70 to-blue-50/40" : "from-slate-50/90 via-slate-50/70 to-blue-50/40"
+					isRtl 
+						? "from-slate-50/90 via-slate-50/70 to-blue-50/40 dark:from-slate-950/95 dark:via-slate-950/80 dark:to-blue-950/30" 
+						: "from-slate-50/90 via-slate-50/70 to-blue-50/40 dark:from-slate-950/95 dark:via-slate-950/80 dark:to-blue-950/30"
 				)} />
 			</div>
 
@@ -50,7 +52,7 @@ export const PageHero = ({ title, subtitle, count, countLabel, breadcrumbs, bgIm
 				<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
 					<defs>
 						<pattern id="pageHeroDots" width="18" height="18" patternUnits="userSpaceOnUse">
-							<circle cx="2" cy="2" r="1.5" fill="currentColor" className="text-primary" />
+							<circle cx="2" cy="2" r="1.5" fill="currentColor" className="text-primary opacity-60 dark:opacity-30" />
 						</pattern>
 					</defs>
 					<rect width="100%" height="100%" fill="url(#pageHeroDots)" />

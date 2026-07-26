@@ -12,7 +12,7 @@ export const HeroImage = ({ src, alt, imageVariants }) => {
 	return (
 		<div className="relative w-full h-full hidden lg:flex items-center justify-center pointer-events-none select-none">
 			{/* Oval backdrop - z-0 (Strictly behind products) */}
-			<div className="absolute w-[85%] h-[85%] max-w-[460px] max-h-[460px] rounded-[170px] bg-[#E3EFFF] z-0 border border-blue-100/60 transform rotate-[-8deg] transition-all duration-500" />
+			<div className="absolute w-[85%] h-[85%] max-w-[460px] max-h-[460px] rounded-[170px] bg-[#E3EFFF] dark:bg-blue-950/40 z-0 border border-blue-100/60 dark:border-blue-900/30 transform rotate-[-8deg] transition-all duration-500" />
 			
 			{/* Products Image - z-10 (Strictly in front of the oval) */}
 			<motion.div

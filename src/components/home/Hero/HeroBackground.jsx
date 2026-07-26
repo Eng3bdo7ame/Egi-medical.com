@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
  */
 export const HeroBackground = ({ className, bgClass = "bg-[#F4F7FC]" }) => {
 	return (
-		<div className={cn("absolute inset-0 z-0 overflow-hidden", bgClass, className)}>
+		<div className={cn("absolute inset-0 z-0 overflow-hidden bg-[#F4F7FC] dark:bg-slate-950", className)}>
 			{/* Soft Gradient Overlay */}
-			<div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/40 to-transparent pointer-events-none" />
+			<div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/40 to-transparent dark:from-slate-950/70 dark:via-slate-950/40 pointer-events-none" />
 
 			{/* Dot Grid Pattern (Top Right/End) */}
 			<div className="absolute top-6 end-8 w-36 h-48 opacity-35 pointer-events-none">

@@ -25,7 +25,7 @@ export const HeroButtons = ({ primary, secondary }) => {
 				<Button
 					asChild
 					variant="secondary"
-					className="min-w-[130px] sm:min-w-[160px] h-10 sm:h-12 !rounded-[8px] font-semibold text-sm sm:text-[15px] bg-white hover:bg-primary/5"
+					className="min-w-[130px] sm:min-w-[160px] h-10 sm:h-12 !rounded-[8px] font-semibold text-sm sm:text-[15px]"
 				>
 					<LocalizedLink to={secondary.link}>{secondary.label}</LocalizedLink>
 				</Button>

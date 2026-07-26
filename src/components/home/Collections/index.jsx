@@ -1,6 +1,7 @@
 import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import Container from "@/components/ui/Container";
+import Section from "@/components/ui/Section";
 import LocalizedLink from "@/components/ui/LocalizedLink";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,10 +17,10 @@ export const MedicalCollections = () => {
 				{/* Section Header */}
 				<div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
 					<div className="max-w-2xl">
-						<h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 mb-2 sm:mb-4 tracking-tight">
+						<h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-text-heading mb-2 sm:mb-4 tracking-tight">
 							{isRtl ? "المجموعات الطبية" : "Medical Collections"}
 						</h2>
-						<p className="text-sm sm:text-base lg:text-lg text-slate-600">
+						<p className="text-sm sm:text-base lg:text-lg text-text-secondary">
 							{isRtl
 								? "استكشف مجموعاتنا المصنفة بعناية لتلبية كافة احتياجاتك الصحية بضغطة زر."
 								: "Explore our carefully curated collections designed to meet all your healthcare needs."}
