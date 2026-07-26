@@ -10,4 +10,5 @@ export const STORAGE_KEYS = {
 	THEME: "eg_medical_theme",
 	AUTH_TOKEN: "eg_medical_auth_token",
 	USER: "eg_medical_user",
+	TEMP_USER_ID: "eg_medical_temp_user_id",
 };

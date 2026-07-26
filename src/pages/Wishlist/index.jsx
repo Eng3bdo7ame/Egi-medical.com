@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import Container from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { Heart } from "lucide-react";
 import ProductCard from "@/components/ui/ProductCard/ProductCard";
 import EmptyWishlistState from "./components/EmptyWishlistState";
-import { mockProducts } from "@/pages/Products/components/products.mock";
+import { useAppSelector } from "@/app/store/hooks";
+import { selectWishlistItems } from "@/features/wishlist/wishlistSlice";
 
 const Wishlist = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
-	// Initializing with 3 mock products for demonstration
-	const [wishlistItems, setWishlistItems] = useState(mockProducts.slice(2, 5));
+	const wishlistItems = useAppSelector(selectWishlistItems);
 
 	const breadcrumbItems = [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
