@@ -28,10 +28,10 @@ export const navigationLinks = [
 		path: "/contact" 
 	},
 	{ 
-		id: "consultation",
-		name: { en: "Consultation", ar: "الاستشارات" }, 
-		path: "/contact",
-		badge: { en: "New", ar: "جديد" },
+		id: "best-sellers",
+		name: { en: "Best Sellers", ar: "الأكثر مبيعاً" }, 
+		path: "/best-sellers",
+		badge: { en: "Top", ar: "مميز" },
 		badgeVariant: "success"
 	}
 ];

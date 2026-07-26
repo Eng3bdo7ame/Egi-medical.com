@@ -22,6 +22,7 @@ import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
 import Privacy from "@/pages/Privacy";
 import Terms from "@/pages/Terms";
+import BestSellers from "@/pages/BestSellers";
 
 // Auth Pages
 import Login from "@/pages/Login";
@@ -111,6 +112,10 @@ export const routes = [
 					{
 						path: ROUTES.TERMS.substring(1),
 						element: <Terms />,
+					},
+					{
+						path: ROUTES.BEST_SELLERS.substring(1),
+						element: <BestSellers />,
 					},
 					// Protected Routes directly accessible (Guards removed temporarily)
 					{
