@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useLanguage } from "@/app/providers/I18nProvider";
 
-export const AuthGuard = ({ children }) => {
+export const ProtectedRoute = ({ children }) => {
 	const { isAuthenticated } = useSelector((state) => state.auth);
 	const { language } = useLanguage();
 	const location = useLocation();
@@ -22,4 +22,4 @@ export const AuthGuard = ({ children }) => {
 	return children;
 };
 
-export default AuthGuard;
+export default ProtectedRoute;

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import LocalizedLink from "@/components/ui/LocalizedLink";
-import { useRegister, PasswordField, PasswordStrength, AuthFooter } from "@/features/auth";
+import { useRegister, PasswordField, PasswordStrength, AuthFooter, SocialLoginButton } from "@/features/auth";
 import { authValidators } from "@/features/auth/validation/authSchemas";
-import { AlertCircle, CheckCircle2, Loader2, User, Mail, Phone, Briefcase, ShieldCheck, ArrowRight, ArrowLeft } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, User, Mail, Phone, ShieldCheck, ArrowRight, ArrowLeft } from "lucide-react";
+import { normalizeApiError } from "@/utils/errorMapper";
 import { cn } from "@/lib/utils";
 
 export const Register = () => {
@@ -18,7 +19,6 @@ export const Register = () => {
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
 	const [countryCode, setCountryCode] = useState("+20"); // Egypt default
-	const [role, setRole] = useState(""); // Default empty
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [agreeToTerms, setAgreeToTerms] = useState(true);
@@ -32,16 +32,6 @@ export const Register = () => {
 	const [nameFocused, setNameFocused] = useState(false);
 	const [emailFocused, setEmailFocused] = useState(false);
 	const [phoneFocused, setPhoneFocused] = useState(false);
-	const [roleFocused, setRoleFocused] = useState(false);
-	
-	// Custom Select Dropdown State
-	const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
-
-	const roles = [
-		{ value: "user", label: { en: "Patient / Customer", ar: "مريض / مشتري عادي" } },
-		{ value: "doctor", label: { en: "Doctor / Practitioner", ar: "طبيب ممارس" } },
-		{ value: "distributor", label: { en: "Distributor / Hospital", ar: "مستودع / مستشفى" } }
-	];
 
 	const handleFormSubmit = async (e) => {
 		e.preventDefault();
@@ -53,11 +43,6 @@ export const Register = () => {
 			setErrorMessage(isRtl 
 				? "يجب الموافقة على الشروط والأحكام للمتابعة." 
 				: "You must agree to the terms and conditions to proceed.");
-			return;
-		}
-
-		if (!role) {
-			setErrors(prev => ({ ...prev, role: { en: "Please select an account type.", ar: "يرجى اختيار نوع الحساب." } }));
 			return;
 		}
 
@@ -84,15 +69,19 @@ export const Register = () => {
 		}
 
 		try {
-			const fullPhoneNumber = `${countryCode}${phone}`;
-			await register({ name, email, phone: fullPhoneNumber, role, password });
+			const fullPhoneNumber = `${phone}`; // Sending just the number as requested
+			await register({ name, email, phone: fullPhoneNumber, country_id: 1, password });
 			setSuccessMessage(isRtl ? "تم إنشاء الحساب بنجاح! جاري تحويلك لتأكيد الحساب..." : "Account created successfully! Redirecting for confirmation...");
 			
 			setTimeout(() => {
-				navigate(`/${language}/auth/verify-otp?email=${encodeURIComponent(email)}`);
+				navigate(`/${language}/auth/login`);
 			}, 1500);
 		} catch (err) {
-			setErrorMessage(isRtl ? "فشل إنشاء الحساب. حاول مرة أخرى." : "Registration failed.");
+			const { generalMessage, fieldErrors } = normalizeApiError(err);
+			setErrorMessage(generalMessage);
+			if (Object.keys(fieldErrors).length > 0) {
+				setErrors(prev => ({ ...prev, ...fieldErrors }));
+			}
 		}
 	};
 
@@ -241,6 +230,7 @@ export const Register = () => {
 								className="w-full h-full bg-transparent outline-none pl-12 pr-4 text-sm font-semibold text-white placeholder:text-slate-500/60 text-left"
 								dir="ltr"
 								required
+								autoComplete="username"
 							/>
 						</div>
 						{errors.email && (
@@ -250,7 +240,7 @@ export const Register = () => {
 
 				</div>
 
-				{/* Row 2: Phone Number & Account Type (Order swapped: Phone Number first) */}
+				{/* Row 2: Phone Number */}
 				<div className="flex flex-col sm:flex-row gap-5">
 					
 					{/* Phone Number Input with code flag selector */}
@@ -284,7 +274,7 @@ export const Register = () => {
 								onChange={e => setPhone(e.target.value.replace(/\D/g, ""))} // Only digits
 								onFocus={() => phoneFocused ? null : setPhoneFocused(true)}
 								onBlur={() => setPhoneFocused(false)}
-								placeholder={isRtl ? "أدخل رقم هاتفك" : "Enter your phone number"}
+								placeholder="01021456325"
 								className={cn(
 									"w-full h-full bg-transparent outline-none text-sm font-semibold text-white placeholder:text-slate-500/60 text-left",
 									"pl-20 pr-12 rtl:placeholder:text-right"
@@ -297,75 +287,6 @@ export const Register = () => {
 							<span className="text-xs text-red-500 font-semibold mt-1 block px-1">{errors.phone[language]}</span>
 						)}
 					</div>
-
-					{/* Account Type (Custom Dropdown) */}
-					<div className="relative flex-1">
-						<div className={cn(
-							"relative w-full h-[52px] bg-[#0b1329]/40 border rounded-xl flex items-center transition-all duration-300 cursor-pointer select-none",
-							roleFocused ? "border-blue-500 ring-2 ring-blue-500/20 shadow-lg shadow-blue-500/10" : "border-slate-800 hover:border-slate-700",
-							errors.role && "border-red-500"
-						)}
-							onClick={() => {
-								setRoleDropdownOpen(!roleDropdownOpen);
-								setRoleFocused(true);
-							}}
-							onBlur={() => {
-								setTimeout(() => {
-									setRoleDropdownOpen(false);
-									setRoleFocused(false);
-								}, 200);
-							}}
-							tabIndex={0}
-						>
-							<label className={cn(
-								"absolute -top-2.5 px-2 text-[10px] font-extrabold text-slate-400 bg-[#0b1329] select-none pointer-events-none transition-colors",
-								isRtl ? "right-3" : "left-3",
-								roleFocused && "text-blue-400"
-							)}>
-								{isRtl ? "نوع الحساب" : "Account Type"}
-							</label>
-							<div className={cn("absolute text-slate-400 pointer-events-none", isRtl ? "right-4" : "left-4")}>
-								<Briefcase className={cn("w-4.5 h-4.5", roleFocused && "text-blue-500")} />
-							</div>
-							
-							<div className={cn(
-								"text-sm font-semibold text-white px-4 flex-1",
-								isRtl ? "text-right pr-12 pl-10" : "text-left pl-12 pr-10"
-							)}>
-								{role ? roles.find(r => r.value === role)?.label[language] : (isRtl ? "اختر نوع الحساب" : "Select account type")}
-							</div>
-
-							<div className={cn("absolute text-slate-400 transition-transform", isRtl ? "left-4" : "right-4", roleDropdownOpen && "rotate-180")}>
-								<svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-							</div>
-						</div>
-
-						{/* Custom dropdown elements */}
-						{roleDropdownOpen && (
-							<div className="absolute top-[58px] left-0 w-full bg-[#0b1329] border border-slate-800 rounded-xl shadow-xl z-55 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-								{roles.map(r => (
-									<div 
-										key={r.value}
-										onClick={() => {
-											setRole(r.value);
-											setRoleDropdownOpen(false);
-										}}
-										className={cn(
-											"px-4 py-3 text-sm font-semibold text-slate-300 hover:bg-slate-800/60 hover:text-white cursor-pointer transition-colors",
-											role === r.value && "bg-blue-600/20 text-blue-400 hover:bg-blue-600/30"
-										)}
-									>
-										{r.label[language]}
-									</div>
-								))}
-							</div>
-						)}
-
-						{errors.role && (
-							<span className="text-xs text-red-500 font-semibold mt-1 block px-1">{errors.role[language]}</span>
-						)}
-					</div>
-
 				</div>
 
 				{/* Row 3: Password Field */}
@@ -376,6 +297,7 @@ export const Register = () => {
 						placeholder={isRtl ? "إنشاء كلمة مرور قوية" : "Create strong password"}
 						label={isRtl ? "كلمة المرور" : "Password"}
 						error={errors.password}
+						autoComplete="new-password"
 					/>
 					{/* Password Strength Indicator */}
 					<PasswordStrength password={password} />
@@ -388,6 +310,7 @@ export const Register = () => {
 					placeholder={isRtl ? "أعد إدخال كلمة المرور" : "Confirm password"}
 					label={isRtl ? "تأكيد كلمة المرور" : "Confirm Password"}
 					error={errors.confirmPassword}
+					autoComplete="new-password"
 					required={true}
 				/>
 
@@ -465,42 +388,10 @@ export const Register = () => {
 			</div>
 
 			{/* Social login grid */}
-			<div className="grid grid-cols-3 gap-3 mt-1 select-none">
-				{/* Google */}
-				<button 
-					type="button" 
-					className="h-11 bg-slate-950/40 border border-slate-800/80 hover:bg-slate-900/60 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all duration-200"
-				>
-					<svg className="w-4.5 h-4.5" viewBox="0 0 24 24">
-						<path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.54 14.98 1 12 1 7.35 1 3.37 3.65 1.42 7.5l3.86 3C6.22 7.39 8.89 5.04 12 5.04z" />
-						<path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.34H12v4.44h6.45c-.28 1.48-1.11 2.73-2.37 3.58v2.98h3.84c2.24-2.06 3.57-5.09 3.57-8.66z" />
-						<path fill="#FBBC05" d="M5.28 14.5c-.23-.69-.36-1.43-.36-2.2s.13-1.51.36-2.2L1.42 7.1C.51 8.92 0 10.94 0 13s.51 4.08 1.42 5.9l3.86-3.4z" />
-						<path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.84-2.98c-1.07.72-2.44 1.15-4.12 1.15-3.11 0-5.78-2.35-6.72-5.46L1.42 16.2C3.37 20.35 7.35 23 12 23z" />
-					</svg>
-					<span className="hidden sm:inline-block text-xs font-bold text-slate-300">Google</span>
-				</button>
-
-				{/* Apple */}
-				<button 
-					type="button" 
-					className="h-11 bg-slate-950/40 border border-slate-800/80 hover:bg-slate-900/60 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all duration-200"
-				>
-					<svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.15.67-2.87 1.51-.62.71-1.16 1.86-1.01 2.98 1.1.09 2.22-.62 2.89-1.43z"/>
-					</svg>
-					<span className="hidden sm:inline-block text-xs font-bold text-slate-300">Apple</span>
-				</button>
-
-				{/* Facebook */}
-				<button 
-					type="button" 
-					className="h-11 bg-slate-950/40 border border-slate-800/80 hover:bg-slate-900/60 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all duration-200"
-				>
-					<svg className="w-4.5 h-4.5 text-[#1877F2]" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-					</svg>
-					<span className="hidden sm:inline-block text-xs font-bold text-slate-300">Facebook</span>
-				</button>
+			<div className="flex flex-col gap-3 mt-1 select-none">
+				<SocialLoginButton provider="google" onClick={() => {}} />
+				<SocialLoginButton provider="facebook" onClick={() => {}} />
+				<SocialLoginButton provider="apple" onClick={() => {}} />
 			</div>
 
 			{/* Link to Login */}

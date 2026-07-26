@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import LocalizedLink from "@/components/ui/LocalizedLink";
 import { authValidators } from "@/features/auth/validation/authSchemas";
-import authApi from "@/features/auth/api/authApi";
+import authService from "@/features/auth/services/authService";
 import { AuthFooter } from "@/features/auth";
 import { AlertCircle, CheckCircle2, Loader2, ArrowLeft, Mail } from "lucide-react";
+import { normalizeApiError } from "@/utils/errorMapper";
 import { cn } from "@/lib/utils";
 
 export const ForgotPassword = () => {
@@ -33,7 +34,7 @@ export const ForgotPassword = () => {
 
 		setLoading(true);
 		try {
-			await authApi.forgotPassword(email);
+			await authService.forgetPassword(email);
 			setSuccess(isRtl ? "تم إرسال رمز التحقق بنجاح!" : "Verification code sent successfully!");
 			
 			// Redirect to Verify OTP page after 1.5s
@@ -41,9 +42,8 @@ export const ForgotPassword = () => {
 				navigate(`/${language}/auth/verify-otp?email=${encodeURIComponent(email)}`);
 			}, 1500);
 		} catch (err) {
-			setError(isRtl 
-				? { ar: "البريد الإلكتروني غير مسجل لدينا." } 
-				: { en: "Email not found in our database." });
+			const { generalMessage } = normalizeApiError(err);
+			setError({ en: generalMessage, ar: generalMessage });
 		} finally {
 			setLoading(false);
 		}
@@ -53,10 +53,10 @@ export const ForgotPassword = () => {
 		<div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
 			{/* Page Header */}
 			<div className="flex flex-col gap-2 text-center sm:text-start">
-				<h2 className="text-3xl sm:text-4xl font-black text-text tracking-tight">
+				<h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
 					{isRtl ? "نسيت كلمة المرور؟" : "Forgot Password?"}
 				</h2>
-				<p className="text-sm font-semibold text-text-muted">
+				<p className="text-sm font-semibold text-slate-400">
 					{isRtl ? "أدخل بريدك الإلكتروني لإرسال رمز تأكيد الـ OTP" : "Enter your email to receive a verification code"}
 				</p>
 			</div>
@@ -79,15 +79,15 @@ export const ForgotPassword = () => {
 			{/* Form */}
 			<form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
 				<div className="flex flex-col gap-1.5 w-full">
-					<label className="text-xs font-bold text-text-secondary select-none">
+					<label className="text-xs font-bold text-slate-400 select-none">
 						{isRtl ? "البريد الإلكتروني" : "Email Address"}
 					</label>
 					<div className={cn(
-						"relative w-full h-12 bg-surface-2 border rounded-xl flex items-center overflow-hidden transition-all duration-300",
-						emailFocused ? "border-primary ring-2 ring-primary/20 shadow-sm shadow-primary/10" : "border-border/80 hover:border-primary/50"
+						"relative w-full h-12 bg-[#0b1329]/40 border rounded-xl flex items-center overflow-hidden transition-all duration-300",
+						emailFocused ? "border-blue-500 ring-2 ring-blue-500/20 shadow-sm shadow-blue-500/10" : "border-slate-800 hover:border-slate-700"
 					)}>
-						<div className="absolute left-4 text-text-muted flex items-center justify-center pointer-events-none">
-							<Mail className={cn("w-5 h-5 transition-colors duration-300", emailFocused && "text-primary")} />
+						<div className="absolute left-4 text-slate-450 flex items-center justify-center pointer-events-none">
+							<Mail className={cn("w-5 h-5 transition-colors duration-300", emailFocused && "text-blue-500")} />
 						</div>
 						<input 
 							type="email"
@@ -96,7 +96,7 @@ export const ForgotPassword = () => {
 							onFocus={() => setEmailFocused(true)}
 							onBlur={() => setEmailFocused(false)}
 							placeholder="name@example.com"
-							className="w-full h-full bg-transparent outline-none ps-12 pe-4 text-sm font-semibold text-text placeholder:text-text-muted/50"
+							className="w-full h-full bg-transparent outline-none ps-12 pe-4 text-sm font-semibold text-white placeholder:text-slate-500/60"
 							dir="ltr"
 							required
 						/>
@@ -123,7 +123,7 @@ export const ForgotPassword = () => {
 			{/* Back Link */}
 			<LocalizedLink 
 				to="/auth/login" 
-				className="flex items-center justify-center gap-2 text-sm font-bold text-text-secondary hover:text-primary transition-colors mt-2"
+				className="flex items-center justify-center gap-2 text-sm font-bold text-slate-400 hover:text-blue-500 transition-colors mt-2"
 			>
 				<ArrowLeft className={cn("w-4 h-4", isRtl && "rotate-180")} />
 				<span>{isRtl ? "العودة لتسجيل الدخول" : "Back to Sign In"}</span>

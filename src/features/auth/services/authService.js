@@ -1,83 +1,41 @@
-import authApi from "../api/authApi";
-import authStorage from "../storage/authStorage";
+import api from "@/services/api/axios";
+import { API_ENDPOINTS } from "@/services/api/api.constants";
 
 export const authService = {
-	login: async (credentials, rememberMe = true) => {
-		try {
-			const data = await authApi.login(credentials);
-			authStorage.clearAll();
-			authStorage.setRememberMe(rememberMe);
-			authStorage.setAccessToken(data.token, rememberMe);
-			authStorage.setRefreshToken(data.refreshToken, rememberMe);
-			authStorage.setUser(data.user, rememberMe);
-			return data;
-		} catch (error) {
-			throw error;
-		}
+	register: async (userData) => {
+		// As per spec: { phone, country_id: 1, ... }
+		const payload = {
+			...userData,
+			country_id: userData.country_id || 1
+		};
+		return await api.post(API_ENDPOINTS.AUTH.REGISTER, payload);
 	},
 
-	register: async (userData, rememberMe = true) => {
-		try {
-			const data = await authApi.register(userData);
-			authStorage.clearAll();
-			authStorage.setRememberMe(rememberMe);
-			authStorage.setAccessToken(data.token, rememberMe);
-			authStorage.setRefreshToken(data.refreshToken, rememberMe);
-			authStorage.setUser(data.user, rememberMe);
-			return data;
-		} catch (error) {
-			throw error;
-		}
+	login: async (credentials) => {
+		// credentials: { login (email or phone), password }
+		return await api.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
 	},
 
-	forgotPassword: async (email) => {
-		try {
-			return await authApi.forgotPassword(email);
-		} catch (error) {
-			throw error;
-		}
+	socialLogin: async (providerData) => {
+		// providerData: { provider, provider_id, email, name, image, temp_user_id, country_id }
+		return await api.post(API_ENDPOINTS.AUTH.SOCIAL_LOGIN, providerData);
 	},
 
-	verifyOtp: async (email, otp) => {
-		try {
-			return await authApi.verifyOtp(email, otp);
-		} catch (error) {
-			throw error;
-		}
+	forgetPassword: async (email) => {
+		return await api.post(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, { email });
 	},
 
-	resetPassword: async (token, newPassword) => {
-		try {
-			return await authApi.resetPassword(token, newPassword);
-		} catch (error) {
-			throw error;
-		}
-	},
-
-	refreshAccessToken: async () => {
-		try {
-			const rToken = authStorage.getRefreshToken();
-			if (!rToken) throw new Error("No refresh token found");
-			
-			const data = await authApi.refreshToken(rToken);
-			const rememberMe = authStorage.getRememberMe();
-			authStorage.setAccessToken(data.token, rememberMe);
-			authStorage.setRefreshToken(data.refreshToken, rememberMe);
-			return data.token;
-		} catch (error) {
-			authStorage.clearAll();
-			throw error;
-		}
+	resetPassword: async (resetData) => {
+		// resetData: { email, otp, password, password_confirmation }
+		return await api.post(API_ENDPOINTS.AUTH.RESET_PASSWORD, resetData);
 	},
 
 	logout: async () => {
-		try {
-			await authApi.logout();
-		} catch (e) {
-			// Ignore network issues on logout
-		} finally {
-			authStorage.clearAll();
-		}
+		return await api.post(API_ENDPOINTS.AUTH.LOGOUT);
+	},
+
+	deleteAccount: async () => {
+		return await api.post(API_ENDPOINTS.USER.DELETE_ACCOUNT);
 	}
 };
 

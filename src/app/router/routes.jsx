@@ -17,7 +17,7 @@ import Brands from "@/pages/Brands";
 import Cart from "@/pages/Cart/index";
 import Checkout from "@/pages/Checkout/index";
 import Wishlist from "@/pages/Wishlist/index";
-import Profile from "@/pages/Profile/index";
+import Account from "@/pages/Account/index";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
 import Privacy from "@/pages/Privacy";
@@ -35,7 +35,7 @@ import ResetPassword from "@/pages/ResetPassword";
 import VerifyOtp from "@/pages/VerifyOtp";
 
 // Auth Guards
-import { AuthGuard, GuestGuard } from "@/features/auth";
+import { ProtectedRoute, GuestRoute } from "@/features/auth";
 
 import { ROUTES } from "./paths";
 
@@ -116,28 +116,28 @@ export const routes = [
 					{
 						path: ROUTES.CHECKOUT.substring(1),
 						element: (
-							<AuthGuard>
+							<ProtectedRoute>
 								<Checkout />
-							</AuthGuard>
+							</ProtectedRoute>
 						),
 					},
 					{
-						path: ROUTES.PROFILE.substring(1),
+						path: ROUTES.ACCOUNT.substring(1),
 						element: (
-							<AuthGuard>
-								<Profile />
-							</AuthGuard>
+							<ProtectedRoute>
+								<Account />
+							</ProtectedRoute>
 						),
 					},
 				],
 			},
-			// Auth Layout Routes (Direct access, GuestGuard integrated)
+			// Auth Layout Routes (Direct access, GuestRoute integrated)
 			{
 				path: "auth",
 				element: (
-					<GuestGuard>
+					<GuestRoute>
 						<AuthLayout />
-					</GuestGuard>
+					</GuestRoute>
 				),
 				children: [
 					{

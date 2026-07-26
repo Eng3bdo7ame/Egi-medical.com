@@ -4,7 +4,8 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import LocalizedLink from "@/components/ui/LocalizedLink";
 import { useLogin, PasswordField, RememberMe, SocialLoginButton, AuthFooter } from "@/features/auth";
 import { authValidators } from "@/features/auth/validation/authSchemas";
-import { AlertCircle, CheckCircle2, Loader2, Mail } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, User } from "lucide-react";
+import { normalizeApiError } from "@/utils/errorMapper";
 import { cn } from "@/lib/utils";
 
 export const Login = () => {
@@ -54,12 +55,10 @@ export const Login = () => {
 				navigate(from, { replace: true });
 			}, 1500);
 		} catch (err) {
-			if (err.message === "INVALID_CREDENTIALS") {
-				setErrorMessage(isRtl 
-					? "البريد الإلكتروني أو كلمة المرور غير صحيحة." 
-					: "Invalid email or password. Please try again.");
-			} else {
-				setErrorMessage(isRtl ? "حدث خطأ غير متوقع. حاول مرة أخرى." : "An unexpected error occurred.");
+			const { generalMessage, fieldErrors } = normalizeApiError(err);
+			setErrorMessage(generalMessage);
+			if (Object.keys(fieldErrors).length > 0) {
+				setErrors(prev => ({ ...prev, ...fieldErrors }));
 			}
 		}
 	};
@@ -75,10 +74,10 @@ export const Login = () => {
 		<div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
 			{/* Page Header */}
 			<div className="flex flex-col gap-2 text-center sm:text-start">
-				<h2 className="text-3xl sm:text-4xl font-black text-text tracking-tight">
+				<h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
 					{isRtl ? "مرحباً بك مجدداً 👋" : "Welcome Back 👋"}
 				</h2>
-				<p className="text-sm font-semibold text-text-muted">
+				<p className="text-sm font-semibold text-slate-400">
 					{isRtl ? "قم بتسجيل الدخول للوصول إلى حسابك الطبي" : "Sign in to access your medical account"}
 				</p>
 			</div>
@@ -100,28 +99,29 @@ export const Login = () => {
 
 			{/* Form */}
 			<form onSubmit={handleFormSubmit} className="flex flex-col gap-5">
-				{/* Email */}
+				{/* Email or Phone */}
 				<div className="flex flex-col gap-1.5 w-full">
-					<label className="text-xs font-bold text-text-secondary select-none">
-						{isRtl ? "البريد الإلكتروني" : "Email Address"}
+					<label className="text-xs font-bold text-slate-400 select-none">
+						{isRtl ? "البريد الإلكتروني أو رقم الهاتف" : "Email or Phone"}
 					</label>
 					<div className={cn(
-						"relative w-full h-12 bg-surface-2 border rounded-xl flex items-center overflow-hidden transition-all duration-300",
-						emailFocused ? "border-primary ring-2 ring-primary/20 shadow-sm shadow-primary/10" : "border-border/80 hover:border-primary/50"
+						"relative w-full h-12 bg-[#0b1329]/40 border rounded-xl flex items-center overflow-hidden transition-all duration-300",
+						emailFocused ? "border-blue-500 ring-2 ring-blue-500/20 shadow-sm shadow-blue-500/10" : "border-slate-800 hover:border-slate-700"
 					)}>
-						<div className="absolute left-4 text-text-muted flex items-center justify-center pointer-events-none">
-							<Mail className={cn("w-5 h-5 transition-colors duration-300", emailFocused && "text-primary")} />
+						<div className="absolute left-4 text-slate-450 flex items-center justify-center pointer-events-none">
+							<User className={cn("w-5 h-5 transition-colors duration-300", emailFocused && "text-blue-500")} />
 						</div>
 						<input 
-							type="email"
+							type="text"
 							value={email}
 							onChange={e => setEmail(e.target.value)}
 							onFocus={() => setEmailFocused(true)}
 							onBlur={() => setEmailFocused(false)}
-							placeholder="name@example.com"
-							className="w-full h-full bg-transparent outline-none ps-12 pe-4 text-sm font-semibold text-text placeholder:text-text-muted/50"
+							placeholder={isRtl ? "أدخل بريدك الإلكتروني أو رقمك" : "Enter your email or phone"}
+							className="w-full h-full bg-transparent outline-none ps-12 pe-4 text-sm font-semibold text-white placeholder:text-slate-500/60"
 							dir="ltr"
 							required
+							autoComplete="username"
 						/>
 					</div>
 					{errors.email && (
@@ -136,6 +136,7 @@ export const Login = () => {
 					placeholder="••••••••"
 					label={isRtl ? "كلمة المرور" : "Password"}
 					error={errors.password}
+					autoComplete="current-password"
 				/>
 
 				{/* Remember Me & Forgot Password Link */}
@@ -143,7 +144,7 @@ export const Login = () => {
 					<RememberMe checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} />
 					<LocalizedLink 
 						to="/auth/forgot-password" 
-						className="text-xs font-bold text-primary hover:text-primary-hover hover:underline transition-colors cursor-pointer"
+						className="text-xs font-bold text-blue-500 hover:text-blue-400 hover:underline transition-colors cursor-pointer"
 					>
 						{isRtl ? "نسيت كلمة المرور؟" : "Forgot Password?"}
 					</LocalizedLink>
@@ -175,12 +176,16 @@ export const Login = () => {
 			</div>
 
 			{/* Social login */}
-			<SocialLoginButton onClick={handleSocialLogin} />
+			<div className="flex flex-col gap-3">
+				<SocialLoginButton provider="google" onClick={handleSocialLogin} />
+				<SocialLoginButton provider="facebook" onClick={handleSocialLogin} />
+				<SocialLoginButton provider="apple" onClick={handleSocialLogin} />
+			</div>
 
 			{/* Link to Register */}
-			<p className="text-center text-sm font-bold text-text-secondary">
+			<p className="text-center text-sm font-bold text-slate-400 mt-2">
 				{isRtl ? "ليس لديك حساب؟ " : "Don't have an account? "}
-				<LocalizedLink to="/auth/register" className="text-primary hover:text-primary-hover hover:underline font-black transition-colors">
+				<LocalizedLink to="/auth/register" className="text-blue-500 hover:text-blue-400 hover:underline font-black transition-colors">
 					{isRtl ? "سجل الآن" : "Sign Up"}
 				</LocalizedLink>
 			</p>

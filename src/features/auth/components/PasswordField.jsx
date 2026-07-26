@@ -3,7 +3,7 @@ import { Eye, EyeOff, Lock } from "lucide-react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { cn } from "@/lib/utils";
 
-export const PasswordField = ({ value, onChange, placeholder, label, error, required = true }) => {
+export const PasswordField = ({ value, onChange, placeholder, label, error, required = true, autoComplete }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const [showPassword, setShowPassword] = useState(false);
@@ -55,6 +55,7 @@ export const PasswordField = ({ value, onChange, placeholder, label, error, requ
 							: "text-left pl-12 pr-12"
 					)}
 					dir={isRtl ? "rtl" : "ltr"}
+					autoComplete={autoComplete}
 				/>
 
 				{/* Eye icon (Left in RTL, Right in LTR) */}

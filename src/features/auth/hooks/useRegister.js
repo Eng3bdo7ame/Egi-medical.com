@@ -8,12 +8,12 @@ export const useRegister = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
-	const register = async (userData, rememberMe = true) => {
+	const register = async (userData) => {
 		setLoading(true);
 		setError(null);
 		try {
-			const data = await authService.register(userData, rememberMe);
-			dispatch(setCredentials({ user: data.user, accessToken: data.token }));
+			const data = await authService.register(userData);
+			dispatch(setCredentials({ user: data.user, accessToken: data.access_token || data.token }));
 			setLoading(false);
 			return data;
 		} catch (err) {

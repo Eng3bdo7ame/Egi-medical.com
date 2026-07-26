@@ -1,6 +1,6 @@
 // Export Guards
-export { default as AuthGuard } from "./guards/AuthGuard";
-export { default as GuestGuard } from "./guards/GuestGuard";
+export { default as ProtectedRoute } from "./guards/ProtectedRoute";
+export { default as GuestRoute } from "./guards/GuestRoute";
 export { default as RoleGuard } from "./guards/RoleGuard";
 export { default as PermissionGuard } from "./guards/PermissionGuard";
 

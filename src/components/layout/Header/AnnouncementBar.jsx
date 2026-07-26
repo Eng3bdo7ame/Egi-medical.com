@@ -6,6 +6,8 @@ import Container from "@/components/ui/Container";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { Icon } from "@/components/ui/Icon";
 import { useSelector } from "react-redux";
+import { useLogout } from "@/features/auth";
+import { cn } from "@/lib/utils";
 
 /**
  * AnnouncementBar Component
@@ -15,9 +17,10 @@ export const AnnouncementBar = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const { isAuthenticated, user } = useSelector((state) => state.auth);
+	const { logout } = useLogout();
 
 	return (
-		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none">
+		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none relative z-[60]">
 			<Container>
 				<div className="flex items-center justify-between py-2.5 gap-4">
 					{/* Left: Shipping */}
@@ -70,15 +73,51 @@ export const AnnouncementBar = () => {
 
 						{/* Login / Register or Profile */}
 						{isAuthenticated ? (
-							<LocalizedLink
-								to="/profile"
-								className="flex items-center gap-2 font-bold text-primary hover:text-primary-hover transition-colors"
-							>
-								<Icon name="User" size="sm" className="text-primary shrink-0" />
-								<span className="hidden sm:inline">
-									{user?.name || (isRtl ? "حسابي" : "My Account")}
-								</span>
-							</LocalizedLink>
+							<div className="relative group z-50">
+								<LocalizedLink
+									to="/account"
+									className="flex items-center gap-2 font-bold text-primary hover:text-primary-hover transition-colors py-2"
+								>
+									<Icon name="User" size="sm" className="text-primary shrink-0" />
+									<span className="hidden sm:inline">
+										{user?.name || (isRtl ? "حسابي" : "My Account")}
+									</span>
+								</LocalizedLink>
+
+								{/* Dropdown Menu */}
+								<div className={cn(
+									"absolute top-full opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 w-48 bg-surface border border-border rounded-xl shadow-lg shadow-black/5 overflow-hidden flex flex-col z-[100]",
+									isRtl ? "left-0" : "right-0"
+								)}>
+									<div className="p-3 border-b border-border/50">
+										<p className="text-xs font-bold text-text truncate">{user?.name}</p>
+										<p className="text-[10px] text-text-muted truncate">{user?.email || user?.phone}</p>
+									</div>
+									<div className="flex flex-col p-1">
+										<LocalizedLink to="/account?tab=overview" className="flex items-center gap-2 p-2 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-xs font-semibold">
+											<Icon name="User" size="sm" />
+											{isRtl ? "الملف الشخصي" : "Profile"}
+										</LocalizedLink>
+										<LocalizedLink to="/account?tab=orders" className="flex items-center gap-2 p-2 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-xs font-semibold">
+											<Icon name="Package" size="sm" />
+											{isRtl ? "الطلبات" : "Orders"}
+										</LocalizedLink>
+										<LocalizedLink to="/account?tab=wishlist" className="flex items-center gap-2 p-2 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-xs font-semibold">
+											<Icon name="Heart" size="sm" />
+											{isRtl ? "المفضلة" : "Wishlist"}
+										</LocalizedLink>
+									</div>
+									<div className="p-1 border-t border-border/50">
+										<button 
+											onClick={() => logout()} 
+											className="flex w-full items-center gap-2 p-2 hover:bg-danger/10 text-danger rounded-lg transition-colors text-xs font-bold cursor-pointer"
+										>
+											<Icon name="LogOut" size="sm" />
+											{isRtl ? "تسجيل الخروج" : "Logout"}
+										</button>
+									</div>
+								</div>
+							</div>
 						) : (
 							<LocalizedLink
 								to="/auth/login"

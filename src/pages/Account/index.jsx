@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import Container from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { User, Package, MapPin, Heart, Settings as SettingsIcon, LogOut } from "lucide-react";
+import { User, Package, MapPin, Heart, Settings as SettingsIcon, LogOut, FileDiff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Components
@@ -14,7 +14,7 @@ import Settings from "./components/Settings";
 import OrderDetails from "./components/OrderDetails";
 import { useLogout } from "@/features/auth";
 
-const Profile = () => {
+const Account = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const navigate = useNavigate();
@@ -25,12 +25,12 @@ const Profile = () => {
 	const orderId = searchParams.get("orderId");
 
 	const tabs = [
-		{ id: "overview", label: { en: "Overview", ar: "لوحة التحكم" }, icon: User },
-		{ id: "orders", label: { en: "My Orders", ar: "طلباتي" }, icon: Package },
-		{ id: "addresses", label: { en: "Addresses", ar: "عناويني" }, icon: MapPin },
-		{ id: "settings", label: { en: "Settings", ar: "إعدادات الحساب" }, icon: SettingsIcon },
-		// Wishlist is a separate page but we link to it
+		{ id: "overview", label: { en: "Profile", ar: "الملف الشخصي" }, icon: User },
+		{ id: "orders", label: { en: "Orders", ar: "الطلبات" }, icon: Package },
+		{ id: "addresses", label: { en: "Addresses", ar: "العناوين" }, icon: MapPin },
 		{ id: "wishlist", label: { en: "Wishlist", ar: "المفضلة" }, icon: Heart, isLink: true, path: "/wishlist" },
+		{ id: "compare", label: { en: "Compare", ar: "المقارنة" }, icon: FileDiff, isLink: true, path: "/compare" },
+		{ id: "settings", label: { en: "Settings", ar: "الإعدادات" }, icon: SettingsIcon },
 	];
 
 	const handleTabChange = (tab) => {
@@ -43,7 +43,7 @@ const Profile = () => {
 
 	const breadcrumbItems = [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
-		{ label: { en: "Profile", ar: "حسابي" } }
+		{ label: { en: "Account", ar: "حسابي" } }
 	];
 
 	return (
@@ -184,4 +184,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default Account;

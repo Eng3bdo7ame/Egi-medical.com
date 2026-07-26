@@ -10,6 +10,19 @@ const GoogleIcon = () => (
 	</svg>
 );
 
+const FacebookIcon = () => (
+	<svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z" fill="#1877F2"/>
+		<path d="M16.143 14.708l.467-3.622h-3.587V8.773c0-1.048.291-1.763 1.795-1.763l1.918-.001v-3.24c-.332-.044-1.47-.143-2.795-.143-2.766 0-4.659 1.688-4.659 4.788v2.671H6.154v3.622h3.128V24h3.587v-9.292h3.274z" fill="#FFF"/>
+	</svg>
+);
+
+const AppleIcon = () => (
+	<svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M16.634 10.373c-.029-2.585 2.112-3.829 2.208-3.889-1.2-1.758-3.072-1.996-3.753-2.023-1.597-.16-3.118.941-3.931.941-.81 0-2.054-.917-3.376-.89-1.722.028-3.315.999-4.205 2.548-1.802 3.127-.461 7.747 1.298 10.288.86 1.241 1.868 2.628 3.197 2.576 1.272-.054 1.76-.826 3.3-.826 1.536 0 1.977.826 3.328.799 1.378-.027 2.234-1.258 3.088-2.502.986-1.442 1.393-2.839 1.411-2.915-.031-.013-2.73-1.048-2.765-4.107zM15.42 6.541c.697-.843 1.168-2.016 1.04-3.191-1.009.041-2.228.672-2.946 1.512-.572.666-1.135 1.86-1.001 3.013 1.13.088 2.207-.491 2.907-1.334z" fill="#000" className="dark:fill-white"/>
+	</svg>
+);
+
 export const SocialLoginButton = ({ provider = "google", onClick }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
@@ -18,7 +31,17 @@ export const SocialLoginButton = ({ provider = "google", onClick }) => {
 		google: {
 			label: { en: "Continue with Google", ar: "متابعة باستخدام جوجل" },
 			icon: GoogleIcon,
-			bg: "bg-slate-950/40 border-slate-800/80 hover:bg-slate-900/60 text-slate-300 hover:text-white"
+			bg: "bg-surface-2 border-border/60 hover:bg-border/30 text-text hover:text-text"
+		},
+		facebook: {
+			label: { en: "Continue with Facebook", ar: "متابعة باستخدام فيسبوك" },
+			icon: FacebookIcon,
+			bg: "bg-[#1877F2]/10 border-[#1877F2]/20 hover:bg-[#1877F2]/20 text-[#1877F2]"
+		},
+		apple: {
+			label: { en: "Continue with Apple", ar: "متابعة باستخدام أبل" },
+			icon: AppleIcon,
+			bg: "bg-surface-2 border-border/60 hover:bg-border/30 text-text hover:text-text"
 		}
 	};
 
