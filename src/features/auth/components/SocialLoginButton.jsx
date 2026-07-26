@@ -18,7 +18,7 @@ export const SocialLoginButton = ({ provider = "google", onClick }) => {
 		google: {
 			label: { en: "Continue with Google", ar: "متابعة باستخدام جوجل" },
 			icon: GoogleIcon,
-			bg: "hover:bg-slate-50 border-border/80 text-text bg-surface"
+			bg: "bg-slate-950/40 border-slate-800/80 hover:bg-slate-900/60 text-slate-300 hover:text-white"
 		}
 	};
 
