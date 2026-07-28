@@ -185,6 +185,38 @@ export const fallbackBlogs = [
 	}
 ];
 
+export const mapBlogData = (apiBlog) => {
+	if (!apiBlog) return null;
+
+	// Sometimes category is null in the response
+	const categoryObj = apiBlog.category && typeof apiBlog.category === 'object' 
+		? { id: String(apiBlog.category.id || "cat-0"), title: { en: apiBlog.category.name || "", ar: apiBlog.category.name || "" } }
+		: { id: "general", title: { en: "General", ar: "عام" } };
+
+	// Description often contains HTML from API
+	const contentHtml = apiBlog.description || "";
+	
+	// Strip HTML tags for the excerpt if needed, or just use meta_description
+	const plainExcerpt = apiBlog.meta_description ? apiBlog.meta_description.replace(/<[^>]+>/g, '') : contentHtml.replace(/<[^>]+>/g, '').substring(0, 150) + "...";
+
+	return {
+		id: apiBlog.id,
+		slug: apiBlog.slug || String(apiBlog.id),
+		title: { en: apiBlog.title || apiBlog.name || "", ar: apiBlog.title || apiBlog.name || "" },
+		category: categoryObj,
+		excerpt: { en: plainExcerpt, ar: plainExcerpt },
+		content: { en: contentHtml, ar: contentHtml },
+		image: apiBlog.image || apiBlog.primary_image || "",
+		author: {
+			name: { en: apiBlog.author_name || "Admin", ar: apiBlog.author_name || "المدير" },
+			avatar: "https://ui-avatars.com/api/?name=Admin&background=random"
+		},
+		publishedAt: apiBlog.created_at || apiBlog.published_at || new Date().toISOString().split('T')[0],
+		readTime: { en: "5 min read", ar: "5 دقائق قراءة" },
+		_apiOriginal: apiBlog
+	};
+};
+
 export const useBlogs = () => {
 	return useQuery({
 		queryKey: ["blogs"],
@@ -194,7 +226,7 @@ export const useBlogs = () => {
 				// If the API succeeds and returns list, return it. Otherwise use fallback.
 				const list = res?.data?.data || res?.data || res;
 				if (Array.isArray(list) && list.length > 0) {
-					return list;
+					return list.map(mapBlogData).filter(Boolean);
 				}
 				return fallbackBlogs;
 			} catch (e) {
@@ -212,8 +244,8 @@ export const useBlogBySlug = (slug) => {
 			try {
 				const res = await api.get(`${API_ENDPOINTS.BLOGS}/${slug}`);
 				const post = res?.data?.data || res?.data || res;
-				if (post && post.slug) {
-					return post;
+				if (post && post.id) {
+					return mapBlogData(post);
 				}
 				return fallbackBlogs.find(p => p.slug === slug) || null;
 			} catch (e) {
