@@ -13,6 +13,7 @@ import About from "@/pages/About";
 import Products from "@/pages/Products/index";
 import ProductDetails from "@/pages/ProductDetails/index";
 import Category from "@/pages/Category/index";
+import Categories from "@/pages/Categories/index";
 import Brands from "@/pages/Brands";
 import Cart from "@/pages/Cart/index";
 import Checkout from "@/pages/Checkout/index";
@@ -78,11 +79,11 @@ export const routes = [
 					},
 					{
 						path: "categories",
-						element: <Category />,
+						element: <Categories />,
 					},
 					{
 						path: "categories/*",
-						element: <Category />,
+						element: <Categories />,
 					},
 					{
 						path: ROUTES.BRANDS.substring(1),

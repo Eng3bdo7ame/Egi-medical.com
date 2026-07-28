@@ -88,8 +88,8 @@ const Category = () => {
 						};
 					});
 					setProducts(mappedProducts);
-					setTotalPages(response.data?.last_page || 1);
-					setTotalItems(response.data?.total || mappedProducts.length);
+					setTotalPages(response.data?.meta?.last_page || response.data?.last_page || 1);
+					setTotalItems(response.data?.meta?.total || response.data?.total || mappedProducts.length);
 					
 					// Set real category name from the first product
 					if (mappedProducts.length > 0) {
@@ -109,10 +109,16 @@ const Category = () => {
 
 	const itemsPerPage = 12;
 
-	const displayCategoryName = categoryName[language] || (isRtl ? "منتجات القسم" : "Category Products");
+	const isAllProducts = rawSlug === "all-categories";
+	const displayCategoryName = isAllProducts
+		? (isRtl ? "كل المنتجات" : "All Products")
+		: (categoryName[language] || (isRtl ? "منتجات القسم" : "Category Products"));
 
 	// Breadcrumb mapping
-	const breadcrumbItems = [
+	const breadcrumbItems = isAllProducts ? [
+		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
+		{ label: { en: "All Products", ar: "كل المنتجات" } }
+	] : [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
 		{ label: { en: "Categories", ar: "الأقسام" }, link: "/categories" },
 		{ label: { en: displayCategoryName, ar: displayCategoryName } }
@@ -219,7 +225,11 @@ const Category = () => {
 			{/* 1. Internal Hero */}
 			<PageHero
 				title={{ en: displayCategoryName, ar: displayCategoryName }}
-				subtitle={{ en: "Explore our curated selection of high-quality products in this category.", ar: "استكشف تشكيلتنا المختارة من المنتجات عالية الجودة في هذا القسم." }}
+				subtitle={
+					isAllProducts 
+					? { en: "Discover our complete catalog of certified medical equipment and supplies.", ar: "اكتشف الكتالوج الكامل للمعدات والمستلزمات الطبية المعتمدة." }
+					: { en: "Explore our curated selection of high-quality products in this category.", ar: "استكشف تشكيلتنا المختارة من المنتجات عالية الجودة في هذا القسم." }
+				}
 				count={totalItems}
 				breadcrumbs={breadcrumbItems}
 			/>

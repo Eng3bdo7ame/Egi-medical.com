@@ -1,9 +1,9 @@
-import { Navigate } from "react-router-dom";
 import React from "react";
+import Category from "../Category";
 
 const Products = () => {
-	// Redirect generic products page to home to enforce category-only browsing
-	return <Navigate to="/" replace />;
+	// Re-using Category page which already handles "all-categories" and product grid rendering
+	return <Category />;
 };
 
 export default Products;
