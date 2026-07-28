@@ -49,6 +49,9 @@ export const ProductSection = ({ title, subtitle, viewAllLink, variant = "defaul
 
 	// Map API products to match the expected format for ProductCard, so we don't need to change ProductCard.
 	const productsToDisplay = products && products.length > 0 ? products.map(apiProd => {
+		if (apiProd.price && typeof apiProd.price === 'object' && 'current' in apiProd.price) {
+			return apiProd;
+		}
 		const price = apiProd.price || 0;
 		const currentPrice = apiProd.final_price || apiProd.special_price || apiProd.sale_price || price;
 		const originalPrice = price > currentPrice ? price : null;

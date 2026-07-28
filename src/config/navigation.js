@@ -4,6 +4,16 @@ export const navigationLinks = [
 		name: { en: "Home", ar: "الرئيسية" },
 		path: "/"
 	},
+	{
+		id: "products",
+		name: { en: "All Products", ar: "كل المنتجات" },
+		path: "/products"
+	},
+	{
+		id: "categories",
+		name: { en: "All Categories", ar: "كل الأقسام" },
+		path: "/categories"
+	},
 	{ 
 		id: "flash-deals",
 		name: { en: "Flash Deals", ar: "عروض خاطفة" }, 
