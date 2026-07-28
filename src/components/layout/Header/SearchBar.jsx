@@ -80,9 +80,9 @@ export const SearchBar = ({ className }) => {
 			<form
 				onSubmit={handleSubmit}
 				className={cn(
-					"flex items-stretch w-full h-[52px] rounded-[14px] overflow-hidden relative z-50",
-					"border border-border-normal focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20",
-					"bg-surface shadow-sm transition-all duration-200"
+					"flex items-stretch w-full h-[54px] rounded-full overflow-hidden relative z-50",
+					"border border-slate-200 focus-within:border-primary focus-within:shadow-[0_0_0_4px_rgba(var(--primary-rgb),0.1)]",
+					"bg-slate-50 hover:bg-white shadow-sm transition-all duration-300"
 				)}
 				role="search"
 				aria-label={isRtl ? "البحث عن المنتجات" : "Search products"}

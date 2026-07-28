@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { PageHero } from "@/components/ui/PageHero";
 import { useLanguage } from "@/app/providers/I18nProvider";
+import api from "@/services/api/client";
+import { API_ENDPOINTS } from "@/services/api/endpoints";
 
 // Layout & UI States
 import ProductsLayout from "../Products/components/ProductsLayout";
@@ -32,6 +34,11 @@ const Category = () => {
 	const [error, setError] = useState(null);
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
+	const [products, setProducts] = useState([]);
+	const [totalPages, setTotalPages] = useState(1);
+	const [totalItems, setTotalItems] = useState(0);
+	const [categoryName, setCategoryName] = useState({ en: "", ar: "" });
+
 	// Extract slug from route params (handles :slug and wildcard *)
 	const rawSlug = params["*"]
 		? params["*"].split('/').filter(Boolean).pop()
@@ -41,27 +48,74 @@ const Category = () => {
 	const { state, updateParams, toggleArrayItem, clearAllFilters } = useProductFilters();
 	const { viewMode, sortOption, currentPage, availability, brands, rating, price } = state;
 
-	// Format category display title dynamically
-	const fakeCategoryName = rawSlug
-		? rawSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-		: (isRtl ? "جميع الأقسام" : "All Categories");
-
-	// Fake initial loading (Simulating API fetch dependent on URL state)
 	useEffect(() => {
-		setIsLoading(true);
-		setError(null);
-		const timer = setTimeout(() => setIsLoading(false), 800);
-		return () => clearTimeout(timer);
-	}, [state, rawSlug]);
+		const fetchProducts = async () => {
+			setIsLoading(true);
+			setError(null);
+			try {
+				const response = await api.get(API_ENDPOINTS.PRODUCTS, {
+					params: {
+						category_id: rawSlug !== "all-categories" ? rawSlug : undefined,
+						page: currentPage,
+						sort: sortOption,
+						// Add other filters if needed
+					}
+				});
+				if (response && response.success) {
+					const apiProducts = response.data?.data || [];
+					const mappedProducts = apiProducts.map(apiProd => {
+						const priceVal = apiProd.price || 0;
+						const currentPrice = apiProd.final_price || apiProd.special_price || apiProd.sale_price || priceVal;
+						const originalPrice = priceVal > currentPrice ? priceVal : null;
+						const badges = [];
+						if (apiProd.has_flash_sale) {
+							badges.push({ type: "sale", label: { en: "Flash Sale", ar: "عرض فلاش" } });
+						} else if (apiProd.discount_percentage > 0) {
+							badges.push({ type: "sale", label: { en: `${apiProd.discount_percentage}% OFF`, ar: `خصم ${apiProd.discount_percentage}%` } });
+						}
+						return {
+							id: `prod-${apiProd.id}`,
+							title: { ar: apiProd.title || apiProd.name || "", en: apiProd.title || apiProd.name || "" },
+							category: { ar: apiProd.category || "", en: apiProd.category || "", id: String(apiProd.category_id || "") },
+							brand: apiProd.brand || "",
+							image: apiProd.primary_image || apiProd.image || "",
+							price: { current: currentPrice, original: originalPrice },
+							reviews: { rating: apiProd.rating || 0, count: apiProd.rate_count || 0 },
+							stock: { quantity: apiProd.quantity || 0 },
+							badges,
+							link: apiProd.product_link || `/product/${apiProd.id}`,
+							_apiOriginal: apiProd
+						};
+					});
+					setProducts(mappedProducts);
+					setTotalPages(response.data?.last_page || 1);
+					setTotalItems(response.data?.total || mappedProducts.length);
+					
+					// Set real category name from the first product
+					if (mappedProducts.length > 0) {
+						setCategoryName(mappedProducts[0].category);
+					}
+				} else {
+					setError(isRtl ? "حدث خطأ أثناء جلب المنتجات." : "Failed to load products.");
+				}
+			} catch (err) {
+				setError(err?.message || (isRtl ? "حدث خطأ أثناء جلب المنتجات." : "Failed to load products."));
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		fetchProducts();
+	}, [state, rawSlug, isRtl]);
 
 	const itemsPerPage = 12;
-	const totalItems = 45;
+
+	const displayCategoryName = categoryName[language] || (isRtl ? "منتجات القسم" : "Category Products");
 
 	// Breadcrumb mapping
 	const breadcrumbItems = [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
 		{ label: { en: "Categories", ar: "الأقسام" }, link: "/categories" },
-		{ label: { en: fakeCategoryName, ar: fakeCategoryName } }
+		{ label: { en: displayCategoryName, ar: displayCategoryName } }
 	];
 
 	// Fake Filter Options (Would come from API)
@@ -164,7 +218,7 @@ const Category = () => {
 		<div className="flex flex-col w-full min-h-screen bg-background pb-10">
 			{/* 1. Internal Hero */}
 			<PageHero
-				title={fakeCategoryName}
+				title={{ en: displayCategoryName, ar: displayCategoryName }}
 				subtitle={{ en: "Explore our curated selection of high-quality products in this category.", ar: "استكشف تشكيلتنا المختارة من المنتجات عالية الجودة في هذا القسم." }}
 				count={totalItems}
 				breadcrumbs={breadcrumbItems}
@@ -206,17 +260,17 @@ const Category = () => {
 				}
 			>
 				{/* Main Grid Content */}
-				{mockProducts.length === 0 ? (
+				{products.length === 0 ? (
 					<EmptyState onClearFilters={clearAllFilters} />
 				) : (
-					<ProductsGrid products={mockProducts} viewMode={viewMode} />
+					<ProductsGrid products={products} viewMode={viewMode} />
 				)}
 
 				{/* Pagination */}
-				{mockProducts.length > 0 && (
+				{products.length > 0 && (
 					<ProductsPagination
 						currentPage={currentPage}
-						totalPages={4}
+						totalPages={totalPages}
 						onPageChange={(page) => updateParams({ page })}
 					/>
 				)}

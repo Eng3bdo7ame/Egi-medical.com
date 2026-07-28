@@ -33,7 +33,7 @@ export const Navigation = () => {
 	};
 
 	return (
-		<div className="w-full bg-surface border-b border-border hidden lg:block relative z-40">
+		<div className="w-full bg-white border-b border-slate-200 hidden lg:block relative z-40 shadow-sm">
 			<Container className="relative">
 				<div 
 					className="flex items-center gap-2 py-1 static"
@@ -46,14 +46,14 @@ export const Navigation = () => {
 					>
 						<button
 							className={cn(
-								"inline-flex items-center justify-between min-w-[200px] h-[52px] text-white text-[15px] font-semibold px-5 rounded-t-lg transition-colors duration-200 cursor-pointer select-none shrink-0",
-								isMegaMenuOpen ? "bg-primary-hover" : "bg-primary hover:bg-primary-hover"
+								"inline-flex items-center justify-between min-w-[220px] h-[56px] text-white text-[15px] font-bold px-6 rounded-t-xl transition-all duration-300 cursor-pointer select-none shrink-0",
+								isMegaMenuOpen ? "bg-secondary/90 shadow-inner" : "bg-secondary hover:bg-secondary/90 hover:-translate-y-0.5"
 							)}
 							aria-haspopup="true"
 							aria-expanded={isMegaMenuOpen}
 						>
 							<div className="flex items-center gap-3">
-								<Icon name="Menu" size={20} strokeWidth={2.5} />
+								<Icon name="LayoutGrid" size={20} strokeWidth={2.5} />
 								<span>{isRtl ? "كل الأقسام" : "All Categories"}</span>
 							</div>
 							<Icon name="ChevronDown" size={16} className={cn("opacity-80 transition-transform duration-300", isMegaMenuOpen && "rotate-180")} />
@@ -61,7 +61,10 @@ export const Navigation = () => {
 					</div>
 
 					{/* Mega Menu Dropdown */}
-					<div className="absolute top-full left-0 right-0 w-full" onMouseEnter={handleMouseEnter}>
+					<div 
+						className={cn("absolute top-full z-50", isRtl ? "right-0" : "left-0")} 
+						onMouseEnter={handleMouseEnter}
+					>
 						<MegaMenu 
 							isOpen={isMegaMenuOpen} 
 							language={language} 
@@ -71,7 +74,7 @@ export const Navigation = () => {
 					</div>
 
 					{/* Navigation Links */}
-					<nav className="flex items-center gap-1.5 ms-4 flex-1" aria-label="Main navigation">
+					<nav className="flex items-center gap-6 ms-8 flex-1" aria-label="Main navigation">
 						{navigationLinks.map((link) => {
 							const linkName = link.name[language] || link.name.en;
 
@@ -80,18 +83,24 @@ export const Navigation = () => {
 									key={link.id || link.path}
 									to={link.path}
 									className={cn(
-										"relative inline-flex items-center gap-1.5 px-3 py-2 text-[15px] font-semibold rounded-lg transition-all duration-200 select-none whitespace-nowrap",
+										"relative inline-flex items-center gap-1.5 py-4 text-[15.5px] font-bold transition-all duration-300 select-none whitespace-nowrap group",
 										link.isOffer
-											? "text-secondary font-bold hover:bg-secondary/10"
-											: "text-text-secondary hover:text-primary hover:bg-primary/5"
+											? "text-secondary hover:text-secondary-hover"
+											: "text-slate-600 hover:text-primary"
 									)}
 								>
-									<span>{linkName}</span>
+									<span className="relative z-10">{linkName}</span>
 									{link.badge && (
-										<Badge variant={link.badgeVariant || "primary"} size="sm" className="h-5 px-1.5 text-[10px] font-extrabold">
+										<Badge variant={link.badgeVariant || "primary"} size="sm" className="h-5 px-1.5 text-[10px] font-extrabold -translate-y-2">
 											{link.badge[language]}
 										</Badge>
 									)}
+									{/* Animated Underline */}
+									<span className={cn(
+										"absolute bottom-0 left-1/2 h-[3px] bg-current transition-all duration-300 -translate-x-1/2 group-hover:w-full rounded-t-full opacity-0 group-hover:opacity-100",
+										isRtl ? "translate-x-1/2" : "-translate-x-1/2",
+										"w-0 group-hover:w-full"
+									)} />
 								</LocalizedLink>
 							);
 						})}
