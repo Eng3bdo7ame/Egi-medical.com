@@ -25,6 +25,7 @@ import Terms from "@/pages/Terms";
 import BestSellers from "@/pages/BestSellers";
 import Blogs from "@/pages/Blogs/index";
 import BlogDetails from "@/pages/Blogs/BlogDetails";
+import FlashDeals from "@/pages/FlashDeals";
 
 // Auth Pages
 import Login from "@/pages/Login";
@@ -126,6 +127,10 @@ export const routes = [
 					{
 						path: ROUTES.BLOG_DETAILS.substring(1),
 						element: <BlogDetails />,
+					},
+					{
+						path: ROUTES.FLASH_DEALS.substring(1),
+						element: <FlashDeals />,
 					},
 					// Protected Routes directly accessible (Guards removed temporarily)
 					{

@@ -2,8 +2,18 @@ import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { Section } from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
-import { ShieldCheck, Award, Stethoscope, Wrench } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ShieldCheck, Award, Stethoscope, Wrench, CheckCircle, Star, Heart, TrendingUp, Settings } from "lucide-react";
+
+const ICON_MAP = {
+	"shield_check": ShieldCheck,
+	"award": Award,
+	"stethoscope": Stethoscope,
+	"wrench": Wrench,
+	"star": Star,
+	"heart": Heart,
+	"trending_up": TrendingUp,
+	"settings": Settings,
+};
 
 const valueProps = [
 	{
@@ -32,9 +42,24 @@ const valueProps = [
 	}
 ];
 
-export const WhyMootah = () => {
+export const WhyMootah = ({ data }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+
+	const title = data?.title || (isRtl ? "لماذا تختار EG Medical؟" : "Why Choose EG Medical?");
+	const subtitle = data?.subtitle || (isRtl ? "نحن نضع معايير جديدة للموثوقية والأمان في توفير المستلزمات والأجهزة الطبية" : "Setting new standards for trust, quality, and safety in medical device distribution");
+
+	const itemsToDisplay = data?.items && data.items.length > 0 ? data.items.map(item => ({
+		id: item.id,
+		IconComp: ICON_MAP[item.icon] || CheckCircle,
+		title: item.title,
+		desc: item.description
+	})) : valueProps.map(prop => ({
+		id: prop.id,
+		IconComp: prop.icon,
+		title: prop.title[language],
+		desc: prop.desc[language]
+	}));
 
 	return (
 		<Section spacing="lg" className="bg-slate-900 text-white relative overflow-hidden">
@@ -45,16 +70,16 @@ export const WhyMootah = () => {
 			<Container className="relative z-10">
 				<div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14">
 					<h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 sm:mb-4 tracking-tight">
-						{isRtl ? "لماذا تختار EG Medical؟" : "Why Choose EG Medical?"}
+						{title}
 					</h2>
 					<p className="text-slate-400 text-sm sm:text-base lg:text-lg">
-						{isRtl ? "نحن نضع معايير جديدة للثوقية والأمان في توفير المستلزمات والأجهزة الطبية" : "Setting new standards for trust, quality, and safety in medical device distribution"}
+						{subtitle}
 					</p>
 				</div>
 
 				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-					{valueProps.map((prop) => {
-						const IconComp = prop.icon;
+					{itemsToDisplay.map((prop) => {
+						const IconComp = prop.IconComp;
 						return (
 							<div
 								key={prop.id}
@@ -64,10 +89,10 @@ export const WhyMootah = () => {
 									<IconComp className="w-5 h-5 sm:w-7 sm:h-7" />
 								</div>
 								<h3 className="text-base sm:text-xl font-bold text-white mb-1 sm:mb-2">
-									{prop.title[language]}
+									{prop.title}
 								</h3>
 								<p className="text-slate-400 text-sm leading-relaxed">
-									{prop.desc[language]}
+									{prop.desc}
 								</p>
 							</div>
 						);

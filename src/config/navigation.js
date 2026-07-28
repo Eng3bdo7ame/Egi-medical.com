@@ -7,7 +7,7 @@ export const navigationLinks = [
 	{ 
 		id: "flash-deals",
 		name: { en: "Flash Deals", ar: "عروض خاطفة" }, 
-		path: "/products?filter=flash-deals",
+		path: "/flash-deals",
 		badge: { en: "HOT", ar: "🔥 عروض" },
 		badgeVariant: "danger"
 	},

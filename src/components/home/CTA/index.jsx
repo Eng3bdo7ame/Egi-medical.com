@@ -14,6 +14,12 @@ export const CallToAction = ({ title, description, buttonText, buttonLink, iconN
 	// Dynamically load the icon from lucide-react
 	const IconComp = Icons[iconName] || Icons.ArrowRight;
 
+	const getLocalizedText = (textObj) => {
+		if (!textObj) return "";
+		if (typeof textObj === "string") return textObj;
+		return textObj[language] || textObj.en || textObj.ar || "";
+	};
+
 	return (
 		<Section spacing="sm">
 			<Container>
@@ -23,21 +29,21 @@ export const CallToAction = ({ title, description, buttonText, buttonLink, iconN
 					
 					<div className="relative z-10 max-w-xl text-center md:ltr:text-left md:rtl:text-right">
 						<h2 className="text-xl sm:text-h2 font-bold mb-3 sm:mb-4">
-							{title[language]}
+							{getLocalizedText(title)}
 						</h2>
 						{description && (
 							<p className="text-white/80 text-sm sm:text-base lg:text-lg leading-relaxed">
-								{description[language]}
+								{getLocalizedText(description)}
 							</p>
 						)}
 					</div>
 
 					<div className="relative z-10 flex-shrink-0">
 						<Button asChild variant="secondary" size="lg" className="h-14 px-8 text-[15px] shadow-floating gap-3">
-							<LocalizedLink to={buttonLink}>
+							<a href={buttonLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
 								<IconComp className="w-5 h-5" />
-								{buttonText[language]}
-							</LocalizedLink>
+								{getLocalizedText(buttonText)}
+							</a>
 						</Button>
 					</div>
 				</div>

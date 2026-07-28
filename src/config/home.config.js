@@ -20,8 +20,14 @@ export const homepageConfig = [
 		subtitle: { en: "Our top curated recommendations", ar: "أبرز المنتجات الموصى بها" },
 		viewAllLink: "/products"
 	},
-	{ id: "shop-by-category", type: "shopByCategory" }, // Acts as "Featured Categories" Slider
-
+	{
+		id: "latest-products",
+		type: "productSection",
+		variant: "default",
+		bg: "surface",
+		title: { en: "Latest Arrivals", ar: "أحدث المنتجات" },
+		viewAllLink: "/new-arrivals"
+	},
 	{
 		id: "best-sellers",
 		type: "productSection",
@@ -30,7 +36,6 @@ export const homepageConfig = [
 		title: { en: "Best Sellers", ar: "الأكثر مبيعاً" },
 		viewAllLink: "/best-sellers"
 	},
-	{ id: "brands", type: "brands" },
 	{ id: "why-mootah", type: "whyMootah" },
 	{ id: "blog-section", type: "blogSection" },
 	{

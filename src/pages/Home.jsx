@@ -4,9 +4,7 @@ import Hero from "@/components/home/Hero";
 import CategoryPills from "@/components/home/CategoryPills";
 import PromoSection from "@/components/home/Promo";
 import ProductSection from "@/components/home/ProductSection";
-import BrandsShowcase from "@/components/home/Brands";
 import CallToAction from "@/components/home/CTA";
-import ShopByCategory from "@/components/home/ShopByCategory";
 import WhyMootah from "@/components/home/WhyMootah";
 import BlogSection from "@/components/home/BlogSection";
 import { homepageConfig } from "@/config/home.config";
@@ -26,14 +24,18 @@ const Home = () => {
 					case "categoryPills":
 						return <CategoryPills key={section.id} categories={homeData.categories || []} isLoading={isLoading} />;
 					case "promo":
-						return <PromoSection key={section.id} />;
-					case "shopByCategory":
-						return <ShopByCategory key={section.id} />;
+						return <PromoSection key={section.id} offers={homeData.offers} />;
 					case "whyMootah":
-						return <WhyMootah key={section.id} />;
+						return <WhyMootah key={section.id} data={homeData.why_choose_us} />;
 					case "blogSection":
 						return <BlogSection key={section.id} />;
 					case "productSection":
+						let products = [];
+						if (section.id === "flash-deals") products = homeData.flash_sales || [];
+						if (section.id === "featured-products") products = homeData.featured_products || [];
+						if (section.id === "latest-products") products = homeData.latest_products || [];
+						if (section.id === "best-sellers") products = homeData.top_sellers || [];
+
 						return (
 							<ProductSection
 								key={section.id}
@@ -42,18 +44,19 @@ const Home = () => {
 								subtitle={section.subtitle}
 								viewAllLink={section.viewAllLink}
 								bg={section.bg}
+								products={products}
+								isLoading={isLoading}
 							/>
 						);
-					case "brands":
-						return <BrandsShowcase key={section.id} />;
 					case "cta":
+						const catalog = homeData.catalog_download;
 						return (
 							<CallToAction
 								key={section.id}
-								title={section.title}
-								description={section.description}
-								buttonText={section.buttonText}
-								buttonLink={section.buttonLink}
+								title={catalog?.title || section.title}
+								description={catalog?.description || section.description}
+								buttonText={catalog?.button_text || section.buttonText}
+								buttonLink={catalog?.pdf_url || section.buttonLink}
 								iconName={section.icon}
 							/>
 						);

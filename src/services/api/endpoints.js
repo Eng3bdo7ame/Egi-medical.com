@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
 	CONTACT_US: "/contact-us",
 	BEST_SELLERS: "/best-sellers",
 	BLOGS: "/blogs",
+	FLASH_SALES: "/flash-sales",
 };
 
 export default API_ENDPOINTS;
