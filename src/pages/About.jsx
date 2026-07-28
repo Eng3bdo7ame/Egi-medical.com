@@ -2,7 +2,7 @@ import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import Container from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
-import { Award, ShieldCheck, HeartHandshake, Eye, Target, Users } from "lucide-react";
+import { Award, ShieldCheck, HeartHandshake, Eye, Target, Users, CheckCircle2, ChevronRight, Activity } from "lucide-react";
 
 export const About = () => {
 	const { language } = useLanguage();
@@ -14,148 +14,207 @@ export const About = () => {
 	];
 
 	const stats = [
-		{ value: "15,000+", label: { en: "Happy Customers", ar: "عميل سعيد" } },
-		{ value: "250+", label: { en: "Medical Devices", ar: "جهاز طبي معتمد" } },
-		{ value: "80+", label: { en: "Partner Clinics & Hospitals", ar: "عيادة ومستشفى شريكة" } },
-		{ value: "12+", label: { en: "Years of Trust", ar: "عاماً من الثقة" } }
+		{ value: "15,000+", label: { en: "Happy Customers", ar: "عميل يثق بنا" } },
+		{ value: "250+", label: { en: "Certified Devices", ar: "جهاز طبي معتمد" } },
+		{ value: "80+", label: { en: "Partner Facilities", ar: "مستشفى وعيادة شريكة" } },
+		{ value: "12+", label: { en: "Years of Excellence", ar: "عاماً من الخبرة" } }
 	];
 
 	const values = [
 		{
 			icon: ShieldCheck,
-			title: { en: "Certified Quality", ar: "جودة معتمدة" },
+			title: { en: "Certified Quality", ar: "جودة طبية معتمدة" },
 			description: {
-				en: "All products undergo rigorous testing and are fully approved by the Ministry of Health.",
-				ar: "تخضع جميع منتجاتنا لفحوصات جودة صارمة وهي معتمدة بالكامل من وزارة الصحة المصرية."
-			}
+				en: "All products undergo rigorous testing and are fully approved by the Ministry of Health and EDA.",
+				ar: "تخضع جميع منتجاتنا لفحوصات جودة صارمة وهي معتمدة بالكامل من وزارة الصحة وهيئة الدواء المصرية."
+			},
+			glow: "hover:shadow-emerald-500/10 dark:hover:shadow-emerald-500/5"
 		},
 		{
 			icon: HeartHandshake,
-			title: { en: "Customer Centric", ar: "العميل أولاً" },
+			title: { en: "Customer Centric", ar: "العميل أولاً دائماً" },
 			description: {
-				en: "We believe in long-term health partnerships, providing full technical support and post-sale services.",
-				ar: "نؤمن بالشراكة الصحية طويلة الأمد، ونوفر الدعم الفني الكامل وخدمات ما بعد البيع لعملائنا."
-			}
+				en: "We build long-term health partnerships, providing 24/7 technical support and outstanding post-sale services.",
+				ar: "نبني شراكات صحية طويلة الأمد، ونوفر الدعم الفني على مدار الساعة وخدمات ما بعد البيع المتميزة."
+			},
+			glow: "hover:shadow-blue-500/10 dark:hover:shadow-blue-500/5"
 		},
 		{
 			icon: Users,
-			title: { en: "Expert Team", ar: "فريق من الخبراء" },
+			title: { en: "Expert Guidance", ar: "فريق من الاستشاريين" },
 			description: {
-				en: "Guided by professional biomedical engineers and healthcare experts to source the best devices.",
-				ar: "نعمل تحت إشراف مهندسين طبيين وخبراء رعاية صحية لضمان اختيار أفضل الأجهزة الطبية."
-			}
+				en: "Guided by professional biomedical engineers and healthcare experts to source the safest equipment.",
+				ar: "نعمل تحت إشراف مهندسين طبيين وخبراء رعاية صحية لضمان اختيار وتوريد الأجهزة الأكثر أماناً."
+			},
+			glow: "hover:shadow-purple-500/10 dark:hover:shadow-purple-500/5"
 		}
 	];
 
 	return (
-		<div className="flex flex-col w-full min-h-screen bg-background pb-16">
-			{/* Hero Section */}
-			<div className="bg-surface border-b border-border/60 py-10 mb-12">
+		<div className="flex flex-col w-full min-h-screen bg-background pb-20 overflow-hidden relative">
+			{/* Decorative background grids/blobs */}
+			<div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
+			<div className="absolute top-[30%] right-0 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-3xl pointer-events-none translate-x-1/3" />
+
+			{/* Premium Hero Section */}
+			<div className="relative pt-8 pb-16 md:py-20 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/20">
 				<Container>
-					<Breadcrumb items={breadcrumbItems} className="mb-4" />
-					<h1 className="text-3xl md:text-5xl font-extrabold text-text tracking-tight mb-4">
-						{isRtl ? "من نحن" : "About EG Medical"}
-					</h1>
-					<p className="text-lg text-text-secondary max-w-3xl leading-relaxed">
-						{isRtl 
-							? "المنصة الرائدة في مصر لتوفير الأجهزة والمستلزمات الطبية الموثوقة للمستشفيات، العيادات، والأفراد بجودة معتمدة وخدمة عملاء استثنائية."
-							: "Egypt's leading platform sourcing certified medical devices and healthcare consumables to hospitals, clinics, and individuals with guaranteed trust and exceptional care."}
-					</p>
+					<Breadcrumb items={breadcrumbItems} className="mb-6" />
+					
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+						<div className="lg:col-span-7 flex flex-col gap-6 text-start">
+							<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold w-fit">
+								<Activity className="w-3.5 h-3.5 animate-pulse" />
+								{isRtl ? "شريكك الطبي الموثوق" : "Your Trusted Medical Partner"}
+							</div>
+							
+							<h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
+								{isRtl ? (
+									<>
+										الشركة الرائدة في <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-hover">التكنولوجيا الطبية</span> والهندسية
+									</>
+								) : (
+									<>
+										Pioneering in <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-hover">Medical Tech</span> & Engineering
+									</>
+								)}
+							</h1>
+							
+							<p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+								{isRtl 
+									? "المنصة الرائدة في جمهورية مصر العربية لتوفير وتجهيز الأجهزة والمستلزمات الطبية الموثوقة للمستشفيات، العيادات، والأفراد بأعلى معايير الجودة وخدمات صيانة استثنائية."
+									: "Egypt's premier portal for advanced medical engineering, supplying certified clinical equipment and homecare solutions to top hospitals, private practices, and patients nationwide."}
+							</p>
+						</div>
+
+						{/* Hero Image / Visual Element */}
+						<div className="lg:col-span-5 relative">
+							<div className="absolute -inset-2 bg-gradient-to-tr from-primary to-secondary rounded-3xl opacity-20 blur-lg" />
+							<div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-800">
+								<img 
+									src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
+									alt="Precision Engineering" 
+									className="object-cover w-full h-full hover:scale-105 transition-transform duration-700"
+								/>
+								<div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
+							</div>
+						</div>
+					</div>
 				</Container>
 			</div>
 
-			<Container>
-				{/* Mission & Vision */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-					
+			<Container className="mt-16">
+				{/* Mission & Vision Section */}
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
 					{/* Mission */}
-					<div className="bg-surface border border-border/60 p-8 rounded-2xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
-						<div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+					<div className="group relative bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 rounded-3xl flex flex-col gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+						<div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-primary/5 to-transparent rounded-tr-3xl pointer-events-none" />
+						<div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
 							<Target className="w-6 h-6" />
 						</div>
-						<h2 className="text-2xl font-extrabold text-text">
+						<h2 className="text-2xl font-black text-slate-900 dark:text-white">
 							{isRtl ? "رسالتنا" : "Our Mission"}
 						</h2>
-						<p className="text-text-secondary leading-relaxed">
+						<p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm md:text-base">
 							{isRtl
 								? "تمكين كل فرد ومؤسسة طبية في مصر من الوصول إلى أحدث وأدق الأجهزة الطبية والرعاية الصحية بأفضل الأسعار وبأعلى معايير الجودة العالمية لحياة صحية أفضل."
-								: "To empower every individual and medical facility in Egypt by providing access to the latest, most accurate medical hardware and healthcare supplies at fair prices, under strict quality guidelines."}
+								: "To empower every healthcare provider and patient in Egypt by offering instant access to high-grade, verified medical technology under unmatched professional oversight."}
 						</p>
 					</div>
 
 					{/* Vision */}
-					<div className="bg-surface border border-border/60 p-8 rounded-2xl flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow">
-						<div className="w-12 h-12 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+					<div className="group relative bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 rounded-3xl flex flex-col gap-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+						<div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-secondary/5 to-transparent rounded-tr-3xl pointer-events-none" />
+						<div className="w-12 h-12 rounded-2xl bg-secondary/10 text-secondary flex items-center justify-center group-hover:scale-110 transition-transform">
 							<Eye className="w-6 h-6" />
 						</div>
-						<h2 className="text-2xl font-extrabold text-text">
+						<h2 className="text-2xl font-black text-slate-900 dark:text-white">
 							{isRtl ? "رؤيتنا" : "Our Vision"}
 						</h2>
-						<p className="text-text-secondary leading-relaxed">
+						<p className="text-slate-600 dark:text-slate-400 leading-relaxed text-sm md:text-base">
 							{isRtl
 								? "أن نكون الشريك التكنولوجي الطبي الأول والأكثر موثوقية في الشرق الأوسط، والمساهمة الفعالة في التحول الرقمي لمنظومة الرعاية الصحية لتصبح أسهل وأكثر أماناً."
-								: "To become the premier and most trusted medical technology partner in the Middle East, leading the digital transformation of healthcare distribution to make it safer, faster, and more accessible."}
+								: "To become the premier medical technology facilitator in the Middle East, leading the path toward safer, digital-first distribution and clinical implementation."}
 						</p>
 					</div>
-
 				</div>
 
-				{/* Company Stats */}
-				<div className="bg-primary/5 border border-primary/20 rounded-3xl p-8 md:p-12 mb-16">
-					<div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+				{/* Premium Glassmorphic Stats Section */}
+				<div className="relative rounded-3xl overflow-hidden mb-20 p-8 md:p-12 border border-slate-100 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md shadow-lg">
+					<div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 pointer-events-none" />
+					<div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 text-center relative z-10">
 						{stats.map((stat, idx) => (
-							<div key={idx} className="flex flex-col gap-2">
-								<span className="text-3xl md:text-5xl font-black text-primary">{stat.value}</span>
-								<span className="text-sm font-bold text-text-secondary">{stat.label[language]}</span>
+							<div key={idx} className="flex flex-col gap-2 group">
+								<span className="text-4xl md:text-5xl font-black text-primary transition-transform group-hover:scale-105 duration-300 inline-block">
+									{stat.value}
+								</span>
+								<span className="text-xs md:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+									{stat.label[language]}
+								</span>
 							</div>
 						))}
 					</div>
 				</div>
 
-				{/* Our Values */}
-				<div className="mb-16">
-					<h2 className="text-3xl font-extrabold text-text text-center mb-10">
-						{isRtl ? "القيم الأساسية التي نؤمن بها" : "Our Core Values"}
-					</h2>
+				{/* Values Grid */}
+				<div className="mb-20">
+					<div className="text-center max-w-2xl mx-auto mb-12">
+						<h2 className="text-3xl font-black text-slate-900 dark:text-white mb-4">
+							{isRtl ? "القيم الأساسية التي نؤمن بها" : "Our Core Values"}
+						</h2>
+						<p className="text-sm text-slate-500 dark:text-slate-400">
+							{isRtl ? "ثقافتنا مبنية على رعاية المريض والدقة الهندسية والالتزام بالتميز" : "Our corporate culture is anchored on patient wellness, engineering precision, and integrity."}
+						</p>
+					</div>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{values.map((val, idx) => {
 							const Icon = val.icon;
 							return (
-								<div key={idx} className="bg-surface border border-border/50 p-6 rounded-2xl flex flex-col gap-4">
-									<div className="w-10 h-10 rounded-lg bg-surface-2 text-primary flex items-center justify-center shrink-0">
-										<Icon className="w-5 h-5" />
+								<div 
+									key={idx} 
+									className={`group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 rounded-3xl flex flex-col gap-5 shadow-sm hover:shadow-xl transition-all duration-300 ${val.glow}`}
+								>
+									<div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800/80 text-primary flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform">
+										<Icon className="w-6 h-6" />
 									</div>
-									<h3 className="text-lg font-bold text-text">{val.title[language]}</h3>
-									<p className="text-sm text-text-secondary leading-relaxed">{val.description[language]}</p>
+									<h3 className="text-lg font-extrabold text-slate-900 dark:text-white">{val.title[language]}</h3>
+									<p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{val.description[language]}</p>
 								</div>
 							);
 						})}
 					</div>
 				</div>
 
-				{/* Certifications Banner */}
-				<div className="bg-surface border border-border/50 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-					<div className="flex flex-col gap-2">
-						<h3 className="text-xl font-extrabold text-text flex items-center gap-2">
-							<Award className="text-warning w-6 h-6" />
-							{isRtl ? "مؤسسة طبية مرخصة بالكامل" : "Fully Licensed Medical Distributor"}
-						</h3>
-						<p className="text-sm text-text-secondary leading-relaxed">
+				{/* Licensing & Trust Section */}
+				<div className="bg-slate-50 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-850 rounded-3xl p-8 md:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm">
+					<div className="flex flex-col gap-3 text-start">
+						<div className="flex items-center gap-3">
+							<div className="p-2 rounded-xl bg-amber-500/10 text-amber-500">
+								<Award className="w-6 h-6" />
+							</div>
+							<h3 className="text-xl font-black text-slate-900 dark:text-white">
+								{isRtl ? "مؤسسة معتمدة ومرخصة رسمياً" : "Official Licensed Medical Enterprise"}
+							</h3>
+						</div>
+						<p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-3xl">
 							{isRtl
-								? "نحن موزعون معتمدون ومرخصون من قبل هيئة الدواء المصرية ووزارة الصحة، ونخضع لكافة الشروط والمواصفات الصحية العالمية."
-								: "We are authorized distributors registered under the Egyptian Drug Authority and Ministry of Health, meeting international ISO and sanitary guidelines."}
+								? "نحن موزعون ومصنعون معتمدون ومرخصون من قبل هيئة الدواء المصرية (EDA) ووزارة الصحة، ونخضع لكافة شروط ومعايير الجودة العالمية المعتمدة لتقديم أفضل المنتجات وأكثرها أماناً."
+								: "We are authorized distributors registered under the Egyptian Drug Authority (EDA) and Ministry of Health, meeting international ISO guidelines for medical hardware and technical support."}
 						</p>
 					</div>
-					<div className="flex items-center gap-4 shrink-0">
-						<div className="px-4 py-3 bg-surface-2 border border-border rounded-xl font-black text-xs text-text-secondary tracking-widest uppercase">
+					
+					{/* Badges */}
+					<div className="flex flex-wrap items-center gap-4 shrink-0 justify-center">
+						<div className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm text-xs font-bold text-slate-700 dark:text-slate-300">
+							<CheckCircle2 className="w-4 h-4 text-primary" />
 							ISO 9001:2015
 						</div>
-						<div className="px-4 py-3 bg-surface-2 border border-border rounded-xl font-black text-xs text-text-secondary tracking-widest uppercase">
+						<div className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm text-xs font-bold text-slate-700 dark:text-slate-300">
+							<CheckCircle2 className="w-4 h-4 text-primary" />
 							EDA APPROVED
 						</div>
 					</div>
 				</div>
-
 			</Container>
 		</div>
 	);

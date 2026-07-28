@@ -9,11 +9,14 @@ import WhyMootah from "@/components/home/WhyMootah";
 import BlogSection from "@/components/home/BlogSection";
 import { homepageConfig } from "@/config/home.config";
 import { useHome } from "@/hooks/queries/useHome";
+import { useLatestProducts } from "@/hooks/queries/useLatestProducts";
 
 const Home = () => {
 	const { data, isLoading, error } = useHome();
 	// Extract home data from the API response (interceptor returns response.data already)
 	const homeData = data?.data || {};
+
+	const { data: latestProducts, isLoading: latestLoading } = useLatestProducts();
 
 	return (
 		<div className="flex flex-col w-full overflow-hidden">
@@ -31,9 +34,13 @@ const Home = () => {
 						return <BlogSection key={section.id} />;
 					case "productSection":
 						let products = [];
+						let sectionLoading = isLoading;
 						if (section.id === "flash-deals") products = homeData.flash_sales || [];
 						if (section.id === "featured-products") products = homeData.featured_products || [];
-						if (section.id === "latest-products") products = homeData.latest_products || [];
+						if (section.id === "latest-products") {
+							products = latestProducts?.length ? latestProducts : homeData.latest_products || [];
+							sectionLoading = isLoading || latestLoading;
+						}
 						if (section.id === "best-sellers") products = homeData.top_sellers || [];
 
 						return (
@@ -45,7 +52,7 @@ const Home = () => {
 								viewAllLink={section.viewAllLink}
 								bg={section.bg}
 								products={products}
-								isLoading={isLoading}
+								isLoading={sectionLoading}
 							/>
 						);
 					case "cta":
