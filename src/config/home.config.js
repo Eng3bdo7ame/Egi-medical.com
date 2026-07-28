@@ -32,6 +32,7 @@ export const homepageConfig = [
 	},
 	{ id: "brands", type: "brands" },
 	{ id: "why-mootah", type: "whyMootah" },
+	{ id: "blog-section", type: "blogSection" },
 	{
 		id: "b2b-catalog",
 		type: "cta",

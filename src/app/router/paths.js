@@ -14,6 +14,8 @@ export const ROUTES = {
 	PRIVACY: "/privacy",
 	TERMS: "/terms",
 	BEST_SELLERS: "/best-sellers",
+	BLOGS: "/blogs",
+	BLOG_DETAILS: "/blogs/:slug",
 	// Auth
 	LOGIN: "/auth/login",
 	REGISTER: "/auth/register",

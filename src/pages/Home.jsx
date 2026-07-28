@@ -8,6 +8,7 @@ import BrandsShowcase from "@/components/home/Brands";
 import CallToAction from "@/components/home/CTA";
 import ShopByCategory from "@/components/home/ShopByCategory";
 import WhyMootah from "@/components/home/WhyMootah";
+import BlogSection from "@/components/home/BlogSection";
 import { homepageConfig } from "@/config/home.config";
 
 const Home = () => {
@@ -25,6 +26,8 @@ const Home = () => {
 						return <ShopByCategory key={section.id} />;
 					case "whyMootah":
 						return <WhyMootah key={section.id} />;
+					case "blogSection":
+						return <BlogSection key={section.id} />;
 					case "productSection":
 						return (
 							<ProductSection

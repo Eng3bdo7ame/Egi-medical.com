@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
 	SETTINGS: "/settings",
 	CONTACT_US: "/contact-us",
 	BEST_SELLERS: "/best-sellers",
+	BLOGS: "/blogs",
 };
 
 export default API_ENDPOINTS;

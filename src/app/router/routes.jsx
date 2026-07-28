@@ -23,6 +23,8 @@ import FAQ from "@/pages/FAQ";
 import Privacy from "@/pages/Privacy";
 import Terms from "@/pages/Terms";
 import BestSellers from "@/pages/BestSellers";
+import Blogs from "@/pages/Blogs/index";
+import BlogDetails from "@/pages/Blogs/BlogDetails";
 
 // Auth Pages
 import Login from "@/pages/Login";
@@ -116,6 +118,14 @@ export const routes = [
 					{
 						path: ROUTES.BEST_SELLERS.substring(1),
 						element: <BestSellers />,
+					},
+					{
+						path: ROUTES.BLOGS.substring(1),
+						element: <Blogs />,
+					},
+					{
+						path: ROUTES.BLOG_DETAILS.substring(1),
+						element: <BlogDetails />,
 					},
 					// Protected Routes directly accessible (Guards removed temporarily)
 					{

@@ -18,6 +18,11 @@ export const navigationLinks = [
 		isOffer: true
 	},
 	{ 
+		id: "blogs",
+		name: { en: "Blog", ar: "المدونة" }, 
+		path: "/blogs"
+	},
+	{ 
 		id: "about",
 		name: { en: "About Us", ar: "من نحن" }, 
 		path: "/about" 
