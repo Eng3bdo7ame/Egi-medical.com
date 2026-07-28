@@ -24,7 +24,7 @@ const Home = () => {
 					case "hero":
 						return <Hero key={section.id} sliders={homeData.sliders || []} isLoading={isLoading} />;
 					case "categoryPills":
-						return <CategoryPills key={section.id} />;
+						return <CategoryPills key={section.id} categories={homeData.categories || []} isLoading={isLoading} />;
 					case "promo":
 						return <PromoSection key={section.id} />;
 					case "shopByCategory":

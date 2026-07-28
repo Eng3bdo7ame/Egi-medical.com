@@ -53,7 +53,7 @@ const categoriesData = [
 	}
 ];
 
-export const ShopByCategory = () => {
+export const ShopByCategory = ({ categories = [], isLoading }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
@@ -74,6 +74,12 @@ export const ShopByCategory = () => {
 	const scrollNext = useCallback(() => {
 		if (emblaApi) emblaApi.scrollNext();
 	}, [emblaApi]);
+
+	const categoriesToDisplay = categories && categories.length > 0 ? categories : categoriesData;
+
+	if (isLoading && (!categories || categories.length === 0)) {
+		return <Section bg="surface" spacing="lg"><div className="h-[280px] w-full bg-slate-100 animate-pulse rounded-2xl"></div></Section>;
+	}
 
 	return (
 		<Section bg="surface" spacing="lg" className="overflow-hidden">
@@ -112,49 +118,65 @@ export const ShopByCategory = () => {
 				<div className="w-full relative" dir={isRtl ? "rtl" : "ltr"}>
 					<div className="overflow-hidden py-2" ref={emblaRef}>
 						<div className="flex touch-pan-y -ml-4 rtl:-mr-4 rtl:ml-0">
-							{categoriesData.map((cat) => (
-								<div
-									key={cat.id}
-									className="flex-[0_0_75%] sm:flex-[0_0_48%] md:flex-[0_0_36%] lg:flex-[0_0_31%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
-								>
-									<LocalizedLink
-										to={cat.link}
-										className="group relative rounded-2xl overflow-hidden block shadow-sm hover:shadow-xl transition-all duration-500 h-[220px] sm:h-[260px] md:h-[280px]"
+							{categoriesToDisplay.map((cat, index) => {
+								const getLocalized = (field) => {
+									if (!field) return "";
+									if (typeof field === "string") return field;
+									return field[language] || field.en || field.ar || "";
+								};
+
+								const title = getLocalized(cat.title) || getLocalized(cat.name);
+								const desc = getLocalized(cat.desc);
+								const linkUrl = (cat.link && typeof cat.link === 'string' && cat.link.startsWith('/')) 
+									? cat.link 
+									: `/category/${cat.id || cat.link}`;
+
+								return (
+									<div
+										key={cat.id || index}
+										className="flex-[0_0_75%] sm:flex-[0_0_48%] md:flex-[0_0_36%] lg:flex-[0_0_31%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
 									>
-										{/* Background Image */}
-										<img
-											src={cat.image}
-											alt={cat.title[language]}
-											className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-										/>
+										<LocalizedLink
+											to={linkUrl}
+											className="group relative rounded-2xl overflow-hidden block shadow-sm hover:shadow-xl transition-all duration-500 h-[220px] sm:h-[260px] md:h-[280px]"
+										>
+											{/* Background Image */}
+											<img
+												src={cat.image}
+												alt={title}
+												className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+											/>
 
-										{/* Gradient Overlay for Readability */}
-										<div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent transition-opacity duration-300 group-hover:from-slate-950/95" />
+											{/* Gradient Overlay for Readability */}
+											<div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent transition-opacity duration-300 group-hover:from-slate-950/95" />
 
-										{/* Card Content Overlay */}
-										<div className="absolute inset-0 p-6 flex flex-col justify-end z-10">
-											<div className="flex items-end justify-between gap-4">
-												<div>
-													<h3 className="text-xl font-extrabold text-white mb-1.5 tracking-wide group-hover:text-primary-light transition-colors">
-														{cat.title[language]}
-													</h3>
-													<p className="text-slate-300 text-xs leading-relaxed line-clamp-2">
-														{cat.desc[language]}
-													</p>
-												</div>
+											{/* Card Content Overlay */}
+											<div className="absolute inset-0 p-6 flex flex-col justify-end z-10">
+												<div className="flex items-end justify-between gap-4">
+													<div>
+														<h3 className="text-xl font-extrabold text-white mb-1.5 tracking-wide group-hover:text-primary-light transition-colors">
+															{title}
+														</h3>
+														{desc && (
+															<p className="text-slate-300 text-xs leading-relaxed line-clamp-2">
+																{desc}
+															</p>
+														)}
+													</div>
 
-												{/* Interactive Arrow Button */}
-												<div className={cn(
-													"w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20 transition-all duration-300 group-hover:bg-primary group-hover:border-primary",
-													isRtl ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"
-												)}>
-													<ArrowUpRight className={cn("w-4 h-4 text-white", isRtl && "scale-x-[-1]")} />
+													{/* Interactive Arrow Button */}
+													<div className={cn(
+														"w-9 h-9 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center shrink-0 border border-white/20 transition-all duration-300 group-hover:bg-primary group-hover:border-primary",
+														isRtl ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"
+													)}>
+														<ArrowUpRight className={cn("w-4 h-4 text-white", isRtl && "scale-x-[-1]")} />
+													</div>
 												</div>
 											</div>
-										</div>
-									</LocalizedLink>
-								</div>
-							))}
+										</LocalizedLink>
+									</div>
+								);
+							})}
 						</div>
 					</div>
 				</div>

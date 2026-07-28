@@ -7,7 +7,8 @@ import LocalizedLink from "@/components/ui/LocalizedLink";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
-export const CategoriesSection = () => {
+
+export const CategoriesSection = ({ categories = [], isLoading }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
@@ -24,6 +25,18 @@ export const CategoriesSection = () => {
 	const scrollNext = () => {
 		if (emblaApi) emblaApi.scrollNext();
 	};
+
+	const categoriesToDisplay = categories && categories.length > 0 ? categories : healthNeeds;
+
+	if (isLoading && (!categories || categories.length === 0)) {
+		return (
+			<Section bg="background" spacing="xs" className="overflow-hidden">
+				<Container>
+					<div className="h-[280px] w-full bg-slate-100 animate-pulse rounded-[32px]"></div>
+				</Container>
+			</Section>
+		);
+	}
 
 	return (
 		<Section bg="background" spacing="xs" className="overflow-hidden">
@@ -58,32 +71,45 @@ export const CategoriesSection = () => {
 					<div className="relative z-10 w-full md:w-[80%] lg:w-[85%]" dir={isRtl ? "rtl" : "ltr"}>
 						<div className="overflow-hidden" ref={emblaRef}>
 							<div className="flex touch-pan-y -ml-4 rtl:-mr-4 rtl:ml-0">
-								{healthNeeds.map((need, index) => (
-									<div
-										key={need.id + index}
-										className="flex-[0_0_40%] sm:flex-[0_0_30%] md:flex-[0_0_25%] lg:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
-									>
-										<LocalizedLink
-											to={need.link}
-											className="group relative flex flex-col overflow-hidden rounded-[24px] aspect-[4/5] bg-surface border border-border/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-										>
-											<img
-												src={need.image}
-												alt={need.title[language]}
-												className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-											/>
-											{/* Bottom Fade for Text */}
-											<div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface via-surface/60 to-transparent pointer-events-none" />
+								{categoriesToDisplay.map((need, index) => {
+									const getLocalized = (field) => {
+										if (!field) return "";
+										if (typeof field === "string") return field;
+										return field[language] || field.en || field.ar || "";
+									};
 
-											{/* Text */}
-											<div className="absolute inset-x-0 bottom-0 p-4 pt-8 flex items-end justify-center text-center">
-												<span className="text-text font-extrabold text-sm sm:text-base leading-tight drop-shadow-sm">
-													{need.title[language]}
-												</span>
-											</div>
-										</LocalizedLink>
-									</div>
-								))}
+									const title = getLocalized(need.title) || getLocalized(need.name);
+									const linkUrl = (need.link && typeof need.link === 'string' && need.link.startsWith('/'))
+										? need.link
+										: `/category/${need.id || need.link}`;
+
+									return (
+										<div
+											key={need.id || index}
+											className="flex-[0_0_40%] sm:flex-[0_0_30%] md:flex-[0_0_25%] lg:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
+										>
+											<LocalizedLink
+												to={linkUrl}
+												className="group relative flex flex-col overflow-hidden rounded-[24px] aspect-[4/5] bg-surface border border-border/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+											>
+												<img
+													src={need.image}
+													alt={title}
+													className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+												/>
+												{/* Bottom Fade for Text */}
+												<div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface via-surface/60 to-transparent pointer-events-none" />
+
+												{/* Text */}
+												<div className="absolute inset-x-0 bottom-0 p-4 pt-8 flex items-end justify-center text-center">
+													<span className="text-text font-extrabold text-sm sm:text-base leading-tight drop-shadow-sm">
+														{title}
+													</span>
+												</div>
+											</LocalizedLink>
+										</div>
+									);
+								})}
 							</div>
 						</div>
 
