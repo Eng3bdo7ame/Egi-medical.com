@@ -36,10 +36,11 @@ export const ProductCard = ({ product, variant = PRODUCT_CARD_VARIANTS.DEFAULT, 
 	if (!product) return null;
 
 	const discount = calculateDiscount(product.price?.current, product.price?.original);
+	const targetSlug = product.slug || product._apiOriginal?.slug || product.id?.toString().replace('prod-', '');
 
 	return (
 		<LocalizedLink 
-			to={`/products/${product.slug}`}
+			to={`/products/${targetSlug}`}
 			className={cn(
 				"group relative flex flex-col w-full bg-surface border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-border-hover hover:shadow-floating outline-none",
 				variant === PRODUCT_CARD_VARIANTS.COMPACT && "p-2",

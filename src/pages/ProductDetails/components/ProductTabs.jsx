@@ -98,10 +98,12 @@ export const ProductTabs = ({ description, specifications, reviews }) => {
 				
 				{/* Description Tab */}
 				<div className={cn(activeTab === "description" ? "block" : "hidden")}>
-					<div 
-						className="prose prose-sm md:prose-base dark:prose-invert max-w-none prose-p:text-text-secondary prose-headings:text-text mb-8"
-						dangerouslySetInnerHTML={{ __html: description?.[language] || "" }} 
-					/>
+					<div className="w-full overflow-x-auto">
+						<div 
+							className="prose prose-sm md:prose-base dark:prose-invert max-w-none prose-p:text-text-secondary prose-headings:text-text prose-table:w-full prose-table:border-collapse prose-th:bg-surface-2 prose-th:p-3 prose-td:p-3 prose-td:border prose-th:border mb-8 min-w-full"
+							dangerouslySetInnerHTML={{ __html: description?.[language] || "" }} 
+						/>
+					</div>
 					
 					<div className="flex flex-col gap-6 pt-6 border-t border-border">
 						<h3 className="text-lg font-bold text-text">

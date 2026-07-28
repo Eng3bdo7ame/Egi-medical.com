@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Container from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
@@ -15,45 +15,120 @@ import ProductTabs from "./components/ProductTabs";
 import MobileBottomBar from "./components/MobileBottomBar";
 import RelatedProducts from "./components/RelatedProducts";
 import RecentlyViewed from "@/components/products/RecentlyViewed";
+import LoadingState from "../Products/components/States/LoadingState";
+import ErrorState from "../Products/components/States/ErrorState";
+import api from "@/services/api/client";
+import { API_ENDPOINTS } from "@/services/api/endpoints";
 
-// Mocks
-import { mockProductDetails } from "./product-details.mock";
+// Mocks (for related products fallback)
 import { mockProducts } from "../Products/components/products.mock";
 
 const ProductDetails = () => {
 	const { slug } = useParams();
 	const navigate = useNavigate();
 	const { language } = useLanguage();
-
-	// Look up product dynamically by slug for realistic mockup experience
-	const matchedProduct = mockProducts.find(p => p.slug === slug);
-	const product = matchedProduct ? {
-		...mockProductDetails,
-		id: matchedProduct.id,
-		title: matchedProduct.title,
-		price: {
-			...mockProductDetails.price,
-			current: matchedProduct.price.current,
-			original: matchedProduct.price.original
-		},
-		images: [matchedProduct.image, ...mockProductDetails.images.slice(1)]
-	} : mockProductDetails;
-
-	const relatedProducts = mockProducts.filter(p => p.id !== product.id).slice(0, 8);
-
-	// Product State
-	const [quantity, setQuantity] = useState(1);
-	const dispatch = useAppDispatch();
-	const isWishlisted = useAppSelector(selectIsWishlisted(product.id));
 	const isRtl = language === "ar";
 
+	const [product, setProduct] = useState(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState(null);
+
+	// Product Interaction State
+	const [quantity, setQuantity] = useState(1);
+	const dispatch = useAppDispatch();
+	const isWishlisted = useAppSelector(selectIsWishlisted(product?.id || ""));
+
+	useEffect(() => {
+		const fetchProductDetails = async () => {
+			setIsLoading(true);
+			setError(null);
+			try {
+				// Fetch product using the slug (or ID) from URL
+				const response = await api.get(`${API_ENDPOINTS.PRODUCTS}/${slug}`);
+				if (response && response.success) {
+					const data = response.data;
+					
+					// Map API data to the format expected by components
+					const priceVal = data.price || 0;
+					const currentPrice = data.final_price || data.special_price || data.sale_price || priceVal;
+					const originalPrice = priceVal > currentPrice ? priceVal : null;
+					
+					const images = [];
+					if (data.primary_image || data.image) {
+						images.push(data.primary_image || data.image);
+					}
+					if (data.images && data.images.length > 0) {
+						data.images.forEach(img => {
+							if (img.image && !images.includes(img.image)) {
+								images.push(img.image);
+							}
+						});
+					} else if (data.gallery && data.gallery.length > 0) {
+						data.gallery.forEach(img => {
+							if (img.image && !images.includes(img.image)) {
+								images.push(img.image);
+							}
+						});
+					}
+					// Fallback if no images
+					if (images.length === 0) images.push("https://placehold.co/800x800?text=No+Image");
+
+					const badges = [];
+					if (data.has_flash_sale) {
+						badges.push({ type: "sale", label: { en: "Flash Sale", ar: "عرض فلاش" } });
+					} else if (data.discount_percentage > 0) {
+						badges.push({ type: "sale", label: { en: `${data.discount_percentage}% OFF`, ar: `خصم ${data.discount_percentage}%` } });
+					}
+
+					const mappedProduct = {
+						id: `prod-${data.id}`,
+						_realId: data.id,
+						title: { ar: data.name || data.title || "", en: data.name || data.title || "" },
+						description: { ar: data.description || "", en: data.description || "" },
+						price: { current: currentPrice, original: originalPrice },
+						images: images,
+						categories: [{ 
+							id: String(data.category_id || ""), 
+							label: { en: data.category || "", ar: data.category || "" } 
+						}],
+						stock: { 
+							// Treat -1 as unlimited for now, or just map what we have
+							quantity: (data.quantity === -1 || data.ignore_quantity) ? 999 : (data.quantity || 0),
+							sku: data.sku || data.item_code || null
+						},
+						brand: { name: data.brand || data.store_name || "EG Medical" },
+						shortDescription: { ar: data.meta_description || "", en: data.meta_description || "" },
+						reviews: { rating: data.rating || 0, count: data.rate_count || 0 },
+						reviewsList: data.product_rates || [], // fallback if mock needs it
+						badges,
+						specifications: [], // If API provides specs, map them here
+						_apiOriginal: data
+					};
+
+					setProduct(mappedProduct);
+				} else {
+					setError(isRtl ? "لم يتم العثور على المنتج" : "Product not found");
+				}
+			} catch (err) {
+				setError(err?.message || (isRtl ? "حدث خطأ أثناء تحميل بيانات المنتج" : "Failed to load product details"));
+			} finally {
+				setIsLoading(false);
+			}
+		};
+
+		if (slug) {
+			fetchProductDetails();
+		}
+	}, [slug, isRtl]);
+
 	const handleAddToCart = () => {
-		if (!product.stock?.quantity) return;
+		if (!product?.stock?.quantity) return;
 		dispatch(addToCart({ product, quantity }));
 		toast.success(isRtl ? "تم إضافة المنتج للسلة بنجاح" : "Product added to cart successfully");
 	};
 
 	const handleToggleWishlist = () => {
+		if (!product) return;
 		dispatch(toggleWishlist(product));
 		if (!isWishlisted) {
 			toast.success(isRtl ? "تم الإضافة إلى المفضلة" : "Added to Wishlist");
@@ -62,12 +137,27 @@ const ProductDetails = () => {
 		}
 	};
 
+	if (isLoading) {
+		return <LoadingState />;
+	}
+
+	if (error || !product) {
+		return (
+			<div className="flex flex-col w-full min-h-screen bg-background pb-10 px-4">
+				<ErrorState message={error || "Product not found"} onRetry={() => window.location.reload()} />
+			</div>
+		);
+	}
+
+	// Related products fallback (since API doesn't return them directly in this payload)
+	const relatedProducts = mockProducts.slice(0, 8);
+
 	// Breadcrumb mapping
 	const breadcrumbItems = [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
 		{ label: { en: "Products", ar: "المنتجات" }, link: "/products" },
-		{ label: { en: product.categories?.[0]?.label.en || "Category", ar: product.categories?.[0]?.label.ar || "القسم" }, link: `/categories/${product.categories?.[0]?.id}` },
-		{ label: { en: product.title.en, ar: product.title.ar } }
+		{ label: product.categories?.[0]?.label || { en: "Category", ar: "القسم" }, link: `/category/${product.categories?.[0]?.id}` },
+		{ label: product.title }
 	];
 
 	return (

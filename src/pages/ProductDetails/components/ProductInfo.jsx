@@ -82,9 +82,12 @@ export const ProductInfo = ({ product }) => {
 			)}
 
 			{/* Short Description */}
-			<p className="text-text-secondary text-base leading-relaxed my-1">
-				{product.shortDescription?.[language]}
-			</p>
+			{product.shortDescription?.[language] && (
+				<div 
+					className="text-text-secondary text-base leading-relaxed my-1 line-clamp-3 prose prose-sm dark:prose-invert"
+					dangerouslySetInnerHTML={{ __html: product.shortDescription[language] }}
+				/>
+			)}
 		</div>
 	);
 };
