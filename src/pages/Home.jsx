@@ -10,14 +10,19 @@ import ShopByCategory from "@/components/home/ShopByCategory";
 import WhyMootah from "@/components/home/WhyMootah";
 import BlogSection from "@/components/home/BlogSection";
 import { homepageConfig } from "@/config/home.config";
+import { useHome } from "@/hooks/queries/useHome";
 
 const Home = () => {
+	const { data, isLoading, error } = useHome();
+	// Extract home data from the API response (interceptor returns response.data already)
+	const homeData = data?.data || {};
+
 	return (
 		<div className="flex flex-col w-full overflow-hidden">
 			{homepageConfig.map((section) => {
 				switch (section.type) {
 					case "hero":
-						return <Hero key={section.id} />;
+						return <Hero key={section.id} sliders={homeData.sliders || []} isLoading={isLoading} />;
 					case "categoryPills":
 						return <CategoryPills key={section.id} />;
 					case "promo":

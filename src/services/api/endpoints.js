@@ -1,4 +1,5 @@
 export const API_ENDPOINTS = {
+	HOME: "/home",
 	LOGIN: "/auth/login",
 	REGISTER: "/auth/register",
 	PRODUCTS: "/products",

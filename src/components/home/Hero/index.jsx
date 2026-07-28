@@ -9,9 +9,23 @@ import HeroImage from "./HeroImage";
 import Container from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 
-export const Hero = () => {
+export const Hero = ({ sliders = [], isLoading }) => {
 	const { language } = useLanguage();
 	const [activeIndex, setActiveIndex] = useState(0);
+
+	// Merge API data with static data to preserve text/buttons/features if API returns empty strings
+	const slidesToDisplay = (sliders && sliders.length > 0 ? sliders : heroSlides).map((apiSlide, index) => {
+		const staticFallback = heroSlides[index] || heroSlides[0];
+		return {
+			...staticFallback,
+			...apiSlide,
+			title: apiSlide.title || staticFallback.title,
+			subtitle: apiSlide.description || staticFallback.subtitle,
+			buttons: staticFallback.buttons,
+			features: staticFallback.features,
+			background: apiSlide.background || staticFallback.background,
+		};
+	});
 
 	// Calm motion variants for text
 	const textVariants = {
@@ -43,19 +57,23 @@ export const Hero = () => {
 		exit: { opacity: 0, transition: { duration: 0.2 } },
 	};
 
+	if (isLoading && (!sliders || sliders.length === 0)) {
+		return <Section spacing="none"><div className="min-h-[520px] bg-slate-100 animate-pulse w-full"></div></Section>;
+	}
+
 	return (
 		<Section spacing="none">
 			<HeroSlider onSlideChange={setActiveIndex}>
-				{heroSlides.map((slide, index) => {
+				{slidesToDisplay.map((slide, index) => {
 					const isActive = index === activeIndex;
 
 					return (
 						<div
-							key={slide.id}
+							key={slide.id || index}
 							className="relative flex-[0_0_100%] min-w-0 h-auto min-h-[520px] sm:min-h-[460px] md:min-h-[480px] lg:h-[520px] select-none"
 						>
 							{/* Background Component (Full width) */}
-							<HeroBackground bgClass={slide.background} />
+							<HeroBackground bgClass={slide.background || "bg-[#F4F7FC]"} />
 
 							<div className="absolute inset-0 z-10 w-full h-full">
 								<Container className="h-full">
@@ -77,7 +95,7 @@ export const Hero = () => {
 											{isActive && (
 												<HeroImage
 													src={slide.image}
-													alt={`${slide.brand} product`}
+													alt={slide.brand ? `${slide.brand} product` : `Slider image`}
 													imageVariants={imageVariants}
 												/>
 											)}
