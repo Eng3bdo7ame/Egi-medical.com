@@ -47,7 +47,7 @@ export const Navigation = () => {
 						<button
 							className={cn(
 								"inline-flex items-center justify-between min-w-[220px] h-[56px] text-white text-[15px] font-bold px-6 rounded-t-xl transition-all duration-300 cursor-pointer select-none shrink-0",
-								isMegaMenuOpen ? "bg-secondary/90 shadow-inner" : "bg-secondary hover:bg-secondary/90 hover:-translate-y-0.5"
+								isMegaMenuOpen ? "bg-primary/90 shadow-inner" : "bg-primary hover:bg-primary/90 hover:-translate-y-0.5"
 							)}
 							aria-haspopup="true"
 							aria-expanded={isMegaMenuOpen}

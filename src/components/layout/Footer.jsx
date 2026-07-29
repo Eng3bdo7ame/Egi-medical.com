@@ -58,7 +58,7 @@ export const Footer = () => {
 				</div>
 
 				{/* Main Footer Links */}
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 mb-10 sm:mb-16">
 					
 					{/* Brand Info */}
 					<div className="space-y-6">
