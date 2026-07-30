@@ -12,7 +12,9 @@ import Orders from "./components/Orders";
 import Addresses from "./components/Addresses";
 import Settings from "./components/Settings";
 import OrderDetails from "./components/OrderDetails";
-import { useLogout } from "@/features/auth";
+import { useLogout, useCurrentUser } from "@/features/auth";
+import { useProfile } from "@/features/user";
+
 
 const Account = () => {
 	const { language } = useLanguage();
@@ -20,6 +22,10 @@ const Account = () => {
 	const navigate = useNavigate();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const { logout } = useLogout();
+	
+	// Fetch user profile from API and sync to Redux
+	useProfile();
+	const { user } = useCurrentUser();
 	
 	const activeTab = searchParams.get("tab") || "overview";
 	const orderId = searchParams.get("orderId");
@@ -70,11 +76,11 @@ const Account = () => {
 						{/* User Mini Profile */}
 						<div className="flex items-center gap-4 mb-6 p-2">
 							<div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-xl shrink-0">
-								A
+								{user?.name ? user.name.charAt(0).toUpperCase() : "U"}
 							</div>
 							<div className="flex flex-col overflow-hidden">
-								<span className="font-bold text-text truncate">Ahmed Mohamed</span>
-								<span className="text-xs text-text-muted truncate">ahmed@example.com</span>
+								<span className="font-bold text-text truncate">{user?.name || "User"}</span>
+								<span className="text-xs text-text-muted truncate">{user?.email || ""}</span>
 							</div>
 						</div>
 
@@ -122,11 +128,11 @@ const Account = () => {
 						<div className="flex items-center justify-between bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
 							<div className="flex items-center gap-3">
 								<div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-lg shrink-0">
-									A
+									{user?.name ? user.name.charAt(0).toUpperCase() : "U"}
 								</div>
 								<div className="flex flex-col min-w-0">
-									<span className="font-bold text-text truncate text-sm">Ahmed Mohamed</span>
-									<span className="text-xs text-text-muted truncate">ahmed@example.com</span>
+									<span className="font-bold text-text truncate text-sm">{user?.name || "User"}</span>
+									<span className="text-xs text-text-muted truncate">{user?.email || ""}</span>
 								</div>
 							</div>
 							<button 
@@ -167,7 +173,7 @@ const Account = () => {
 
 					{/* Main Content Area */}
 					<div className="flex-1 w-full min-w-0">
-						{activeTab === "overview" && <ProfileOverview />}
+						{activeTab === "overview" && <ProfileOverview user={user} />}
 						{activeTab === "orders" && (
 							<Orders onViewOrder={(id) => setSearchParams({ tab: "order-details", orderId: id })} />
 						)}

@@ -2,9 +2,11 @@ import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { Package, Heart, MapPin, CreditCard } from "lucide-react";
 
-export const ProfileOverview = () => {
+export const ProfileOverview = ({ user }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+
+	const firstName = user?.name ? user.name.split(" ")[0] : (isRtl ? "مستخدم" : "User");
 
 	const stats = [
 		{ id: "orders", icon: Package, value: 12, label: { en: "Total Orders", ar: "إجمالي الطلبات" }, color: "text-primary", bg: "bg-primary/10" },
@@ -20,7 +22,7 @@ export const ProfileOverview = () => {
 			<div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 md:p-8 flex items-center justify-between">
 				<div className="flex flex-col gap-2">
 					<h2 className="text-2xl font-extrabold text-text">
-						{isRtl ? "مرحباً بعودتك، أحمد!" : "Welcome back, Ahmed!"}
+						{isRtl ? `مرحباً بعودتك، ${firstName}!` : `Welcome back, ${firstName}!`}
 					</h2>
 					<p className="text-text-secondary">
 						{isRtl 

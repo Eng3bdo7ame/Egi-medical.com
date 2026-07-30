@@ -48,7 +48,7 @@ export const Header = () => {
 					"w-full transition-shadow duration-200",
 					isSticky
 						? "fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-surface/95 backdrop-blur-md shadow-md"
-						: "relative z-50"
+						: "relative z-[100]"
 				)}
 			>
 				{/* Desktop: MainHeader + Navigation */}

@@ -1,28 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { CreditCard, Banknote } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePaymentMethods } from "@/hooks/queries/usePaymentMethods";
+
+const getPaymentIcon = (name = "") => {
+	const lower = name.toLowerCase();
+	if (lower.includes("cod") || lower.includes("cash") || lower.includes("استلام") || lower.includes("نقد")) {
+		return Banknote;
+	}
+	return CreditCard;
+};
 
 export const PaymentMethod = ({ onNext, onBack }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	
-	const [selected, setSelected] = useState("cod");
+	const { data: apiMethods = [], isLoading } = usePaymentMethods();
+	const [selected, setSelected] = useState(null);
 
-	const methods = [
-		{
-			id: "cod",
-			icon: Banknote,
-			title: { en: "Cash on Delivery", ar: "الدفع عند الاستلام" },
-			desc: { en: "Pay when you receive your order", ar: "ادفع نقداً عند استلام طلبك" }
-		},
-		{
-			id: "card",
-			icon: CreditCard,
-			title: { en: "Credit / Debit Card", ar: "بطاقة ائتمان / خصم مباشر" },
-			desc: { en: "Visa, Mastercard, Meeza", ar: "فيزا، ماستركارد، ميزة" }
+	useEffect(() => {
+		if (apiMethods.length > 0 && selected === null) {
+			const activeMethod = apiMethods.find(m => m.is_active !== false) || apiMethods[0];
+			setSelected(activeMethod.id);
 		}
-	];
+	}, [apiMethods, selected]);
+
+	const currentMethod = apiMethods.find(m => m.id === selected);
+	const isCardSelected = currentMethod && !(
+		currentMethod.name?.toLowerCase().includes("cash") ||
+		currentMethod.name?.toLowerCase().includes("cod") ||
+		currentMethod.name?.includes("استلام") ||
+		currentMethod.name?.includes("نقد")
+	);
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col gap-6 p-6 bg-surface rounded-2xl border border-border/50 items-center justify-center min-h-[200px]">
+				<div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+				<span className="text-sm font-semibold text-text-secondary">
+					{isRtl ? "جاري تحميل طرق الدفع..." : "Loading payment methods..."}
+				</span>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex flex-col gap-6 p-6 bg-surface rounded-2xl border border-border/50">
@@ -31,8 +52,8 @@ export const PaymentMethod = ({ onNext, onBack }) => {
 			</h2>
 
 			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				{methods.map(method => {
-					const Icon = method.icon;
+				{apiMethods.map(method => {
+					const Icon = getPaymentIcon(method.name);
 					const isSelected = selected === method.id;
 					return (
 						<label 
@@ -51,8 +72,8 @@ export const PaymentMethod = ({ onNext, onBack }) => {
 								)}
 							</div>
 							
-							<span className="font-bold text-text text-lg leading-tight">{method.title[language]}</span>
-							<span className="text-xs font-medium text-text-secondary px-2">{method.desc[language]}</span>
+							<span className="font-bold text-text text-lg leading-tight">{method.name}</span>
+							<span className="text-xs font-medium text-text-secondary px-2">{method.description}</span>
 
 							<input 
 								type="radio" 
@@ -68,7 +89,7 @@ export const PaymentMethod = ({ onNext, onBack }) => {
 			</div>
 
 			{/* Dummy Card Form (shows only if Card is selected) */}
-			{selected === "card" && (
+			{isCardSelected && (
 				<div className="flex flex-col gap-4 p-4 mt-2 bg-surface-2/50 rounded-xl border border-border/60 animate-in fade-in slide-in-from-top-4">
 					<div className="flex flex-col gap-2">
 						<label className="text-xs font-bold text-text-secondary">{isRtl ? "رقم البطاقة" : "Card Number"}</label>

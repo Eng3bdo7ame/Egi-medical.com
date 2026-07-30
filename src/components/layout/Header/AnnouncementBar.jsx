@@ -20,7 +20,7 @@ export const AnnouncementBar = () => {
 	const { logout } = useLogout();
 
 	return (
-		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none relative z-[60]">
+		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none relative z-[110]">
 			<Container>
 				<div className="flex items-center justify-between py-2.5 gap-4">
 					{/* Left: Shipping */}

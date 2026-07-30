@@ -19,6 +19,8 @@ export const API_ENDPOINTS = {
 	BLOGS: "/blogs",
 	FLASH_SALES: "/flash-sales",
 	LATEST_PRODUCTS: "/latest-products",
+	PROFILE: "/profile",
+	PAYMENT_METHODS: "/payment-methods",
 };
 
 export default API_ENDPOINTS;
