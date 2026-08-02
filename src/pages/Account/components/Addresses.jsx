@@ -1,29 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { MapPin, Plus, Edit2, Trash2, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUserAddresses, useCreateAddress, useUpdateAddress, useDeleteAddress } from "@/hooks/queries/useUserAddresses";
+import { useCountries, useGovernorates, useCities } from "@/hooks/queries/useLocations";
 
 export const Addresses = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
+	const { data: apiAddresses = [], isLoading } = useUserAddresses();
+	const createAddress = useCreateAddress();
+	const updateAddress = useUpdateAddress();
+	const deleteAddress = useDeleteAddress();
+
 	// State for addresses
-	const [addresses, setAddresses] = useState([
-		{
-			id: 1,
-			title: { en: "Home", ar: "المنزل" },
-			details: { en: "123 El Thawra St, Heliopolis, Cairo", ar: "١٢٣ شارع الثورة، مصر الجديدة، القاهرة" },
-			phone: "+20 100 123 4567",
-			isDefault: true
-		},
-		{
-			id: 2,
-			title: { en: "Office", ar: "العمل" },
-			details: { en: "45 Maadi Ring Road, Maadi, Cairo", ar: "٤٥ الطريق الدائري المعادي، المعادي، القاهرة" },
-			phone: "+20 111 987 6543",
-			isDefault: false
+	const [addresses, setAddresses] = useState([]);
+
+	useEffect(() => {
+		if (apiAddresses.length > 0) {
+			const formatted = apiAddresses.map(addr => ({
+				id: addr.id,
+				title: { 
+					en: addr.name || "Shipping Address", 
+					ar: addr.name || "عنوان الشحن" 
+				},
+				details: { 
+					en: `${addr.address || ""}, ${addr.city?.name || ""}, ${addr.governorate?.name || ""}, ${addr.country?.name || ""}`,
+					ar: `${addr.address || ""}, ${addr.city?.name || ""}, ${addr.governorate?.name || ""}, ${addr.country?.name || ""}`
+				},
+				phone: addr.phone || "",
+				isDefault: !!addr.is_main,
+				raw: addr
+			}));
+			setAddresses(formatted);
+		} else {
+			setAddresses([]);
 		}
-	]);
+	}, [apiAddresses]);
 
 	// Modal State
 	const [isOpen, setIsOpen] = useState(false);
@@ -34,6 +48,21 @@ export const Addresses = () => {
 	const [details, setDetails] = useState("");
 	const [phone, setPhone] = useState("");
 	const [isDefault, setIsDefault] = useState(false);
+	
+	const [countryId, setCountryId] = useState("");
+	const [governorateId, setGovernorateId] = useState("");
+	const [cityId, setCityId] = useState("");
+
+	// Location options
+	const { data: countriesData } = useCountries();
+	const countries = countriesData?.data || (Array.isArray(countriesData) ? countriesData : []);
+
+	const { data: govData } = useGovernorates(countryId);
+	const governorates = govData?.data || (Array.isArray(govData) ? govData : []);
+
+	const { data: citiesData } = useCities(governorateId);
+	const cities = citiesData?.data || (Array.isArray(citiesData) ? citiesData : []);
+
 
 	// Open Modal for Create
 	const handleOpenCreate = () => {
@@ -42,16 +71,22 @@ export const Addresses = () => {
 		setDetails("");
 		setPhone("");
 		setIsDefault(false);
+		setCountryId("");
+		setGovernorateId("");
+		setCityId("");
 		setIsOpen(true);
 	};
 
 	// Open Modal for Edit
 	const handleOpenEdit = (address) => {
 		setEditingAddress(address);
-		setTitle(address.title[language]);
-		setDetails(address.details[language]);
-		setPhone(address.phone);
+		setTitle(address.raw?.name || address.title[language] || "");
+		setDetails(address.raw?.address || address.details[language] || "");
+		setPhone(address.phone || "");
 		setIsDefault(address.isDefault);
+		setCountryId(address.raw?.country?.id || address.raw?.country_id || "");
+		setGovernorateId(address.raw?.governorate?.id || address.raw?.governorate_id || "");
+		setCityId(address.raw?.city?.id || address.raw?.city_id || "");
 		setIsOpen(true);
 	};
 
@@ -61,61 +96,51 @@ export const Addresses = () => {
 	};
 
 	// Submit Form
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (!title.trim() || !details.trim() || !phone.trim()) return;
+		if (!title.trim() || !details.trim() || !phone.trim() || !countryId || !governorateId || !cityId) return;
 
-		let updatedList;
-		const addressData = {
-			id: editingAddress ? editingAddress.id : Date.now(),
-			title: editingAddress 
-				? { ...editingAddress.title, [language]: title } 
-				: { en: title, ar: title },
-			details: editingAddress 
-				? { ...editingAddress.details, [language]: details } 
-				: { en: details, ar: details },
+		const payload = {
+			name: title.trim(),
 			phone: phone.trim(),
-			isDefault: isDefault
+			address: details.trim(),
+			country_id: Number(countryId),
+			governorate_id: Number(governorateId),
+			city_id: Number(cityId),
+			is_main: isDefault ? 1 : 0
 		};
 
-		if (isDefault) {
-			// Unmark other defaults
-			updatedList = addresses.map(addr => ({
-				...addr,
-				isDefault: false
-			}));
-		} else {
-			updatedList = [...addresses];
+		try {
+			if (editingAddress) {
+				await updateAddress.mutateAsync({ id: editingAddress.id, ...payload });
+			} else {
+				await createAddress.mutateAsync(payload);
+			}
+			setIsOpen(false);
+		} catch (error) {
+			console.error("Failed to save address:", error);
 		}
-
-		if (editingAddress) {
-			// Edit Mode
-			updatedList = updatedList.map(addr => 
-				addr.id === editingAddress.id ? addressData : addr
-			);
-		} else {
-			// Create Mode
-			updatedList.push(addressData);
-		}
-
-		// Fallback: If only one address exists, make it default
-		if (updatedList.length === 1) {
-			updatedList[0].isDefault = true;
-		}
-
-		setAddresses(updatedList);
-		setIsOpen(false);
 	};
 
 	// Delete Address
-	const handleDelete = (id) => {
-		const updatedList = addresses.filter(addr => addr.id !== id);
-		// If we deleted the default address and list is not empty, make first address default
-		if (updatedList.length > 0 && !updatedList.some(addr => addr.isDefault)) {
-			updatedList[0].isDefault = true;
+	const handleDelete = async (id) => {
+		try {
+			await deleteAddress.mutateAsync(id);
+		} catch (error) {
+			console.error("Failed to delete address:", error);
 		}
-		setAddresses(updatedList);
 	};
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col gap-6 p-6 bg-surface rounded-2xl border border-border/50 items-center justify-center min-h-[200px]">
+				<div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+				<span className="text-sm font-semibold text-text-secondary">
+					{isRtl ? "جاري تحميل العناوين..." : "Loading addresses..."}
+				</span>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -248,6 +273,63 @@ export const Addresses = () => {
 									placeholder={isRtl ? "الشارع، رقم المبنى، الحي، المدينة" : "Street, Building, Area, City"}
 									className="w-full bg-surface-2 border border-border/80 rounded-xl px-3.5 py-2.5 text-sm text-text placeholder:text-text-muted/40 outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all resize-none"
 								/>
+							</div>
+
+							{/* Country Selection */}
+							<div className="flex flex-col gap-1.5">
+								<label className="text-xs font-bold text-text-secondary">{isRtl ? "البلد" : "Country"}</label>
+								<select 
+									required 
+									value={countryId}
+									onChange={e => {
+										setCountryId(e.target.value);
+										setGovernorateId("");
+										setCityId("");
+									}}
+									className="w-full bg-surface-2 border border-border/80 rounded-xl px-3.5 py-2.5 text-sm text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all cursor-pointer"
+								>
+									<option value="">{isRtl ? "اختر البلد" : "Select Country"}</option>
+									{countries.map(c => (
+										<option key={c.id} value={c.id}>{c.name}</option>
+									))}
+								</select>
+							</div>
+
+							{/* Governorate Selection */}
+							<div className="flex flex-col gap-1.5">
+								<label className="text-xs font-bold text-text-secondary">{isRtl ? "المحافظة" : "Governorate"}</label>
+								<select 
+									required 
+									value={governorateId}
+									disabled={!countryId}
+									onChange={e => {
+										setGovernorateId(e.target.value);
+										setCityId("");
+									}}
+									className="w-full bg-surface-2 border border-border/80 rounded-xl px-3.5 py-2.5 text-sm text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+								>
+									<option value="">{isRtl ? "اختر المحافظة" : "Select Governorate"}</option>
+									{governorates.map(g => (
+										<option key={g.id} value={g.id}>{g.name}</option>
+									))}
+								</select>
+							</div>
+
+							{/* City Selection */}
+							<div className="flex flex-col gap-1.5">
+								<label className="text-xs font-bold text-text-secondary">{isRtl ? "المنطقة / الحي" : "Area / District"}</label>
+								<select 
+									required 
+									value={cityId}
+									disabled={!governorateId}
+									onChange={e => setCityId(e.target.value)}
+									className="w-full bg-surface-2 border border-border/80 rounded-xl px-3.5 py-2.5 text-sm text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+								>
+									<option value="">{isRtl ? "اختر المنطقة" : "Select Area"}</option>
+									{cities.map(c => (
+										<option key={c.id} value={c.id}>{c.name}</option>
+									))}
+								</select>
 							</div>
 
 							{/* Phone Input */}

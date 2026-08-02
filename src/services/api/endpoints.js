@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
 	LATEST_PRODUCTS: "/latest-products",
 	PROFILE: "/profile",
 	PAYMENT_METHODS: "/payment-methods",
+	ADDRESSES: "/addresses",
 };
 
 export default API_ENDPOINTS;
