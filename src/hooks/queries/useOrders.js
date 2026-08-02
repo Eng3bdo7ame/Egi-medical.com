@@ -35,3 +35,18 @@ export const useCreateOrder = () => {
 		},
 	});
 };
+
+export const useCancelOrder = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (orderId) => {
+			const response = await orderApi.cancelOrder(orderId);
+			return response.data || response;
+		},
+		onSuccess: (data, orderId) => {
+			queryClient.invalidateQueries({ queryKey: ["orders"] });
+			queryClient.invalidateQueries({ queryKey: ["order", orderId] });
+		},
+	});
+};

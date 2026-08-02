@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { Info, Settings2, MessageSquare, ChevronDown, HelpCircle, Star, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAddReview } from "@/hooks/queries/useReviews";
 
 import SpecificationTable from "./SpecificationTable";
 import RatingSummary from "./RatingSummary";
@@ -10,10 +11,11 @@ import QnASubtab from "./QnASubtab";
 import TrustBadges from "./TrustBadges";
 import MedicalDisclaimer from "./MedicalDisclaimer";
 
-export const ProductTabs = ({ description, specifications, reviews }) => {
+export const ProductTabs = ({ productId, description, specifications, reviews }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const [activeTab, setActiveTab] = useState("description");
+	const addReviewMutation = useAddReview();
 
 	// Local reviews state for dynamic additions
 	const [localReviews, setLocalReviews] = useState(reviews || []);
@@ -32,27 +34,43 @@ export const ProductTabs = ({ description, specifications, reviews }) => {
 	const [formComment, setFormComment] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(false);
 
-	const handleReviewSubmit = (e) => {
+	const handleReviewSubmit = async (e) => {
 		e.preventDefault();
 		if (!formComment.trim()) return;
 
-		const newReview = {
-			id: Date.now(),
-			user: formName.trim() || (isRtl ? "مستخدم" : "Anonymous"),
-			verified: true,
-			date: isRtl ? "الآن" : "Just now",
-			rating: formRating,
-			title: formTitle,
-			comment: formComment
-		};
+		try {
+			await addReviewMutation.mutateAsync({
+				product_id: productId,
+				rating: formRating,
+				comment: formComment
+			});
 
-		setLocalReviews([newReview, ...localReviews]);
-		setFormName("");
-		setFormTitle("");
-		setFormComment("");
-		setFormRating(5);
-		setIsSubmitted(true);
-		setTimeout(() => setIsSubmitted(false), 4000);
+			const newReview = {
+				id: Date.now(),
+				user: formName.trim() || (isRtl ? "مستخدم" : "Anonymous"),
+				verified: true,
+				date: isRtl ? "الآن" : "Just now",
+				rating: formRating,
+				title: formTitle,
+				comment: formComment
+			};
+
+			setLocalReviews([newReview, ...localReviews]);
+			setFormName("");
+			setFormTitle("");
+			setFormComment("");
+			setFormRating(5);
+			setIsSubmitted(true);
+			setTimeout(() => setIsSubmitted(false), 4000);
+			alert(isRtl ? "تم نشر تقييمك بنجاح!" : "Review submitted successfully!");
+		} catch (err) {
+			console.error("Failed to submit review:", err);
+			alert(
+				isRtl 
+					? (err.response?.data?.message || "فشل إرسال التقييم. يرجى المحاولة مرة أخرى.") 
+					: (err.response?.data?.message || "Failed to submit review. Please try again.")
+			);
+		}
 	};
 
 	const filteredReviews = selectedRating 
@@ -237,9 +255,17 @@ export const ProductTabs = ({ description, specifications, reviews }) => {
 								<div className="flex justify-end">
 									<button 
 										type="submit"
-										className="h-12 px-6 bg-primary hover:bg-primary-hover text-white font-extrabold rounded-xl transition-all shadow-sm active:scale-[0.98] text-sm"
+										disabled={addReviewMutation.isPending}
+										className="h-12 px-6 bg-primary hover:bg-primary-hover text-white font-extrabold rounded-xl transition-all shadow-sm active:scale-[0.98] text-sm disabled:opacity-50 flex items-center justify-center gap-2"
 									>
-										{isRtl ? "نشر التقييم" : "Submit Review"}
+										{addReviewMutation.isPending ? (
+											<>
+												<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+												<span>{isRtl ? "جاري النشر..." : "Submitting..."}</span>
+											</>
+										) : (
+											<span>{isRtl ? "نشر التقييم" : "Submit Review"}</span>
+										)}
 									</button>
 								</div>
 							</form>

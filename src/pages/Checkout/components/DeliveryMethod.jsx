@@ -76,7 +76,7 @@ export const DeliveryMethod = ({ onNext, onBack }) => {
 				<button onClick={onBack} className="h-14 px-8 border-2 border-border/60 text-text font-bold rounded-xl hover:bg-surface-2 transition-colors">
 					{isRtl ? "رجوع" : "Back"}
 				</button>
-				<button onClick={onNext} className="flex-1 h-14 bg-primary text-white font-extrabold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-hover active:scale-[0.98] transition-all">
+				<button onClick={() => onNext(selected)} className="flex-1 h-14 bg-primary text-white font-extrabold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-hover active:scale-[0.98] transition-all">
 					{isRtl ? "المتابعة للدفع" : "Continue to Payment"}
 				</button>
 			</div>

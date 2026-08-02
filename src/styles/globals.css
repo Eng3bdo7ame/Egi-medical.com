@@ -378,3 +378,54 @@ body {
     -webkit-text-fill-color: white !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   DYNAMIC HTML CONTENT STYLE SYSTEM (RTL & LTR COMPLIANT)
+   ═══════════════════════════════════════════════════════════ */
+.html-content {
+  line-height: 2.0;
+  font-size: 1.125rem;
+}
+.html-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  text-align: justify;
+}
+.html-content strong, .html-content b {
+  font-weight: 800;
+  color: var(--text-heading);
+}
+.html-content ul {
+  list-style-type: disc;
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+.html-content ol {
+  list-style-type: decimal;
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+.html-content li {
+  margin-bottom: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+}
+.html-content h1, .html-content h2, .html-content h3, .html-content h4 {
+  font-weight: 900;
+  color: var(--text-heading);
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.025em;
+  line-height: 1.4;
+}
+.html-content h1 { font-size: 2.25rem; }
+.html-content h2 { font-size: 1.875rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; }
+.html-content h3 { font-size: 1.5rem; }
+.html-content h4 { font-size: 1.25rem; }
+
+html[dir="rtl"] .html-content ul,
+html[dir="rtl"] .html-content ol {
+  padding-left: 0;
+  padding-right: 2rem;
+}

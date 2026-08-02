@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { ArrowLeft, Check, Package, Download, Printer, RefreshCw, Undo2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Check, Package, AlertCircle, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useOrderDetails } from "@/hooks/queries/useOrders";
+import { useOrderDetails, useCancelOrder } from "@/hooks/queries/useOrders";
 
 export const OrderDetails = ({ orderId, onBack }) => {
 	const { language } = useLanguage();
@@ -11,45 +11,17 @@ export const OrderDetails = ({ orderId, onBack }) => {
 	const { data: rawOrder, isLoading, error } = useOrderDetails(orderId);
 	const order = rawOrder?.data?.[0] || rawOrder;
 
-	const [showReturnForm, setShowReturnForm] = useState(false);
-	const [selectedReturnItems, setSelectedReturnItems] = useState({});
-	const [returnReason, setReturnReason] = useState("");
-	const [isSubmittingReturn, setIsSubmittingReturn] = useState(false);
+	const cancelOrderMutation = useCancelOrder();
 
-	const handleReorder = () => {
-		alert(isRtl ? "تمت إعادة إضافة جميع المنتجات إلى سلة المشتريات بنجاح!" : "All products from this order have been successfully added to your cart!");
-	};
-
-	const handleDownloadPDF = () => {
-		alert(isRtl ? "جاري تحميل الفاتورة بصيغة PDF..." : "Downloading invoice PDF...");
-	};
-
-	const handlePrint = () => {
-		window.print();
-	};
-
-	const handleItemCheckboxChange = (idx) => {
-		setSelectedReturnItems(prev => ({
-			...prev,
-			[idx]: !prev[idx]
-		}));
-	};
-
-	const handleReturnSubmit = (e) => {
-		e.preventDefault();
-		const hasSelectedItems = Object.values(selectedReturnItems).some(val => val === true);
-		if (!hasSelectedItems) {
-			alert(isRtl ? "يرجى تحديد منتج واحد على الأقل لإرجاعه." : "Please select at least one item to return.");
-			return;
+	const handleCancelOrder = async () => {
+		if (window.confirm(isRtl ? "هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟" : "Are you sure you want to cancel this order?")) {
+			try {
+				await cancelOrderMutation.mutateAsync(orderId);
+				alert(isRtl ? "تم إلغاء الطلب بنجاح." : "Order cancelled successfully.");
+			} catch (err) {
+				alert(isRtl ? "فشل إلغاء الطلب. يرجى المحاولة مرة أخرى." : "Failed to cancel order. Please try again.");
+			}
 		}
-
-		setIsSubmittingReturn(true);
-		
-		setTimeout(() => {
-			setShowReturnForm(false);
-			setIsSubmittingReturn(false);
-			alert(isRtl ? "تم تقديم طلب الإرجاع بنجاح!" : "Return request submitted successfully!");
-		}, 1000);
 	};
 
 	if (isLoading) {
@@ -109,8 +81,6 @@ export const OrderDetails = ({ orderId, onBack }) => {
 		{ label: { en: "Delivered", ar: "تم التوصيل" }, date: null, active: ["delivered", "completed"].includes(order.status) }
 	];
 
-	const itemsList = order.items || [];
-
 	return (
 		<div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 			{/* Back Header */}
@@ -128,25 +98,44 @@ export const OrderDetails = ({ orderId, onBack }) => {
 				</div>
 			</div>
 
-			{/* Status Banner */}
+			{/* Status Banner with Cancel Action */}
 			<div className={cn(
-				"p-4 rounded-xl border flex items-center justify-between",
+				"p-5 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm",
 				["delivered", "completed"].includes(order.status) && "bg-success/5 border-success/20 text-success",
 				["processing", "pending"].includes(order.status) && "bg-warning/5 border-warning/20 text-warning",
 				order.status === "cancelled" && "bg-danger/5 border-danger/20 text-danger"
 			)}>
-				<div className="flex items-center gap-3">
-					<Package className="w-5 h-5" />
-					<span className="font-extrabold text-sm sm:text-base">
-						{getStatusDescription()}
-					</span>
+				<div className="flex items-center gap-3.5">
+					<div className="p-2.5 bg-surface rounded-xl border border-current/15 flex items-center justify-center shrink-0">
+						<Package className="w-5 h-5" />
+					</div>
+					<div className="flex flex-col">
+						<span className="font-black text-sm sm:text-base leading-tight">
+							{getStatusDescription()}
+						</span>
+						<span className="text-xs text-text-muted mt-1 font-semibold">{order.created_at || order.date}</span>
+					</div>
 				</div>
-				<span className="text-xs text-text-muted">{order.created_at || order.date}</span>
+
+				{["pending", "processing"].includes(order.status) && (
+					<button 
+						onClick={handleCancelOrder}
+						disabled={cancelOrderMutation.isPending}
+						className="h-11 px-5 bg-danger text-white font-extrabold rounded-xl transition-all text-xs cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 hover:bg-danger/90 self-start sm:self-auto shrink-0 shadow-sm shadow-danger/10"
+					>
+						{cancelOrderMutation.isPending ? (
+							<RefreshCw className="w-3.5 h-3.5 animate-spin" />
+						) : (
+							<AlertCircle className="w-3.5 h-3.5" />
+						)}
+						{isRtl ? "إلغاء الطلب" : "Cancel Order"}
+					</button>
+				)}
 			</div>
 
 			{/* Refund Banner Details (for Cancelled orders) */}
 			{order.status === "cancelled" && (
-				<div className="p-4 bg-info/5 border border-info/20 text-info rounded-xl flex gap-3 text-sm animate-in fade-in duration-300">
+				<div className="p-4 bg-info/5 border border-info/20 text-info rounded-2xl flex gap-3 text-sm animate-in fade-in duration-300">
 					<AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
 					<div className="flex flex-col gap-1">
 						<span className="font-extrabold">{isRtl ? "تفاصيل استرداد الأموال (Refund)" : "Refund Confirmation"}</span>
@@ -160,8 +149,8 @@ export const OrderDetails = ({ orderId, onBack }) => {
 			)}
 
 			{/* Tracking Stepper */}
-			<div className="bg-surface border border-border/50 rounded-2xl p-6">
-				<h3 className="font-bold text-text mb-6">
+			<div className="bg-surface border border-border/50 rounded-2xl p-6 shadow-xs">
+				<h3 className="font-extrabold text-text text-base mb-6 pb-2 border-b border-border/30">
 					{isRtl ? "تتبع الشحنة" : "Order Tracking"}
 				</h3>
 				<div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative">
@@ -199,207 +188,74 @@ export const OrderDetails = ({ orderId, onBack }) => {
 				</div>
 			</div>
 
-			{/* Return Items Form Block */}
-			{showReturnForm && itemsList.length > 0 && (
-				<div className="bg-surface border border-warning/30 rounded-2xl p-6 animate-in slide-in-from-top-4 duration-300">
-					<h3 className="font-bold text-text text-lg mb-4 flex items-center gap-2">
-						<Undo2 className="w-5 h-5 text-warning animate-pulse" />
-						{isRtl ? "طلب إرجاع المنتجات" : "Request Return"}
-					</h3>
-					
-					<form onSubmit={handleReturnSubmit} className="flex flex-col gap-5">
-						<span className="text-xs font-bold text-text-secondary select-none">
-							{isRtl ? "حدد المنتجات التي تود إرجاعها من الطلب:" : "Select items to return from this order:"}
-						</span>
-
-						{/* Items list with checkboxes */}
-						<div className="flex flex-col gap-3">
-							{itemsList.map((item, idx) => {
-								const title = item.product?.title?.[language] || item.product_name || item.name || "";
-								const image = item.product?.image || item.image || "";
-								return (
-									<label key={idx} className="flex items-center gap-3 p-3 bg-surface-2/40 hover:bg-surface-2 rounded-xl cursor-pointer transition-colors border border-border/40 select-none">
-										<input 
-											type="checkbox"
-											checked={!!selectedReturnItems[idx]}
-											onChange={() => handleItemCheckboxChange(idx)}
-											className="w-4.5 h-4.5 text-primary accent-primary rounded cursor-pointer"
-										/>
-										{image && <img src={image} alt="" className="w-10 h-10 rounded-lg object-cover border border-border/50" />}
-										<div className="flex-1 flex flex-col min-w-0">
-											<span className="font-bold text-text text-xs sm:text-sm truncate">{title}</span>
-											<span className="text-[10px] text-text-muted mt-0.5">{isRtl ? "الكمية المتاحة:" : "Available Qty:"} {item.quantity}</span>
-										</div>
-									</label>
-								);
-							})}
-						</div>
-
-						{/* Reason for Return */}
-						<div className="flex flex-col gap-1.5">
-							<label className="text-xs font-bold text-text-secondary">{isRtl ? "سبب الإرجاع" : "Reason for Return"}</label>
-							<select 
-								required 
-								value={returnReason}
-								onChange={e => setReturnReason(e.target.value)}
-								className="h-12 px-4 bg-surface-2 border border-border/80 rounded-xl outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-sm font-semibold cursor-pointer"
-							>
-								<option value="">{isRtl ? "اختر سبب الإرجاع" : "Select return reason"}</option>
-								<option value="defective">{isRtl ? "جهاز معيب / لا يعمل" : "Defective medical device / Not working"}</option>
-								<option value="wrong_item">{isRtl ? "منتج خاطئ غير المطابق للطلب" : "Incorrect item shipped"}</option>
-								<option value="damaged">{isRtl ? "المنتج تالف أو مكسور" : "Item arrived damaged"}</option>
-								<option value="change_of_mind">{isRtl ? "تغيير رأيي (العبوة مغلقة)" : "Changed my mind (Sealed package)"}</option>
-							</select>
-						</div>
-
-						<div className="flex justify-end gap-2 mt-2">
-							<button 
-								type="button"
-								onClick={() => setShowReturnForm(false)}
-								className="h-11 px-5 bg-surface-2 hover:bg-surface-3 text-text font-bold rounded-xl transition-all text-sm cursor-pointer"
-							>
-								{isRtl ? "إلغاء" : "Cancel"}
-							</button>
-							<button 
-								type="submit"
-								disabled={isSubmittingReturn}
-								className="h-11 px-5 bg-warning hover:bg-warning-hover text-white font-extrabold rounded-xl transition-all text-sm flex items-center gap-2 shadow-sm cursor-pointer"
-							>
-								{isSubmittingReturn ? (
-									<>
-										<RefreshCw className="w-4 h-4 animate-spin" />
-										<span>{isRtl ? "جاري الإرسال..." : "Submitting..."}</span>
-									</>
-								) : (
-									<>
-										<Check className="w-4 h-4" />
-										<span>{isRtl ? "تأكيد طلب الإرجاع" : "Submit Request"}</span>
-									</>
-								)}
-							</button>
-						</div>
-					</form>
-				</div>
-			)}
-
-			{/* Order Items */}
-			<div className="bg-surface border border-border/50 rounded-2xl p-6">
-				<h3 className="font-bold text-text mb-4">{isRtl ? "المنتجات" : "Items In Order"}</h3>
-				{itemsList.length === 0 ? (
-					<span className="text-sm text-text-muted">{isRtl ? "لا توجد منتجات مسجلة في هذا الطلب" : "No items listed in this order"}</span>
-				) : (
-					<div className="flex flex-col gap-4">
-						{itemsList.map((item, idx) => {
-							const title = item.product?.title?.[language] || item.product_name || item.name || "";
-							const image = item.product?.image || item.image || "";
-							const price = item.price || item.unitPrice || 0;
-							return (
-								<div key={idx} className="flex items-center gap-4 py-3 border-b border-border/40 last:border-0">
-									{image && <img src={image} alt="" className="w-16 h-16 rounded-xl object-cover border border-border/50" />}
-									<div className="flex-1 flex flex-col min-w-0">
-										<span className="font-bold text-text text-sm sm:text-base line-clamp-1">{title}</span>
-										<span className="text-xs text-text-muted mt-0.5">{isRtl ? "الكمية:" : "Qty:"} {item.quantity}</span>
-									</div>
-									<div className="flex flex-col items-end">
-										<span className="font-extrabold text-primary text-sm sm:text-base">
-											{Number(price).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
-										</span>
-									</div>
-								</div>
-							);
-						})}
-					</div>
-				)}
-			</div>
-
 			{/* Delivery & Payment Info */}
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 				
 				{/* Shipping Address */}
-				<div className="bg-surface border border-border/50 rounded-2xl p-6">
-					<h3 className="font-bold text-text mb-3">{isRtl ? "عنوان الشحن" : "Shipping Address"}</h3>
-					<p className="text-sm text-text-secondary leading-relaxed">
+				<div className="bg-surface border border-border/50 rounded-2xl p-6 shadow-xs">
+					<h3 className="font-extrabold text-text text-base mb-3.5 pb-2 border-b border-border/30">
+						{isRtl ? "عنوان الشحن" : "Shipping Address"}
+					</h3>
+					<p className="text-sm text-text-secondary leading-relaxed font-semibold">
 						{formattedAddress}
 					</p>
 				</div>
 
 				{/* Payment Details */}
-				<div className="bg-surface border border-border/50 rounded-2xl p-6 flex flex-col justify-between">
-					<div>
-						<h3 className="font-bold text-text mb-3">{isRtl ? "طريقة الدفع" : "Payment Method"}</h3>
-						<p className="text-sm text-text-secondary">
-							{order.payment_method || (isRtl ? "غير محدد" : "Not specified")}
-						</p>
-					</div>
-					
-					{/* Action Buttons */}
-					<div className="flex flex-wrap items-center gap-2 mt-6">
-						<button 
-							onClick={handleReorder}
-							className="flex-1 min-w-[120px] flex items-center justify-center gap-2 h-11 px-4 bg-primary hover:bg-primary-hover text-white font-extrabold rounded-xl transition-all text-sm cursor-pointer"
-						>
-							<RefreshCw className="w-4 h-4" />
-							{isRtl ? "إعادة الطلب" : "Reorder"}
-						</button>
-
-						{/* Return items button (Visible only when order is delivered) */}
-						{["delivered", "completed"].includes(order.status) && !showReturnForm && (
-							<button 
-								onClick={() => setShowReturnForm(true)}
-								className="flex-1 min-w-[120px] flex items-center justify-center gap-2 h-11 px-4 bg-warning hover:bg-warning-hover text-white font-extrabold rounded-xl transition-all text-sm cursor-pointer"
-							>
-								<Undo2 className="w-4 h-4" />
-								{isRtl ? "إرجاع المنتجات" : "Return Items"}
-							</button>
-						)}
-						
-						<button 
-							onClick={handleDownloadPDF}
-							className="flex items-center justify-center w-11 h-11 bg-surface-2 hover:bg-surface-3 text-text rounded-xl transition-all cursor-pointer"
-							title={isRtl ? "تحميل الفاتورة" : "Download Invoice"}
-						>
-							<Download className="w-4 h-4" />
-						</button>
-						<button 
-							onClick={handlePrint}
-							className="flex items-center justify-center w-11 h-11 bg-surface-2 hover:bg-surface-3 text-text rounded-xl transition-all cursor-pointer"
-							title={isRtl ? "طباعة" : "Print"}
-						>
-							<Printer className="w-4 h-4" />
-						</button>
-					</div>
+				<div className="bg-surface border border-border/50 rounded-2xl p-6 shadow-xs">
+					<h3 className="font-extrabold text-text text-base mb-3.5 pb-2 border-b border-border/30">
+						{isRtl ? "طريقة الدفع" : "Payment Method"}
+					</h3>
+					<p className="text-sm text-text-secondary font-bold">
+						{order.payment_method || (isRtl ? "غير محدد" : "Not specified")}
+					</p>
 				</div>
 
 			</div>
 
 			{/* Financial Summary */}
-			<div className="bg-surface border border-border/50 rounded-2xl p-6 md:p-8">
-				<h3 className="font-bold text-text mb-4">{isRtl ? "ملخص الحساب" : "Payment Summary"}</h3>
-				<div className="flex flex-col gap-3">
+			<div className="bg-surface border border-border/50 rounded-2xl p-6 md:p-8 shadow-xs">
+				<h3 className="font-extrabold text-text text-base mb-4 pb-2 border-b border-border/30">
+					{isRtl ? "ملخص الحساب" : "Payment Summary"}
+				</h3>
+				<div className="flex flex-col gap-3.5">
 					<div className="flex justify-between text-sm text-text-secondary">
 						<span>{isRtl ? "المجموع الفرعي" : "Subtotal"}</span>
-						<span className="font-bold">
+						<span className="font-bold text-text">
 							{Number(order.subtotal || 0).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
 						</span>
 					</div>
+					
 					<div className="flex justify-between text-sm text-text-secondary">
 						<span>{isRtl ? "الشحن" : "Shipping"}</span>
-						<span className="font-bold">
+						<span className="font-bold text-text">
 							{Number(order.shipping_cost || 0).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
 						</span>
 					</div>
+
+					{order.tax !== undefined && order.tax > 0 && (
+						<div className="flex justify-between text-sm text-text-secondary">
+							<span>{isRtl ? "الضريبة" : "Tax"}</span>
+							<span className="font-bold text-text">
+								{Number(order.tax).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
+							</span>
+						</div>
+					)}
+
 					{Number(order.discount || 0) > 0 && (
-						<div className="flex justify-between text-sm text-success">
+						<div className="flex justify-between text-sm text-success font-semibold">
 							<span>{isRtl ? "الخصم" : "Discount"}</span>
 							<span className="font-bold">
 								-{Number(order.discount).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
 							</span>
 						</div>
 					)}
-					<hr className="border-border/50 my-1" />
-					<div className="flex justify-between text-lg text-text font-extrabold">
+					
+					<hr className="border-border/50 my-1.5" />
+					
+					<div className="flex justify-between text-lg text-text font-black">
 						<span>{isRtl ? "الإجمالي" : "Total"}</span>
-						<span className="text-primary">
+						<span className="text-primary text-xl">
 							{Number(order.total || 0).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
 						</span>
 					</div>

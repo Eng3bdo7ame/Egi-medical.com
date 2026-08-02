@@ -123,6 +123,7 @@ export const ShippingAddress = ({ onNext }) => {
 		const activeAddress = addresses.find(addr => addr.id === selectedAddressId);
 		if (!activeAddress) return;
 		onNext({
+			id: activeAddress.id,
 			name: activeAddress.name,
 			phone: activeAddress.phone,
 			country: activeAddress.country?.name || activeAddress.country || "",

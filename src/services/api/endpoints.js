@@ -22,6 +22,11 @@ export const API_ENDPOINTS = {
 	PROFILE: "/profile",
 	PAYMENT_METHODS: "/payment-methods",
 	ADDRESSES: "/addresses",
+	CHECKOUT_STORE: "/checkout/store",
+	CHECKOUT_APPLY_COUPON: "/checkout/apply-coupon",
+	SUB_CATEGORIES: "/sub-categories",
+	RATE_PRODUCT: "/rate-product",
+	PAGES: "/pages",
 };
 
 export default API_ENDPOINTS;

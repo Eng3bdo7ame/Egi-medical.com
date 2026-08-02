@@ -270,6 +270,24 @@ export const removeFromCart = createAsyncThunk(
 	}
 );
 
+export const applyCoupon = createAsyncThunk(
+	"cart/applyCoupon",
+	async (code, { getState, dispatch, rejectWithValue }) => {
+		try {
+			const state = getState();
+			const isAuthenticated = state.auth?.isAuthenticated;
+			const tempUserId = !isAuthenticated ? getOrCreateTempUserId() : null;
+
+			const response = await cartApi.applyCoupon(code, tempUserId);
+			// Sync updated totals/discounts
+			dispatch(fetchCart());
+			return response.data || response;
+		} catch (error) {
+			return rejectWithValue(error.response?.data || error.message || error);
+		}
+	}
+);
+
 const cartSlice = createSlice({
 	name: "cart",
 	initialState,

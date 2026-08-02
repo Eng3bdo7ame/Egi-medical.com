@@ -3,10 +3,19 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import Container from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Award, ShieldCheck, HeartHandshake, Eye, Target, Users, CheckCircle2, ChevronRight, Activity } from "lucide-react";
+import { usePages } from "@/hooks/queries/usePages";
 
 export const About = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
+
+	const { data: pages = [], isLoading } = usePages();
+	const aboutPage = pages.find(p => p.id === 1 || p.title?.includes("من نحن") || p.title?.includes("About") || p.translations?.some(t => t.title?.includes("About") || t.title?.includes("من نحن")));
+	
+	const pageData = aboutPage ? (aboutPage.translations?.find(t => t.locale === language) || {
+		title: aboutPage.title || "",
+		content: aboutPage.content || ""
+	}) : null;
 
 	const breadcrumbItems = [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
@@ -79,12 +88,24 @@ export const About = () => {
 									</>
 								)}
 							</h1>
-							
-							<p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
-								{isRtl 
-									? "المنصة الرائدة في جمهورية مصر العربية لتوفير وتجهيز الأجهزة والمستلزمات الطبية الموثوقة للمستشفيات، العيادات، والأفراد بأعلى معايير الجودة وخدمات صيانة استثنائية."
-									: "Egypt's premier portal for advanced medical engineering, supplying certified clinical equipment and homecare solutions to top hospitals, private practices, and patients nationwide."}
-							</p>
+							{isLoading ? (
+								<div className="space-y-3">
+									<div className="h-4 bg-slate-200 dark:bg-slate-800 animate-pulse rounded w-full"></div>
+									<div className="h-4 bg-slate-200 dark:bg-slate-800 animate-pulse rounded w-5/6"></div>
+									<div className="h-4 bg-slate-200 dark:bg-slate-800 animate-pulse rounded w-2/3"></div>
+								</div>
+							) : pageData?.content ? (
+								<div 
+									className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl space-y-4 html-content"
+									dangerouslySetInnerHTML={{ __html: pageData.content }}
+								/>
+							) : (
+								<p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+									{isRtl 
+										? "المنصة الرائدة في جمهورية مصر العربية لتوفير وتجهيز الأجهزة والمستلزمات الطبية الموثوقة للمستشفيات، العيادات، والأفراد بأعلى معايير الجودة وخدمات صيانة استثنائية."
+										: "Egypt's premier portal for advanced medical engineering, supplying certified clinical equipment and homecare solutions to top hospitals, private practices, and patients nationwide."}
+								</p>
+							)}
 						</div>
 
 						{/* Hero Image / Visual Element */}

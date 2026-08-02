@@ -58,7 +58,11 @@ const Category = () => {
 						category_id: rawSlug !== "all-categories" ? rawSlug : undefined,
 						page: currentPage,
 						sort: sortOption,
-						// Add other filters if needed
+						min_price: price[0] > 0 ? price[0] : undefined,
+						max_price: price[1] < 10000 ? price[1] : undefined,
+						brands: brands.length > 0 ? brands.join(",") : undefined,
+						rating: rating || undefined,
+						in_stock: availability.includes("instock") ? 1 : undefined,
 					}
 				});
 				if (response && response.success) {

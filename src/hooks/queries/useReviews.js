@@ -1,22 +1,17 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import reviewApi from "@/features/reviews/api/reviewApi";
 
-export const useProductReviews = (productId) => {
-	return useQuery({
-		queryKey: ["reviews", productId],
-		queryFn: () => reviewApi.getProductReviews(productId),
-		enabled: !!productId,
-	});
-};
-
-export const useAddReview = (productId) => {
+export const useAddReview = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: (data) => reviewApi.addReview(productId, data),
+		mutationFn: async (reviewData) => {
+			const response = await reviewApi.addReview(reviewData);
+			return response.data || response;
+		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["reviews", productId] });
+			// Invalidate product details to pull updated average rating and reviews list
+			queryClient.invalidateQueries({ queryKey: ["product"] });
 		},
 	});
 };
-

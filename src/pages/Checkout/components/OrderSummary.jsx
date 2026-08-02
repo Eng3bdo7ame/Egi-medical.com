@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Tag } from "lucide-react";
 import { useAppSelector } from "@/app/store/hooks";
 import { 
 	selectCartItems, 
@@ -9,7 +9,7 @@ import {
 	selectCartDiscount, 
 	selectCartTotal 
 } from "@/features/cart/cartSlice";
-import { useCheckoutSummary } from "@/hooks/queries/useCheckoutSummary";
+import { useCheckoutSummary, useApplyCouponCheckout } from "@/hooks/queries/useCheckoutSummary";
 import { cn } from "@/lib/utils";
 
 export const OrderSummary = () => {
@@ -17,6 +17,8 @@ export const OrderSummary = () => {
 	const isRtl = language === "ar";
 	
 	const items = useAppSelector(selectCartItems);
+	const [couponCode, setCouponCode] = useState("");
+	const applyCouponMutation = useApplyCouponCheckout();
 	
 	// Client calculated values as fallback
 	const clientSubtotal = useAppSelector(selectCartSubtotal);
@@ -32,6 +34,21 @@ export const OrderSummary = () => {
 		shipping: apiSummary?.shipping_cost !== undefined ? apiSummary.shipping_cost : clientShipping,
 		discount: apiSummary?.coupon_discount !== undefined ? apiSummary.coupon_discount : clientDiscount,
 		total: apiSummary?.total !== undefined ? apiSummary.total : clientTotal,
+	};
+
+	const handleApplyCoupon = async () => {
+		if (!couponCode.trim()) return;
+		try {
+			await applyCouponMutation.mutateAsync(couponCode);
+			alert(isRtl ? "تم تطبيق الكوبون بنجاح!" : "Coupon applied successfully!");
+		} catch (err) {
+			console.error("Coupon error:", err);
+			alert(
+				isRtl 
+					? (err.response?.data?.message || "الكوبون غير صالح أو منتهي الصلاحية.") 
+					: (err.response?.data?.message || "Invalid or expired coupon.")
+			);
+		}
 	};
 
 	return (
@@ -106,6 +123,34 @@ export const OrderSummary = () => {
 						<span className="font-extrabold">-{summary.discount} {isRtl ? "ج.م" : "EGP"}</span>
 					</div>
 				)}
+			</div>
+
+			{/* Coupon Code Input */}
+			<div className="flex flex-col gap-2 p-1 border-t border-border/40 pt-4">
+				<label className="text-xs font-bold text-text-secondary flex items-center gap-1.5">
+					<Tag className="w-3.5 h-3.5 text-text-muted" />
+					{isRtl ? "كوبون الخصم" : "Discount Coupon"}
+				</label>
+				<div className="flex items-center gap-2">
+					<input 
+						type="text" 
+						value={couponCode}
+						onChange={(e) => setCouponCode(e.target.value)}
+						placeholder={isRtl ? "كود الخصم" : "Coupon code"}
+						className="flex-1 h-10 px-3 bg-surface-2 border border-border/60 rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary uppercase text-xs transition-all font-semibold"
+					/>
+					<button 
+						onClick={handleApplyCoupon}
+						disabled={!couponCode.trim() || applyCouponMutation.isPending}
+						className="h-10 px-4 bg-text text-surface text-xs font-extrabold rounded-xl hover:bg-text-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-[70px]"
+					>
+						{applyCouponMutation.isPending ? (
+							<div className="w-3.5 h-3.5 border-2 border-surface border-t-transparent rounded-full animate-spin" />
+						) : (
+							isRtl ? "تطبيق" : "Apply"
+						)}
+					</button>
+				</div>
 			</div>
 
 			{/* Grand Total Container */}

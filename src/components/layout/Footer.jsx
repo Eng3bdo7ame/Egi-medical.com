@@ -129,11 +129,11 @@ export const Footer = () => {
 							{isRtl ? "خدمة العملاء" : "Customer Service"}
 						</h4>
 						<ul className="space-y-4">
-							<li><LocalizedLink to="/support" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الدعم الفني والصيانة" : "Technical Support"}</LocalizedLink></li>
-							<li><LocalizedLink to="/warranty" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "سياسة الضمان" : "Warranty Policy"}</LocalizedLink></li>
-							<li><LocalizedLink to="/shipping" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الشحن والتوصيل" : "Shipping & Delivery"}</LocalizedLink></li>
+							<li><LocalizedLink to="/about" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "عن الشركة" : "About Us"}</LocalizedLink></li>
+							<li><LocalizedLink to="/privacy" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "سياسة الخصوصية" : "Privacy Policy"}</LocalizedLink></li>
+							<li><LocalizedLink to="/terms" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الشروط والأحكام" : "Terms & Conditions"}</LocalizedLink></li>
 							<li><LocalizedLink to="/faq" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الأسئلة الشائعة" : "FAQ"}</LocalizedLink></li>
-							<li><LocalizedLink to="/track-order" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "تتبع طلبك" : "Track Order"}</LocalizedLink></li>
+							<li><LocalizedLink to="/contact" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "اتصل بنا" : "Contact Us"}</LocalizedLink></li>
 						</ul>
 					</div>
 
@@ -177,10 +177,10 @@ export const Footer = () => {
 					</p>
 					
 					<div className="flex items-center gap-6 text-sm text-slate-500">
-						<LocalizedLink to="/privacy-policy" className="hover:text-primary transition-colors">
+						<LocalizedLink to="/privacy" className="hover:text-primary transition-colors">
 							{isRtl ? "سياسة الخصوصية" : "Privacy Policy"}
 						</LocalizedLink>
-						<LocalizedLink to="/terms-conditions" className="hover:text-primary transition-colors">
+						<LocalizedLink to="/terms" className="hover:text-primary transition-colors">
 							{isRtl ? "الشروط والأحكام" : "Terms & Conditions"}
 						</LocalizedLink>
 					</div>

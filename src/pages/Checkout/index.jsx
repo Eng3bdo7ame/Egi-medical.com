@@ -1,22 +1,30 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import Container from "@/components/ui/Container";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { Lock, MapPin, Truck, CreditCard, ChevronDown } from "lucide-react";
+import { Lock, MapPin, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDispatch } from "react-redux";
 
 import ShippingAddress from "./components/ShippingAddress";
-import DeliveryMethod from "./components/DeliveryMethod";
 import PaymentMethod from "./components/PaymentMethod";
 import OrderSummary from "./components/OrderSummary";
 import OrderSuccess from "./components/OrderSuccess";
 
+import { usePlaceOrder } from "@/hooks/queries/useCheckoutSummary";
+import { clearCart } from "@/features/cart/cartSlice";
+
 const Checkout = () => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
-	
+	const dispatch = useDispatch();
+
 	const [currentStep, setCurrentStep] = useState(1);
 	const [isSuccess, setIsSuccess] = useState(false);
+
+	// Checkout states to send to /checkout/store
+	const [addressId, setAddressId] = useState(null);
+
+	const placeOrderMutation = usePlaceOrder();
 
 	if (isSuccess) {
 		return (
@@ -28,23 +36,46 @@ const Checkout = () => {
 
 	const steps = [
 		{ id: 1, title: { en: "Shipping Address", ar: "عنوان الشحن" }, icon: MapPin },
-		{ id: 2, title: { en: "Delivery Method", ar: "طريقة التوصيل" }, icon: Truck },
-		{ id: 3, title: { en: "Payment", ar: "الدفع" }, icon: CreditCard }
+		{ id: 2, title: { en: "Payment", ar: "الدفع" }, icon: CreditCard }
 	];
 
-	const handleNext = () => {
-		if (currentStep < 3) {
+	const handleNext = (stepData) => {
+		if (currentStep === 1 && stepData) {
+			setAddressId(stepData.id);
+		}
+
+		if (currentStep < 2) {
 			setCurrentStep(prev => prev + 1);
 			window.scrollTo({ top: 0, behavior: "smooth" });
-		} else {
-			setIsSuccess(true);
-			window.scrollTo({ top: 0 });
 		}
 	};
 
 	const handleBack = () => {
 		if (currentStep > 1) {
 			setCurrentStep(prev => prev - 1);
+		}
+	};
+
+	const handlePlaceOrder = async (selectedPaymentId) => {
+		if (!addressId) {
+			alert(isRtl ? "يرجى تحديد عنوان الشحن أولاً." : "Please select a shipping address first.");
+			setCurrentStep(1);
+			return;
+		}
+
+		try {
+			await placeOrderMutation.mutateAsync({
+				address_id: addressId,
+				shipping_method: "standard", // default backend static shipping method fallback
+				payment_method_id: selectedPaymentId,
+			});
+			// Clear local cart storage
+			dispatch(clearCart());
+			setIsSuccess(true);
+			window.scrollTo({ top: 0 });
+		} catch (err) {
+			console.error("Order creation failed:", err);
+			alert(isRtl ? "فشل تأكيد الطلب. الرجاء المحاولة مرة أخرى." : "Failed to place order. Please try again.");
 		}
 	};
 
@@ -124,8 +155,7 @@ const Checkout = () => {
 										<div className="overflow-hidden">
 											<div className="border-t border-border/50">
 												{step.id === 1 && <ShippingAddress onNext={handleNext} />}
-												{step.id === 2 && <DeliveryMethod onNext={handleNext} onBack={handleBack} />}
-												{step.id === 3 && <PaymentMethod onNext={handleNext} onBack={handleBack} />}
+												{step.id === 2 && <PaymentMethod onNext={handlePlaceOrder} onBack={handleBack} isPending={placeOrderMutation.isPending} />}
 											</div>
 										</div>
 									</div>

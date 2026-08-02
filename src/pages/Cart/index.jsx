@@ -9,7 +9,7 @@ import CartItem from "./components/CartItem";
 import CartSummary from "./components/CartSummary";
 import EmptyCartState from "./components/EmptyCartState";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { selectCartItems, selectCartSubtotal, selectCartShipping, selectCartDiscount, selectCartTotal, removeFromCart, updateQuantity } from "@/features/cart/cartSlice";
+import { selectCartItems, selectCartSubtotal, selectCartShipping, selectCartDiscount, selectCartTotal, removeFromCart, updateQuantity, applyCoupon } from "@/features/cart/cartSlice";
 import { toast } from "sonner";
 
 const Cart = () => {
@@ -47,12 +47,21 @@ const Cart = () => {
 		handleRemoveItem(productId, selectedVariant);
 	};
 
-	const handleApplyCoupon = (code) => {
+	const handleApplyCoupon = async (code) => {
 		setIsValidatingCoupon(true);
-		setTimeout(() => {
+		try {
+			const result = await dispatch(applyCoupon(code)).unwrap();
+			toast.success(isRtl ? "تم تطبيق الكوبون بنجاح!" : "Coupon applied successfully!");
+		} catch (err) {
+			console.error("Coupon error:", err);
+			toast.error(
+				isRtl 
+					? (err.message || "الكوبون غير صالح أو منتهي الصلاحية.") 
+					: (err.message || "Invalid or expired coupon.")
+			);
+		} finally {
 			setIsValidatingCoupon(false);
-			toast.success(isRtl ? "تم تطبيق الكوبون" : "Coupon applied successfully");
-		}, 800);
+		}
 	};
 
 	return (

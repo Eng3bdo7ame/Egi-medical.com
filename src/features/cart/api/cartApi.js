@@ -59,6 +59,14 @@ export const cartApi = {
 	deleteCartItem: (id) => {
 		return api.delete(`${API_ENDPOINTS.CART}/${id}`);
 	},
+
+	applyCoupon: (code, tempUserId) => {
+		const data = { coupon_code: code };
+		if (tempUserId) {
+			data.temp_user_id = tempUserId;
+		}
+		return api.post(API_ENDPOINTS.CHECKOUT_APPLY_COUPON, data);
+	},
 };
 
 export default cartApi;

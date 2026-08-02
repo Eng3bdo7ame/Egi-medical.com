@@ -19,9 +19,7 @@ import LoadingState from "../Products/components/States/LoadingState";
 import ErrorState from "../Products/components/States/ErrorState";
 import api from "@/services/api/client";
 import { API_ENDPOINTS } from "@/services/api/endpoints";
-
-// Mocks (for related products fallback)
-import { mockProducts } from "../Products/components/products.mock";
+import { useProducts } from "@/hooks/queries/useProducts";
 
 const ProductDetails = () => {
 	const { slug } = useParams();
@@ -37,6 +35,13 @@ const ProductDetails = () => {
 	const [quantity, setQuantity] = useState(1);
 	const dispatch = useAppDispatch();
 	const isWishlisted = useAppSelector(selectIsWishlisted(product?.id || ""));
+
+	// Fetch related products dynamically from the current product's category
+	const categoryId = product?.categories?.[0]?.id;
+	const { data: catResponse } = useProducts(
+		{ category_id: categoryId },
+		{ enabled: !!categoryId }
+	);
 
 	useEffect(() => {
 		const fetchProductDetails = async () => {
@@ -149,8 +154,29 @@ const ProductDetails = () => {
 		);
 	}
 
-	// Related products fallback (since API doesn't return them directly in this payload)
-	const relatedProducts = mockProducts.slice(0, 8);
+	// Related products fetched dynamically from API
+	const apiRelatedProducts = catResponse?.data?.data || catResponse?.data || [];
+	const relatedProducts = apiRelatedProducts
+		.filter(p => String(p.id) !== String(product?._realId))
+		.slice(0, 8)
+		.map(apiProd => {
+			const priceVal = apiProd.price || 0;
+			const currentPrice = apiProd.final_price || apiProd.special_price || apiProd.sale_price || priceVal;
+			const originalPrice = priceVal > currentPrice ? priceVal : null;
+			return {
+				id: `prod-${apiProd.id}`,
+				title: { ar: apiProd.title || apiProd.name || "", en: apiProd.title || apiProd.name || "" },
+				category: { ar: apiProd.category || "", en: apiProd.category || "", id: String(apiProd.category_id || "") },
+				brand: apiProd.brand || "",
+				image: apiProd.primary_image || apiProd.image || "",
+				price: { current: currentPrice, original: originalPrice },
+				reviews: { rating: apiProd.rating || 0, count: apiProd.rate_count || 0 },
+				stock: { quantity: apiProd.quantity || 0 },
+				badges: [],
+				link: apiProd.product_link || `/products/${apiProd.id}`,
+				_apiOriginal: apiProd
+			};
+		});
 
 	// Breadcrumb mapping
 	const breadcrumbItems = [
@@ -180,6 +206,7 @@ const ProductDetails = () => {
 						{/* Desktop: Move Tabs inside left column so right column can stick alongside it */}
 						<div className="hidden lg:block mt-2">
 							<ProductTabs
+								productId={product._realId}
 								description={product.description}
 								specifications={product.specifications}
 								reviews={product.reviewsList}
@@ -212,6 +239,7 @@ const ProductDetails = () => {
 				{/* Mobile: Tabs below everything else */}
 				<div className="lg:hidden mt-8">
 					<ProductTabs
+						productId={product._realId}
 						description={product.description}
 						specifications={product.specifications}
 						reviews={product.reviewsList}

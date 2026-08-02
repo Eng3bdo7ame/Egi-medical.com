@@ -12,7 +12,7 @@ const getPaymentIcon = (name = "") => {
 	return CreditCard;
 };
 
-export const PaymentMethod = ({ onNext, onBack }) => {
+export const PaymentMethod = ({ onNext, onBack, isPending }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	
@@ -109,11 +109,18 @@ export const PaymentMethod = ({ onNext, onBack }) => {
 			)}
 
 			<div className="flex gap-4 mt-4">
-				<button onClick={onBack} className="h-14 px-8 border-2 border-border/60 text-text font-bold rounded-xl hover:bg-surface-2 transition-colors">
+				<button onClick={onBack} disabled={isPending} className="h-14 px-8 border-2 border-border/60 text-text font-bold rounded-xl hover:bg-surface-2 disabled:opacity-50 transition-colors">
 					{isRtl ? "رجوع" : "Back"}
 				</button>
-				<button onClick={onNext} className="flex-1 h-14 bg-primary text-white font-extrabold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-hover active:scale-[0.98] transition-all">
-					{isRtl ? "تأكيد الطلب" : "Place Order"}
+				<button onClick={() => onNext(selected)} disabled={isPending} className="flex-1 h-14 bg-primary text-white font-extrabold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-hover active:scale-[0.98] disabled:opacity-50 transition-all flex items-center justify-center gap-2">
+					{isPending ? (
+						<>
+							<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+							<span>{isRtl ? "جاري الإرسال..." : "Processing..."}</span>
+						</>
+					) : (
+						<span>{isRtl ? "تأكيد الطلب" : "Place Order"}</span>
+					)}
 				</button>
 			</div>
 		</div>
