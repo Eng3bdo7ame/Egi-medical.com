@@ -8,6 +8,8 @@ export const useLogout = () => {
 	const logout = async () => {
 		try {
 			await authService.logout();
+		} catch (error) {
+			console.error("Logout API request failed:", error);
 		} finally {
 			dispatch(logoutAction());
 		}

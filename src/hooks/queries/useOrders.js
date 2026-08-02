@@ -1,17 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import orderService from "@/services/orderService";
+import orderApi from "@/features/orders/api/orderApi";
 
 export const useOrders = () => {
 	return useQuery({
 		queryKey: ["orders"],
-		queryFn: orderService.getOrders,
+		queryFn: async () => {
+			const response = await orderApi.getOrders();
+			return response.data || response;
+		},
 	});
 };
 
 export const useOrderDetails = (id) => {
 	return useQuery({
 		queryKey: ["order", id],
-		queryFn: () => orderService.getOrderById(id),
+		queryFn: async () => {
+			const response = await orderApi.getOrderById(id);
+			return response.data || response;
+		},
 		enabled: !!id,
 	});
 };
@@ -20,7 +26,10 @@ export const useCreateOrder = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: orderService.createOrder,
+		mutationFn: async (data) => {
+			const response = await orderApi.createOrder(data);
+			return response.data || response;
+		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["orders"] });
 		},
