@@ -49,7 +49,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/*"
-          target: "/home/u373210132/domains/egimedical.com/public_html/front-end/"
+          target: "/home/u373210132/domains/egimedical.com/public_html/frontend/"
           strip_components: 1
           overwrite: true
           timeout: 120s
