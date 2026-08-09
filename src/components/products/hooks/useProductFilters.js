@@ -45,6 +45,7 @@ export const useProductFilters = () => {
 			return [0, 10000];
 		})(),
 		search: getStringParam("q", ""),
+		filterMode: getStringParam("filter", null),
 	}), [searchParams]);
 
 	// --- Updaters ---

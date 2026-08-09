@@ -77,9 +77,13 @@ export const PriceSlider = ({ min = 0, max = 10000, value, onChange, currency = 
 					/>
 				</div>
 			</div>
-			<div className="flex justify-between items-center text-xs text-text-muted">
-				<span>{min} {currency}</span>
-				<span>{max} {currency}</span>
+			<div className="flex justify-end mt-2">
+				<button 
+					onClick={handleBlur}
+					className="px-4 py-1.5 bg-primary text-white text-xs font-bold rounded-md hover:bg-primary/90 transition-colors"
+				>
+					{isRtl ? "تطبيق" : "Apply"}
+				</button>
 			</div>
 		</div>
 	);

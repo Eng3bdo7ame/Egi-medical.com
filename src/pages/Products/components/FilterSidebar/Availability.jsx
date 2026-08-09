@@ -10,8 +10,8 @@ export const Availability = ({ selectedOptions = [], onChange, counts = {} }) =>
 	const { language } = useLanguage();
 
 	const options = [
-		{ id: "instock", label: { en: "In Stock", ar: "متوفر" }, count: counts.instock || 0 },
-		{ id: "sale", label: { en: "On Sale", ar: "تخفيضات" }, count: counts.sale || 0 }
+		{ id: "instock", label: { en: "In Stock", ar: "متوفر" }, count: counts.instock },
+		{ id: "sale", label: { en: "On Sale", ar: "تخفيضات" }, count: counts.sale }
 	];
 
 	return (

@@ -24,7 +24,7 @@ export const navigationLinks = [
 	{ 
 		id: "offers",
 		name: { en: "Offers & Sales", ar: "التخفيضات" }, 
-		path: "/products?filter=offers",
+		path: "/offers",
 		isOffer: true
 	},
 	{ 

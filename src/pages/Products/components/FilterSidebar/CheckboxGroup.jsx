@@ -22,7 +22,7 @@ export const CheckboxGroup = ({ label, value, checked, onChange, count }) => {
 				</span>
 			</div>
 			
-			{count !== undefined && (
+			{count != null && (
 				<span className="text-xs text-text-muted font-medium bg-surface-2 px-2 py-0.5 rounded-full">
 					{count}
 				</span>

@@ -133,6 +133,10 @@ export const routes = [
 						path: ROUTES.FLASH_DEALS.substring(1),
 						element: <FlashDeals />,
 					},
+					{
+						path: ROUTES.OFFERS.substring(1),
+						element: <Category isOffersRoute={true} />,
+					},
 					// Protected Routes directly accessible (Guards removed temporarily)
 					{
 						path: ROUTES.CHECKOUT.substring(1),

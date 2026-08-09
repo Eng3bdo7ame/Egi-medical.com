@@ -24,7 +24,7 @@ import useProductFilters from "@/components/products/hooks/useProductFilters";
 
 // Mock Data (Removed)
 
-const Category = () => {
+const Category = ({ isOffersRoute = false }) => {
 	const params = useParams();
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
@@ -37,6 +37,7 @@ const Category = () => {
 	const [totalPages, setTotalPages] = useState(1);
 	const [totalItems, setTotalItems] = useState(0);
 	const [categoryName, setCategoryName] = useState({ en: "", ar: "" });
+	const [allCategories, setAllCategories] = useState([]);
 
 	// Extract slug from route params (handles :slug and wildcard *)
 	const rawSlug = params["*"]
@@ -45,31 +46,47 @@ const Category = () => {
 
 	// Custom Hook for URL State Sync
 	const { state, updateParams, toggleArrayItem, clearAllFilters } = useProductFilters();
-	const { viewMode, sortOption, currentPage, availability, brands, rating, price } = state;
+	const { viewMode, sortOption, currentPage, availability, categories, rating, price, filterMode } = state;
 
 	const location = useLocation();
 	const searchQuery = new URLSearchParams(location.search).get("search");
+
+	// Fetch all categories once on mount so they always appear in the filter sidebar
+	useEffect(() => {
+		const fetchCategories = async () => {
+			try {
+				const response = await api.get(API_ENDPOINTS.CATEGORIES);
+				if (response && response.success) {
+					setAllCategories(response.data || []);
+				}
+			} catch (err) {
+				console.error("Failed to load global categories", err);
+			}
+		};
+		fetchCategories();
+	}, []);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
 			setIsLoading(true);
 			setError(null);
 			try {
-				const response = await api.get(API_ENDPOINTS.PRODUCTS, {
+				const endpoint = (isOffersRoute || filterMode === "offers") ? "/offers" : API_ENDPOINTS.PRODUCTS;
+				const response = await api.get(endpoint, {
 					params: {
-						category_id: rawSlug !== "all-categories" ? rawSlug : undefined,
+						category_id: categories.length > 0 ? categories.join(",") : (rawSlug !== "all-categories" ? rawSlug : undefined),
 						search: searchQuery || undefined,
 						page: currentPage,
 						sort: sortOption,
 						min_price: price[0] > 0 ? price[0] : undefined,
 						max_price: price[1] < 10000 ? price[1] : undefined,
-						brands: brands.length > 0 ? brands.join(",") : undefined,
 						rating: rating || undefined,
 						in_stock: availability.includes("instock") ? 1 : undefined,
 					}
 				});
 				if (response && response.success) {
-					const apiProducts = response.data?.data || [];
+					const dataPayload = response.data;
+					const apiProducts = Array.isArray(dataPayload) ? dataPayload : (dataPayload?.data || []);
 					const mappedProducts = apiProducts.map(apiProd => {
 						const priceVal = apiProd.price || 0;
 						const currentPrice = apiProd.final_price || apiProd.special_price || apiProd.sale_price || priceVal;
@@ -84,8 +101,8 @@ const Category = () => {
 							id: `prod-${apiProd.id}`,
 							title: { ar: apiProd.title || apiProd.name || "", en: apiProd.title || apiProd.name || "" },
 							category: { ar: apiProd.category || "", en: apiProd.category || "", id: String(apiProd.category_id || "") },
-							brand: apiProd.brand || "",
-							image: apiProd.primary_image || apiProd.image || "",
+							categories: apiProd.categories || [],
+							image: apiProd.primary_image || apiProd.image || apiProd.category?.image || "",
 							price: { current: currentPrice, original: originalPrice },
 							reviews: { rating: apiProd.rating || 0, count: apiProd.rate_count || 0 },
 							stock: { quantity: apiProd.quantity || 0 },
@@ -95,8 +112,8 @@ const Category = () => {
 						};
 					});
 					setProducts(mappedProducts);
-					setTotalPages(response.data?.meta?.last_page || response.data?.last_page || 1);
-					setTotalItems(response.data?.meta?.total || response.data?.total || mappedProducts.length);
+					setTotalPages(dataPayload?.meta?.last_page || dataPayload?.last_page || 1);
+					setTotalItems(dataPayload?.meta?.total || dataPayload?.total || mappedProducts.length);
 					
 					// Set real category name from the first product
 					if (mappedProducts.length > 0) {
@@ -117,12 +134,17 @@ const Category = () => {
 	const itemsPerPage = 12;
 
 	const isAllProducts = rawSlug === "all-categories";
-	const displayCategoryName = isAllProducts
-		? (isRtl ? "كل المنتجات" : "All Products")
-		: (categoryName[language] || (isRtl ? "منتجات القسم" : "Category Products"));
+	const isOffers = isOffersRoute || filterMode === "offers";
+	
+	const displayCategoryName = isOffers
+		? (isRtl ? "التخفيضات والعروض" : "Offers & Sales")
+		: (isAllProducts ? (isRtl ? "كل المنتجات" : "All Products") : (categoryName[language] || (isRtl ? "منتجات القسم" : "Category Products")));
 
 	// Breadcrumb mapping
-	const breadcrumbItems = isAllProducts ? [
+	const breadcrumbItems = isOffers ? [
+		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
+		{ label: { en: "Offers & Sales", ar: "التخفيضات والعروض" } }
+	] : isAllProducts ? [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
 		{ label: { en: "All Products", ar: "كل المنتجات" } }
 	] : [
@@ -131,14 +153,17 @@ const Category = () => {
 		{ label: { en: displayCategoryName, ar: displayCategoryName } }
 	];
 
-	// Fake Filter Options (Would come from API)
+	// Use global categories from API for the filter, so they don't disappear when products are filtered
+	const dynamicCategories = useMemo(() => {
+		return allCategories.map(cat => ({
+			id: String(cat.id),
+			label: { en: cat.title || cat.name || "", ar: cat.name || cat.title || "" },
+			count: null // Set to null to avoid misleading static counts, or use cat.products_count if accurate
+		}));
+	}, [allCategories]);
+
 	const filterOptions = {
-		availability: { instock: 145, sale: 32 },
-		brands: [
-			{ id: "omron", label: { en: "OMRON", ar: "أومرون" }, count: 42 },
-			{ id: "littmann", label: { en: "Littmann", ar: "ليتمان" }, count: 18 },
-			{ id: "roche", label: { en: "Roche", ar: "روش" }, count: 24 }
-		]
+		categories: dynamicCategories
 	};
 
 	// Handlers for Filters
@@ -155,11 +180,8 @@ const Category = () => {
 	// Compute Active Filters Array for the ActiveFilters component
 	const activeFiltersList = useMemo(() => {
 		const list = [];
-		availability.forEach(id => {
-			list.push({ id, type: 'availability', label: { en: id === 'instock' ? 'In Stock' : 'On Sale', ar: id === 'instock' ? 'متوفر' : 'تخفيضات' } });
-		});
-		brands.forEach(id => {
-			list.push({ id, type: 'brands', label: filterOptions.brands.find(o => o.id === id)?.label || { en: id, ar: id } });
+		categories.forEach(id => {
+			list.push({ id, type: 'categories', label: filterOptions.categories.find(o => o.id === id)?.label || { en: id, ar: id } });
 		});
 		if (rating) {
 			list.push({ id: `rating-${rating}`, type: 'rating', label: { en: `${rating} Stars & Up`, ar: `${rating} نجوم فأكثر` } });
@@ -168,20 +190,11 @@ const Category = () => {
 			list.push({ id: `price-${price[0]}-${price[1]}`, type: 'price', label: { en: `${price[0]} - ${price[1]} EGP`, ar: `${price[0]} - ${price[1]} ج.م` } });
 		}
 		return list;
-	}, [availability, brands, rating, price]);
+	}, [categories, rating, price]);
 
 	// Render the sidebar component
 	const renderSidebarContent = () => (
 		<>
-			{/* No Category filter because we are already inside a Category context */}
-			<FilterSidebar.Section title={isRtl ? "التوفر" : "Availability"} activeCount={availability.length}>
-				<FilterSidebar.Availability
-					selectedOptions={availability}
-					onChange={(val) => toggleArrayItem("availability", val)}
-					counts={filterOptions.availability}
-				/>
-			</FilterSidebar.Section>
-
 			<FilterSidebar.Section title={isRtl ? "السعر" : "Price"} activeCount={(price[0] > 0 || price[1] < 10000) ? 1 : 0}>
 				<FilterSidebar.Price
 					min={0} max={10000}
@@ -190,11 +203,11 @@ const Category = () => {
 				/>
 			</FilterSidebar.Section>
 
-			<FilterSidebar.Section title={isRtl ? "العلامات التجارية" : "Brands"} activeCount={brands.length}>
-				<FilterSidebar.Brands
-					brands={filterOptions.brands}
-					selectedBrands={brands}
-					onChange={(val) => toggleArrayItem("brands", val)}
+			<FilterSidebar.Section title={isRtl ? "الأقسام" : "Categories"} activeCount={categories.length}>
+				<FilterSidebar.Categories
+					categories={filterOptions.categories}
+					selectedCategories={categories}
+					onChange={(val) => toggleArrayItem("categories", val)}
 				/>
 			</FilterSidebar.Section>
 
@@ -233,7 +246,9 @@ const Category = () => {
 			<PageHero
 				title={{ en: displayCategoryName, ar: displayCategoryName }}
 				subtitle={
-					isAllProducts 
+					isOffers
+					? { en: "Discover our latest offers and exclusive deals on medical supplies.", ar: "اكتشف أحدث العروض والتخفيضات الحصرية على المستلزمات الطبية." }
+					: isAllProducts 
 					? { en: "Discover our complete catalog of certified medical equipment and supplies.", ar: "اكتشف الكتالوج الكامل للمعدات والمستلزمات الطبية المعتمدة." }
 					: { en: "Explore our curated selection of high-quality products in this category.", ar: "استكشف تشكيلتنا المختارة من المنتجات عالية الجودة في هذا القسم." }
 				}
@@ -244,14 +259,18 @@ const Category = () => {
 			{/* 2. Main Layout Architecture */}
 			<ProductsLayout
 				sidebar={
-					<FilterSidebar isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)}>
-						{renderSidebarContent()}
-					</FilterSidebar>
+					!isOffers && (
+						<FilterSidebar isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)}>
+							{renderSidebarContent()}
+						</FilterSidebar>
+					)
 				}
 				mobileSidebar={
-					<FilterSidebar isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)}>
-						{renderSidebarContent()}
-					</FilterSidebar>
+					!isOffers && (
+						<FilterSidebar isOpen={isMobileFilterOpen} onClose={() => setIsMobileFilterOpen(false)}>
+							{renderSidebarContent()}
+						</FilterSidebar>
+					)
 				}
 				toolbar={
 					<ProductsToolbar
@@ -262,7 +281,7 @@ const Category = () => {
 						onViewModeChange={(mode) => updateParams({ view: mode })}
 						sortOption={sortOption}
 						onSortChange={(sort) => updateParams({ sort })}
-						onOpenFilter={() => setIsMobileFilterOpen(true)}
+						onOpenFilter={!isOffers ? () => setIsMobileFilterOpen(true) : undefined}
 					/>
 				}
 				activeFilters={
