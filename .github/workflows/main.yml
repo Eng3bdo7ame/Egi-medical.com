@@ -38,8 +38,8 @@ jobs:
           debug: true
           script: |
             echo "Removing stale pre-rendered directories (en and ar) to prevent Apache routing bypass..."
-            rm -rf /home/u373210132/domains/egimedical.com/public_html/en
-            rm -rf /home/u373210132/domains/egimedical.com/public_html/ar
+            rm -rf /home/u373210132/domains/egimedical.com/public_html/frontend/en
+            rm -rf /home/u373210132/domains/egimedical.com/public_html/frontend/ar
 
       - name: Deploy to Server via SCP
         uses: appleboy/scp-action@v0.1.7
@@ -49,7 +49,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/*"
-          target: "/home/u373210132/domains/egimedical.com/public_html/"
+          target: "/home/u373210132/domains/egimedical.com/public_html/front-end/"
           strip_components: 1
           overwrite: true
           timeout: 120s
