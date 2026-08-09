@@ -10,23 +10,6 @@ import Container from "@/components/ui/Container";
 import ProductCard from "@/components/ui/ProductCard";
 import { cn } from "@/lib/utils";
 
-const StaticTimer = () => {
-	const TimeUnit = ({ value }) => (
-		<div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-[6px] bg-danger text-white font-bold text-sm shadow-sm">
-			{value}
-		</div>
-	);
-
-	return (
-		<div className="flex items-center gap-1 ltr:ml-3 rtl:mr-3 mt-1 sm:mt-0 border border-danger p-1 rounded-sm">
-			<TimeUnit value="12" />
-			<span className="text-danger font-bold text-base sm:text-lg mx-0.5 animate-pulse">:</span>
-			<TimeUnit value="45" />
-			<span className="text-danger font-bold text-base sm:text-lg mx-0.5 animate-pulse">:</span>
-			<TimeUnit value="30" />
-		</div>
-	);
-};
 
 /**
  * Universal ProductSection
@@ -121,7 +104,6 @@ export const ProductSection = ({ title, subtitle, viewAllLink, variant = "defaul
 								<h2 className="text-xl sm:text-h2 font-bold text-text leading-tight">
 									{title[language]}
 								</h2>
-								{isOffer && <StaticTimer />}
 							</div>
 							{subtitle && (
 								<p className="text-body text-text-secondary">

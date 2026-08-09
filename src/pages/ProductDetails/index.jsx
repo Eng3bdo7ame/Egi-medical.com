@@ -97,8 +97,7 @@ const ProductDetails = () => {
 							label: { en: data.category || "", ar: data.category || "" } 
 						}],
 						stock: { 
-							// Treat -1 as unlimited for now, or just map what we have
-							quantity: (data.quantity === -1 || data.ignore_quantity) ? 999 : (data.quantity || 0),
+							quantity: (data.quantity === -1 || data.ignore_quantity) ? 20 : (data.quantity || 0),
 							sku: data.sku || data.item_code || null
 						},
 						brand: { name: data.brand || data.store_name || "EG Medical" },
@@ -106,7 +105,7 @@ const ProductDetails = () => {
 						reviews: { rating: data.rating || 0, count: data.rate_count || 0 },
 						reviewsList: data.product_rates || [], // fallback if mock needs it
 						badges,
-						specifications: [], // If API provides specs, map them here
+						specifications: data.specifications || data.attributes || [], // If API provides specs, map them here
 						_apiOriginal: data
 					};
 
@@ -127,7 +126,7 @@ const ProductDetails = () => {
 	}, [slug, isRtl]);
 
 	const handleAddToCart = () => {
-		if (!product?.stock?.quantity) return;
+		if (!product?.stock?.quantity || product.stock.quantity <= 0) return;
 		dispatch(addToCart({ product, quantity }));
 		toast.success(isRtl ? "تم إضافة المنتج للسلة بنجاح" : "Product added to cart successfully");
 	};

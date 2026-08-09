@@ -4,7 +4,6 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { Trash2, Heart, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import QuantitySelector from "../../ProductDetails/components/QuantitySelector";
-import { mockProducts } from "@/pages/Products/components/products.mock";
 
 export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) => {
 	const { language } = useLanguage();
@@ -25,8 +24,8 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 			<Link to={`/products/${productSlug}`} className="shrink-0">
 				<div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl border border-border/50 overflow-hidden bg-white">
 					<img 
-						src={product?.images?.[0] || product?.image} 
-						alt={product?.title?.[language]} 
+						src={product?.images?.[0] || product?.image || "https://placehold.co/400x400?text=EG+Medical"} 
+						alt={product?.title?.[language] || product?.title || product?.name || "Product"} 
 						className={cn("w-full h-full object-cover", isOutOfStock && "opacity-50 grayscale")}
 					/>
 				</div>
@@ -38,7 +37,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 					<div className="flex items-start justify-between gap-4">
 						<Link to={`/products/${productSlug}`} className="hover:text-primary transition-colors min-w-0">
 							<h3 className="font-bold text-text text-base sm:text-lg leading-tight truncate-2-lines">
-								{product?.title?.[language]}
+								{product?.title?.[language] || product?.title || product?.name}
 							</h3>
 						</Link>
 						
@@ -81,7 +80,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove, onSaveForLater }) =
 						</button>
 						<div className="w-px h-4 bg-border/60 hidden sm:block" />
 						<button 
-							onClick={() => onSaveForLater(item.productId, item.selectedVariant)}
+							onClick={() => onSaveForLater(product, item.selectedVariant)}
 							className="flex items-center gap-1.5 text-sm font-bold text-text-secondary hover:text-primary transition-colors p-2 rounded-lg hover:bg-primary/10"
 						>
 							<Heart className="w-4 h-4" />

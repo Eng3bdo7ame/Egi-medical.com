@@ -27,6 +27,9 @@ import Logo from "./Logo";
 import { useTheme } from "@/app/providers/ThemeProvider";
 import { THEMES } from "@/constants/theme";
 import { cn } from "@/lib/utils";
+import { useAppSelector } from "@/app/store/hooks";
+import { selectCartCount } from "@/features/cart/cartSlice";
+import { selectWishlistCount } from "@/features/wishlist/wishlistSlice";
 
 /**
  * Helper to resolve appropriate icons for menu items
@@ -66,8 +69,11 @@ export const MobileHeader = () => {
 	const { theme, toggleTheme } = useTheme();
 	const isRtl = language === "ar";
 	const [isOpen, setIsOpen] = useState(false);
+	const [searchQuery, setSearchQuery] = useState("");
 	const navigate = useNavigate();
 	const location = useLocation();
+	const cartCount = useAppSelector(selectCartCount);
+	const wishlistCount = useAppSelector(selectWishlistCount);
 
 	const handleLanguageSwitch = () => {
 		const newLang = language === "ar" ? "en" : "ar";
@@ -82,6 +88,14 @@ export const MobileHeader = () => {
 		
 		const newPath = '/' + pathSegments.join('/') + location.search + location.hash;
 		navigate(newPath);
+	};
+
+	const handleSearchSubmit = (e) => {
+		e.preventDefault();
+		if (searchQuery.trim()) {
+			navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+			setIsOpen(false);
+		}
 	};
 
 	// Lock body scroll when drawer is open
@@ -145,9 +159,11 @@ export const MobileHeader = () => {
 							aria-label={isRtl ? "السلة" : "Cart"}
 						>
 							<ShoppingCart className="w-5 h-5" />
-							<span className="absolute top-0.5 end-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-secondary text-white text-[10px] font-bold leading-none">
-								2
-							</span>
+							{cartCount > 0 && (
+								<span className="absolute top-0.5 end-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-secondary text-white text-[10px] font-bold leading-none">
+									{cartCount}
+								</span>
+							)}
 						</LocalizedLink>
 					</div>
 				</div>
@@ -192,14 +208,16 @@ export const MobileHeader = () => {
 
 					{/* Drawer Search */}
 					<div className="p-4 border-b border-border bg-surface">
-						<div className="flex items-center gap-2 bg-surface-2 rounded-xl px-3.5 py-2.5 border border-border focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+						<form onSubmit={handleSearchSubmit} className="flex items-center gap-2 bg-surface-2 rounded-xl px-3.5 py-2.5 border border-border focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
 							<Search className="w-4 h-4 text-text-muted shrink-0" />
 							<input
 								type="search"
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
 								placeholder={isRtl ? "ابحث عن المنتجات..." : "Search products..."}
 								className="flex-1 bg-transparent text-sm outline-none text-text placeholder:text-text-muted/50"
 							/>
-						</div>
+						</form>
 					</div>
 
 					{/* Scrollable Navigation Area */}
@@ -263,18 +281,28 @@ export const MobileHeader = () => {
 							<LocalizedLink
 								to="/wishlist"
 								onClick={close}
-								className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-surface border border-border/40 text-text-secondary hover:text-primary text-xs font-semibold shadow-sm transition-all"
+								className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-surface border border-border/40 text-text-secondary hover:text-primary text-xs font-semibold shadow-sm transition-all relative"
 							>
 								<Heart className="w-4 h-4 text-danger/80" />
-								{isRtl ? "المفضلة" : "Wishlist"}
+								<span>{isRtl ? "المفضلة" : "Wishlist"}</span>
+								{wishlistCount > 0 && (
+									<span className="flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-primary text-white text-[9px] font-bold leading-none">
+										{wishlistCount}
+									</span>
+								)}
 							</LocalizedLink>
 							<LocalizedLink
-								to="/profile"
+								to="/cart"
 								onClick={close}
-								className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-surface border border-border/40 text-text-secondary hover:text-primary text-xs font-semibold shadow-sm transition-all"
+								className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-surface border border-border/40 text-text-secondary hover:text-primary text-xs font-semibold shadow-sm transition-all relative"
 							>
-								<User className="w-4 h-4 text-primary/80" />
-								{isRtl ? "حسابي" : "Account"}
+								<ShoppingCart className="w-4 h-4 text-secondary/80" />
+								<span>{isRtl ? "السلة" : "Cart"}</span>
+								{cartCount > 0 && (
+									<span className="flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-secondary text-white text-[9px] font-bold leading-none">
+										{cartCount}
+									</span>
+								)}
 							</LocalizedLink>
 						</div>
 

@@ -8,8 +8,8 @@ export const ProductImage = ({ image, hoverImage, title, isHovered, isOutOfStock
 			isOutOfStock && "grayscale opacity-80"
 		)}>
 			<img 
-				src={image} 
-				alt={title} 
+				src={image || "https://placehold.co/400x400?text=EG+Medical"} 
+				alt={title || "Product Image"} 
 				className={cn(
 					"object-contain w-full h-full transition-transform duration-500",
 					isHovered ? "scale-105" : "scale-100"

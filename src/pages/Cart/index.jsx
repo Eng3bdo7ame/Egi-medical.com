@@ -10,6 +10,7 @@ import CartSummary from "./components/CartSummary";
 import EmptyCartState from "./components/EmptyCartState";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { selectCartItems, selectCartSubtotal, selectCartShipping, selectCartDiscount, selectCartTotal, removeFromCart, updateQuantity, applyCoupon } from "@/features/cart/cartSlice";
+import { toggleWishlist } from "@/features/wishlist/wishlistSlice";
 import { toast } from "sonner";
 
 const Cart = () => {
@@ -42,9 +43,9 @@ const Cart = () => {
 		toast.info(isRtl ? "تم إزالة المنتج من السلة" : "Item removed from cart");
 	};
 
-	const handleSaveForLater = (productId, selectedVariant = null) => {
-		console.log("Saved for later:", productId);
-		handleRemoveItem(productId, selectedVariant);
+	const handleSaveForLater = (product, selectedVariant = null) => {
+		dispatch(toggleWishlist(product));
+		handleRemoveItem(product.id || product.productId, selectedVariant);
 	};
 
 	const handleApplyCoupon = async (code) => {

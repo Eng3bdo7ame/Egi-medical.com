@@ -124,7 +124,7 @@ const FlashDeals = () => {
 								reviews: { rating: apiProd.rating || 0, count: apiProd.rate_count || 0 },
 								stock: { quantity: apiProd.quantity || 0 },
 								badges,
-								link: apiProd.product_link || `/product/${apiProd.id}`,
+								link: apiProd.product_link || `/products/${apiProd.id}`,
 								_apiOriginal: apiProd
 							};
 						});

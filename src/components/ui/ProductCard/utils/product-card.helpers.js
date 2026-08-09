@@ -33,7 +33,7 @@ export const calculateDiscount = (currentPrice, originalPrice) => {
  * @returns {string} "in-stock" | "out-of-stock" | "limited"
  */
 export const getStockState = (quantity) => {
-	if (quantity === 0) return "out-of-stock";
+	if (quantity <= 0) return "out-of-stock";
 	if (quantity <= 5) return "limited";
 	return "in-stock";
 };

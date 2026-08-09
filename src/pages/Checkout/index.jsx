@@ -4,6 +4,9 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { Lock, MapPin, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAppSelector } from "@/app/store/hooks";
 
 import ShippingAddress from "./components/ShippingAddress";
 import PaymentMethod from "./components/PaymentMethod";
@@ -11,7 +14,7 @@ import OrderSummary from "./components/OrderSummary";
 import OrderSuccess from "./components/OrderSuccess";
 
 import { usePlaceOrder } from "@/hooks/queries/useCheckoutSummary";
-import { clearCart } from "@/features/cart/cartSlice";
+import { clearCart, selectCartItems } from "@/features/cart/cartSlice";
 
 const Checkout = () => {
 	const { language } = useLanguage();
@@ -20,6 +23,8 @@ const Checkout = () => {
 
 	const [currentStep, setCurrentStep] = useState(1);
 	const [isSuccess, setIsSuccess] = useState(false);
+
+	const items = useAppSelector(selectCartItems);
 
 	// Checkout states to send to /checkout/store
 	const [addressId, setAddressId] = useState(null);
@@ -32,6 +37,10 @@ const Checkout = () => {
 				<OrderSuccess />
 			</div>
 		);
+	}
+
+	if (!items || items.length === 0) {
+		return <Navigate to="/cart" replace />;
 	}
 
 	const steps = [
@@ -58,7 +67,7 @@ const Checkout = () => {
 
 	const handlePlaceOrder = async (selectedPaymentId) => {
 		if (!addressId) {
-			alert(isRtl ? "يرجى تحديد عنوان الشحن أولاً." : "Please select a shipping address first.");
+			toast.error(isRtl ? "يرجى تحديد عنوان الشحن أولاً." : "Please select a shipping address first.");
 			setCurrentStep(1);
 			return;
 		}
@@ -75,7 +84,7 @@ const Checkout = () => {
 			window.scrollTo({ top: 0 });
 		} catch (err) {
 			console.error("Order creation failed:", err);
-			alert(isRtl ? "فشل تأكيد الطلب. الرجاء المحاولة مرة أخرى." : "Failed to place order. Please try again.");
+			toast.error(isRtl ? "فشل تأكيد الطلب. الرجاء المحاولة مرة أخرى." : "Failed to place order. Please try again.");
 		}
 	};
 

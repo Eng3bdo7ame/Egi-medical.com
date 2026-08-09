@@ -1,5 +1,6 @@
 import storage from "@/services/storage/storage";
 import { STORAGE_KEYS } from "@/services/storage/storageKeys";
+import { toast } from "sonner";
 
 export const setupInterceptors = (axiosInstance) => {
 	// Request interceptor to attach authentication token
@@ -30,8 +31,21 @@ export const setupInterceptors = (axiosInstance) => {
 				if (!isLoginRequest && !isLoginPage) {
 					const pathParts = window.location.pathname.split("/");
 					const lang = pathParts[1] || "ar";
+					toast.error(lang === "ar" ? "انتهت الجلسة. يرجى تسجيل الدخول مجدداً." : "Session expired. Please log in again.");
 					window.location.href = `/${lang}/auth/login`;
 				}
+			} else if (!error.response && error.code === "ERR_NETWORK") {
+				toast.error(
+					window.location.pathname.includes("/ar") 
+						? "خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت." 
+						: "Network Error. Please check your internet connection."
+				);
+			} else if (error.response && error.response.status >= 500) {
+				toast.error(
+					window.location.pathname.includes("/ar") 
+						? "خطأ في الخادم. يرجى المحاولة لاحقاً." 
+						: "Server Error. Please try again later."
+				);
 			}
 			
 			// Normalize API Error for Phase 13

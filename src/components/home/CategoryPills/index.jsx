@@ -86,7 +86,7 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 									return (
 										<div
 											key={need.id || index}
-											className="flex-[0_0_40%] sm:flex-[0_0_30%] md:flex-[0_0_25%] lg:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
+											className="flex-[0_0_50%] sm:flex-[0_0_30%] md:flex-[0_0_25%] lg:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
 										>
 											<LocalizedLink
 												to={linkUrl}

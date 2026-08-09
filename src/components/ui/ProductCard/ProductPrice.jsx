@@ -11,7 +11,7 @@ export const ProductPrice = ({ price, language }) => {
 	return (
 		<div className="flex flex-col mt-1">
 			<div className="flex items-end gap-2 flex-wrap">
-				<span className="text-lg font-extrabold text-text leading-none">
+				<span className="text-lg font-extrabold text-text leading-none truncate max-w-full">
 					{currentFormatted}
 				</span>
 				{oldFormatted && (

@@ -36,6 +36,7 @@ export const useProductCard = (productData) => {
 		
 		dispatch(toggleWishlist(productData));
 		
+
 		if (!isWishlisted) {
 			toast.success(isRtl ? "تم الإضافة إلى المفضلة" : "Added to Wishlist");
 		} else {
@@ -48,6 +49,10 @@ export const useProductCard = (productData) => {
 		e.preventDefault();
 		e.stopPropagation();
 		if (isOutOfStock || !productData) return;
+		if (productData.stock?.quantity === undefined || productData.stock.quantity <= 0) {
+			toast.error(isRtl ? "هذا المنتج غير متوفر حالياً" : "This product is out of stock");
+			return;
+		}
 		
 		setIsAddingToCart(true);
 		

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { PageHero } from "@/components/ui/PageHero";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import api from "@/services/api/client";
@@ -22,8 +22,7 @@ import RecentlyViewed from "../Products/components/RecentlyViewed";
 // Hooks
 import useProductFilters from "@/components/products/hooks/useProductFilters";
 
-// Mock Data
-import { mockProducts } from "../Products/components/products.mock";
+// Mock Data (Removed)
 
 const Category = () => {
 	const params = useParams();
@@ -48,6 +47,9 @@ const Category = () => {
 	const { state, updateParams, toggleArrayItem, clearAllFilters } = useProductFilters();
 	const { viewMode, sortOption, currentPage, availability, brands, rating, price } = state;
 
+	const location = useLocation();
+	const searchQuery = new URLSearchParams(location.search).get("search");
+
 	useEffect(() => {
 		const fetchProducts = async () => {
 			setIsLoading(true);
@@ -56,6 +58,7 @@ const Category = () => {
 				const response = await api.get(API_ENDPOINTS.PRODUCTS, {
 					params: {
 						category_id: rawSlug !== "all-categories" ? rawSlug : undefined,
+						search: searchQuery || undefined,
 						page: currentPage,
 						sort: sortOption,
 						min_price: price[0] > 0 ? price[0] : undefined,
@@ -270,7 +273,7 @@ const Category = () => {
 					/>
 				}
 				bottomContent={
-					<RecentlyViewed products={mockProducts.slice(0, 6)} />
+					<RecentlyViewed />
 				}
 			>
 				{/* Main Grid Content */}

@@ -77,7 +77,7 @@ export const WhyMootah = ({ data }) => {
 					</p>
 				</div>
 
-				<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
 					{itemsToDisplay.map((prop) => {
 						const IconComp = prop.IconComp;
 						return (

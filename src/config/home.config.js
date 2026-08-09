@@ -26,7 +26,7 @@ export const homepageConfig = [
 		variant: "default",
 		bg: "surface",
 		title: { en: "Latest Arrivals", ar: "أحدث المنتجات" },
-		viewAllLink: "/new-arrivals"
+		viewAllLink: "/products"
 	},
 	{
 		id: "best-sellers",
@@ -44,7 +44,7 @@ export const homepageConfig = [
 		title: { en: "Download the Complete Medical Catalog", ar: "حمّل كتالوج المنتجات الطبية الكامل" },
 		description: { en: "Browse over 10,000 medical products. Perfect for hospitals, clinics, and wholesale orders.", ar: "استعرض أكثر من 10,000 منتج طبي. مثالي للمستشفيات، العيادات، وطلبات الجملة." },
 		buttonText: { en: "Download PDF Catalog", ar: "تحميل الكتالوج بصيغة PDF" },
-		buttonLink: "/catalog",
+		buttonLink: "#",
 		icon: "DownloadCloud"
 	}
 ];

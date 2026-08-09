@@ -5,6 +5,7 @@ import LocalizedLink from "@/components/ui/LocalizedLink";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/queries/useSettings";
+import { toast } from "sonner";
 
 export const Footer = () => {
 	const { language } = useLanguage();
@@ -29,25 +30,32 @@ export const Footer = () => {
 						</p>
 					</div>
 
-					<form className="w-full md:w-1/2 relative z-10 flex items-center" onSubmit={(e) => e.preventDefault()}>
-						<div className="relative w-full">
-							<div className="absolute inset-y-0 flex items-center px-4 pointer-events-none text-slate-400">
-								<Mail className="w-5 h-5" />
+					<form className="w-full md:w-1/2 relative z-10 flex items-center" onSubmit={(e) => {
+						e.preventDefault();
+						toast.success(isRtl ? "تم الاشتراك بنجاح!" : "Subscribed successfully!");
+						e.target.reset();
+					}}>
+						<div className="flex flex-col sm:relative sm:block w-full gap-3 sm:gap-0">
+							<div className="relative w-full">
+								<div className="absolute inset-y-0 flex items-center px-4 pointer-events-none text-slate-400">
+									<Mail className="w-5 h-5" />
+								</div>
+								<input
+									type="email"
+									aria-label={isRtl ? "البريد الإلكتروني للنشرة" : "Newsletter email"}
+									placeholder={isRtl ? "أدخل بريدك الإلكتروني..." : "Enter your email address..."}
+									className={cn(
+										"w-full h-12 sm:h-14 bg-slate-900/50 border border-slate-700 rounded-full text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base",
+										isRtl ? "pr-10 sm:pr-12 pl-4 sm:pl-32 text-right" : "pl-10 sm:pl-12 pr-4 sm:pr-32 text-left"
+									)}
+									required
+								/>
 							</div>
-							<input
-								type="email"
-								placeholder={isRtl ? "أدخل بريدك الإلكتروني..." : "Enter your email address..."}
-								className={cn(
-									"w-full h-12 sm:h-14 bg-slate-900/50 border border-slate-700 rounded-full text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm sm:text-base",
-									isRtl ? "pr-10 sm:pr-12 pl-28 sm:pl-32 text-right" : "pl-10 sm:pl-12 pr-28 sm:pr-32 text-left"
-								)}
-								required
-							/>
 							<button
 								type="submit"
 								className={cn(
-									"absolute inset-y-1.5 flex items-center justify-center gap-2 px-6 bg-primary hover:bg-primary-hover text-white rounded-full font-semibold transition-all duration-300",
-									isRtl ? "left-1.5" : "right-1.5"
+									"w-full sm:w-auto sm:absolute sm:inset-y-1.5 flex items-center justify-center gap-2 px-6 h-12 sm:h-auto bg-primary hover:bg-primary-hover text-white rounded-full font-semibold transition-all duration-300 shrink-0",
+									isRtl ? "sm:left-1.5" : "sm:right-1.5"
 								)}
 							>
 								<span>{isRtl ? "اشتراك" : "Subscribe"}</span>
@@ -117,9 +125,6 @@ export const Footer = () => {
 						<ul className="space-y-4">
 							<li><LocalizedLink to="/about" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "عن الشركة" : "About Us"}</LocalizedLink></li>
 							<li><LocalizedLink to="/categories" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الأقسام الطبية" : "Medical Categories"}</LocalizedLink></li>
-							<li><LocalizedLink to="/brands" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الماركات المعتمدة" : "Official Brands"}</LocalizedLink></li>
-							<li><LocalizedLink to="/catalog" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "كتالوج المنتجات" : "Product Catalog"}</LocalizedLink></li>
-							<li><LocalizedLink to="/careers" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الوظائف" : "Careers"}</LocalizedLink></li>
 						</ul>
 					</div>
 
@@ -129,7 +134,6 @@ export const Footer = () => {
 							{isRtl ? "خدمة العملاء" : "Customer Service"}
 						</h4>
 						<ul className="space-y-4">
-							<li><LocalizedLink to="/about" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "عن الشركة" : "About Us"}</LocalizedLink></li>
 							<li><LocalizedLink to="/privacy" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "سياسة الخصوصية" : "Privacy Policy"}</LocalizedLink></li>
 							<li><LocalizedLink to="/terms" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الشروط والأحكام" : "Terms & Conditions"}</LocalizedLink></li>
 							<li><LocalizedLink to="/faq" className="text-slate-400 hover:text-primary transition-colors inline-block">{isRtl ? "الأسئلة الشائعة" : "FAQ"}</LocalizedLink></li>

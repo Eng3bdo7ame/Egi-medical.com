@@ -4,7 +4,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
 import { Search, Clock, TrendingUp, ChevronRight } from "lucide-react";
-import { mockProducts } from "@/pages/Products/components/products.mock";
+import { useProducts } from "@/hooks/queries/useProducts";
 import LocalizedLink from "@/components/ui/LocalizedLink";
 
 /**
@@ -56,10 +56,20 @@ export const SearchBar = ({ className }) => {
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, []);
 
-	// Filter mock products based on query (mocking search results)
-	const suggestions = query.length >= 2 
-		? mockProducts.filter(p => p.title[language].toLowerCase().includes(query.toLowerCase())).slice(0, 4)
-		: [];
+	const [debouncedQuery, setDebouncedQuery] = useState("");
+
+	useEffect(() => {
+		const timer = setTimeout(() => setDebouncedQuery(query), 300);
+		return () => clearTimeout(timer);
+	}, [query]);
+
+	const { data: searchResponse } = useProducts(
+		{ search: debouncedQuery, limit: 5 },
+		{ enabled: debouncedQuery.trim().length >= 2 }
+	);
+	
+	const apiProducts = searchResponse?.data?.data || searchResponse?.data || [];
+	const suggestions = debouncedQuery.length >= 2 ? apiProducts : [];
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -155,14 +165,14 @@ export const SearchBar = ({ className }) => {
 							{suggestions.map((prod) => (
 								<LocalizedLink 
 									key={prod.id}
-									to={`/products/${prod.slug}`}
+									to={`/products/${prod.id}`}
 									onClick={() => setIsFocused(false)}
 									className="flex items-center gap-3 p-3 hover:bg-surface-2 transition-colors text-start border-b border-border/30 last:border-0 group"
 								>
-									<img src={prod.image} alt="" className="w-10 h-10 rounded-lg object-cover" />
+									<img src={prod.primary_image || prod.image || "https://placehold.co/100x100"} alt="" className="w-10 h-10 rounded-lg object-cover" />
 									<div className="flex flex-col flex-1">
-										<span className="font-bold text-sm text-text group-hover:text-primary transition-colors line-clamp-1">{prod.title[language]}</span>
-										<span className="text-xs text-text-muted font-bold">{prod.category[language]}</span>
+										<span className="font-bold text-sm text-text group-hover:text-primary transition-colors line-clamp-1">{prod.title || prod.name}</span>
+										<span className="text-xs text-text-muted font-bold">{prod.category}</span>
 									</div>
 									<ChevronRight className={cn("w-4 h-4 text-text-muted opacity-0 group-hover:opacity-100 transition-all", isRtl && "rotate-180")} />
 								</LocalizedLink>

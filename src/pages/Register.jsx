@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import LocalizedLink from "@/components/ui/LocalizedLink";
-import { useRegister, PasswordField, PasswordStrength, AuthFooter, SocialLoginButton } from "@/features/auth";
+import { useRegister, PasswordField, PasswordStrength, AuthFooter } from "@/features/auth";
 import { authValidators } from "@/features/auth/validation/authSchemas";
 import { AlertCircle, CheckCircle2, Loader2, User, Mail, Phone, ShieldCheck, ArrowRight, ArrowLeft } from "lucide-react";
 import { normalizeApiError } from "@/utils/errorMapper";
@@ -379,20 +379,6 @@ export const Register = () => {
 					)}
 				</button>
 			</form>
-
-			{/* Divider */}
-			<div className="flex items-center gap-4 text-[10px] font-bold text-slate-500 mt-2">
-				<span className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
-				<span>{isRtl ? "أو استمر باستخدام" : "Or continue with"}</span>
-				<span className="flex-1 h-px bg-gradient-to-l from-transparent via-slate-800 to-transparent" />
-			</div>
-
-			{/* Social login grid */}
-			<div className="flex flex-col gap-3 mt-1 select-none">
-				<SocialLoginButton provider="google" onClick={() => {}} />
-				<SocialLoginButton provider="facebook" onClick={() => {}} />
-				<SocialLoginButton provider="apple" onClick={() => {}} />
-			</div>
 
 			{/* Link to Login */}
 			<p className="text-center text-sm font-bold text-slate-400 mt-2">

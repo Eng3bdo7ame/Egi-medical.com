@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import LocalizedLink from "@/components/ui/LocalizedLink";
-import { useLogin, PasswordField, RememberMe, SocialLoginButton, AuthFooter } from "@/features/auth";
+import { useLogin, PasswordField, RememberMe, AuthFooter } from "@/features/auth";
 import { authValidators } from "@/features/auth/validation/authSchemas";
 import { AlertCircle, CheckCircle2, Loader2, User } from "lucide-react";
 import { normalizeApiError } from "@/utils/errorMapper";
@@ -63,12 +63,7 @@ export const Login = () => {
 		}
 	};
 
-	const handleSocialLogin = () => {
-		setSuccessMessage(isRtl ? "تسجيل الدخول عبر Google..." : "Signing in with Google...");
-		setTimeout(() => {
-			navigate(`/${language}`, { replace: true });
-		}, 1500);
-	};
+
 
 	return (
 		<div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -108,7 +103,7 @@ export const Login = () => {
 						"relative w-full h-12 bg-[#0b1329]/40 border rounded-xl flex items-center overflow-hidden transition-all duration-300",
 						emailFocused ? "border-blue-500 ring-2 ring-blue-500/20 shadow-sm shadow-blue-500/10" : "border-slate-800 hover:border-slate-700"
 					)}>
-						<div className="absolute left-4 text-slate-450 flex items-center justify-center pointer-events-none">
+						<div className="absolute start-4 text-slate-450 flex items-center justify-center pointer-events-none">
 							<User className={cn("w-5 h-5 transition-colors duration-300", emailFocused && "text-blue-500")} />
 						</div>
 						<input 
@@ -167,20 +162,6 @@ export const Login = () => {
 					)}
 				</button>
 			</form>
-
-			{/* Divider */}
-			<div className="flex items-center gap-4 text-xs font-bold text-text-muted">
-				<span className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent opacity-50" />
-				<span className="bg-surface/50 px-2 rounded-full backdrop-blur-sm">{isRtl ? "أو" : "OR"}</span>
-				<span className="flex-1 h-px bg-gradient-to-l from-transparent via-border to-transparent opacity-50" />
-			</div>
-
-			{/* Social login */}
-			<div className="flex flex-col gap-3">
-				<SocialLoginButton provider="google" onClick={handleSocialLogin} />
-				<SocialLoginButton provider="facebook" onClick={handleSocialLogin} />
-				<SocialLoginButton provider="apple" onClick={handleSocialLogin} />
-			</div>
 
 			{/* Link to Register */}
 			<p className="text-center text-sm font-bold text-slate-400 mt-2">

@@ -35,7 +35,6 @@ const Account = () => {
 		{ id: "orders", label: { en: "Orders", ar: "الطلبات" }, icon: Package },
 		{ id: "addresses", label: { en: "Addresses", ar: "العناوين" }, icon: MapPin },
 		{ id: "wishlist", label: { en: "Wishlist", ar: "المفضلة" }, icon: Heart, isLink: true, path: "/wishlist" },
-		{ id: "compare", label: { en: "Compare", ar: "المقارنة" }, icon: FileDiff, isLink: true, path: "/compare" },
 		{ id: "settings", label: { en: "Settings", ar: "الإعدادات" }, icon: SettingsIcon },
 	];
 

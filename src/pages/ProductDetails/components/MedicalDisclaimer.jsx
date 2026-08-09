@@ -18,7 +18,7 @@ export const MedicalDisclaimer = ({ className }) => {
 				</span>
 				<p className="text-xs font-medium text-warning-dark/80 leading-relaxed">
 					{isRtl 
-						? "هذا المنتج لا يغني عن استشارة الطبيب المختص. يرجى قراءة دليل المستخدم المرفق بعناية قبل الاستخدام." 
+						? "المعلومات والمنتجات الطبية المعروضة ليست بديلاً عن المشورة الطبية المتخصصة."  
 						: "This product is not a substitute for professional medical advice. Please read the user manual carefully before use."}
 				</p>
 			</div>
