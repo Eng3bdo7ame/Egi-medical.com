@@ -11,8 +11,8 @@ export const HeroPagination = ({ slidesCount, selectedIndex, scrollTo }) => {
 					className={cn(
 						"transition-all duration-300 rounded-full",
 						selectedIndex === index
-							? "w-8 h-2.5 bg-primary"
-							: "w-2.5 h-2.5 bg-primary/20 hover:bg-primary/40"
+							? "w-3 h-3 bg-blue-600 shadow-md"
+							: "w-3 h-3 bg-white shadow-md hover:bg-white/80"
 					)}
 					aria-label={`Go to slide ${index + 1}`}
 				/>

@@ -3,11 +3,27 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
 import HeroSlider from "./HeroSlider";
-import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
-import HeroImage from "./HeroImage";
 import Container from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+
+const defaultFeatures = [
+	{
+		icon: "Truck",
+		title: { ar: "توصيل سريع", en: "Fast Delivery" },
+		subtitle: { ar: "لكل المحافظات", en: "To all governorates" }
+	},
+	{
+		icon: "ShieldCheck",
+		title: { ar: "جودة عالية", en: "High Quality" },
+		subtitle: { ar: "معايير عالمية", en: "International standards" }
+	},
+	{
+		icon: "Settings",
+		title: { ar: "دعم فني", en: "Technical Support" },
+		subtitle: { ar: "خدمة ما بعد البيع", en: "After-sales service" }
+	}
+];
 
 export const Hero = ({ sliders = [], isLoading }) => {
 	const { language } = useLanguage();
@@ -15,7 +31,7 @@ export const Hero = ({ sliders = [], isLoading }) => {
 
 	// Bind API data to the slider layout exactly as it is
 	const slidesToDisplay = (sliders || []).map((apiSlide, index) => {
-		
+
 		// Build dynamic link from API fields
 		let actionLink = "/shop";
 		if (apiSlide.link) {
@@ -28,12 +44,17 @@ export const Hero = ({ sliders = [], isLoading }) => {
 			actionLink = `/product/${apiSlide.link_id}`;
 		}
 
+		const defaultDescription = language === "ar"
+			? "تصنيع وتوفير أحدث الأجهزة والمستلزمات الطبية للمستشفيات والعيادات والأفراد بجودة ألمانية ومعايير عالمية."
+			: "Manufacturing and providing the latest medical devices and equipment for hospitals and clinics with international standards.";
+
 		return {
 			id: apiSlide.id || index,
 			title: apiSlide.title || "",
-			subtitle: apiSlide.description || "",
+			subtitle: apiSlide.description || defaultDescription,
 			image: apiSlide.image || "",
 			background: apiSlide.background || "bg-[#F4F7FC]",
+			features: apiSlide.features || defaultFeatures,
 			buttons: {
 				primary: {
 					en: "Shop Now",
@@ -80,60 +101,55 @@ export const Hero = ({ sliders = [], isLoading }) => {
 	};
 
 	if (isLoading && (!sliders || sliders.length === 0)) {
-		return <Section spacing="none"><div className="min-h-[420px] bg-slate-100 animate-pulse w-full"></div></Section>;
+		return <Section spacing="none" className="pt-4 sm:pt-6 pb-8 sm:pb-12"><Container><div className="min-h-[340px] bg-slate-100 animate-pulse w-full rounded-[32px]"></div></Container></Section>;
 	}
 
 	return (
-		<Section spacing="none">
-			<HeroSlider onSlideChange={setActiveIndex}>
-				{slidesToDisplay.map((slide, index) => {
-					const isActive = index === activeIndex;
+		<Section spacing="none" className="pt-4 sm:pt-6 pb-8 sm:pb-12 md:pb-16">
+			<Container>
+				<div className="relative rounded-[32px] overflow-hidden shadow-sm">
+					<HeroSlider onSlideChange={setActiveIndex}>
+						{slidesToDisplay.map((slide, index) => {
+							const isActive = index === activeIndex;
 
-					return (
-						<div
-							key={slide.id || index}
-							className="relative flex-[0_0_100%] min-w-0 h-auto min-h-[420px] sm:min-h-[460px] md:min-h-[480px] lg:h-[520px] select-none"
-						>
-							{/* Background Component (Full width) */}
-							<HeroBackground bgClass={slide.background || "bg-[#F4F7FC]"} />
+							return (
+								<div
+									key={slide.id || index}
+									className="relative flex-[0_0_100%] min-w-0 h-[420px] sm:h-[460px] md:h-[500px] lg:h-[560px] select-none"
+								>
+									{/* Full Background Image */}
+									{slide.image ? (
+										<img
+											src={slide.image}
+											alt={slide.title || "Hero Slider"}
+											className="absolute inset-0 w-full h-full object-cover z-0"
+											loading={index === 0 ? "eager" : "lazy"}
+										/>
+									) : (
+										<div className={`absolute inset-0 w-full h-full ${slide.background || "bg-[#0a2342]"} z-0`} />
+									)}
 
-							<div className="relative lg:absolute lg:inset-0 z-10 w-full h-full py-4 lg:py-0 flex items-center">
-								<Container className="h-full flex items-center">
-									<div className="w-full grid grid-cols-1 lg:grid-cols-2 items-center gap-2 lg:gap-4 h-full">
+									{/* Dark Blue Gradient Overlay - Deep navy blue gradient, dark but clearly blue */}
+									<div className="absolute inset-0 z-0 bg-gradient-to-r from-[#021124] via-[#031d3f]/95 via-[#062d61]/70 to-transparent rtl:bg-gradient-to-l pointer-events-none" />
 
-										{/* Image Side - Order 1 on mobile, Order 2 on desktop */}
-										<div className="order-1 lg:order-2 w-full flex justify-center">
-											<AnimatePresence mode="wait">
-												{isActive && (
-													<HeroImage
-														src={slide.image}
-														alt={slide.brand ? `${slide.brand} product` : `Slider image`}
-														imageVariants={imageVariants}
-													/>
-												)}
-											</AnimatePresence>
-										</div>
-
-										{/* Content Side - Order 2 on mobile, Order 1 on desktop */}
-										<div className="order-2 lg:order-1 w-full flex flex-col justify-center">
-											<AnimatePresence mode="wait">
-												{isActive && (
-													<HeroContent
-														slide={slide}
-														language={language}
-														textVariants={textVariants}
-													/>
-												)}
-											</AnimatePresence>
-										</div>
-
+									{/* Content Side - Sweet spot width to prevent text overflow and allow horizontal trust features */}
+									<div className="absolute inset-y-0 start-0 z-10 flex h-full items-center ps-6 md:ps-16 lg:ps-20 pe-6 w-full lg:w-[58%] xl:w-[54%]">
+										<AnimatePresence mode="wait">
+											{isActive && (
+												<HeroContent
+													slide={slide}
+													language={language}
+													textVariants={textVariants}
+												/>
+											)}
+										</AnimatePresence>
 									</div>
-								</Container>
-							</div>
-						</div>
-					);
-				})}
-			</HeroSlider>
+								</div>
+							);
+						})}
+					</HeroSlider>
+				</div>
+			</Container>
 		</Section>
 	);
 };

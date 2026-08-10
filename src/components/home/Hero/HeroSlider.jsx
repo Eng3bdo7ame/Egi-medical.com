@@ -74,8 +74,8 @@ export const HeroSlider = ({ children, onSlideChange }) => {
 				/>
 			</div>
 
-			{/* Optional Controls - Hidden on mobile, visible on hover on larger screens */}
-			<div className="hidden md:flex absolute top-1/2 -translate-y-1/2 left-6 right-6 justify-between z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+			{/* Optional Controls - Always visible, responsive layout */}
+			<div className="flex absolute top-1/2 -translate-y-1/2 left-3 right-3 md:left-6 md:right-6 justify-between z-20 pointer-events-none">
 				<HeroControls 
 					scrollPrev={scrollPrev} 
 					scrollNext={scrollNext} 

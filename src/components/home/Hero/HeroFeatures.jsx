@@ -10,24 +10,29 @@ export const HeroFeatures = ({ features, language = "ar" }) => {
 	if (!features || features.length === 0) return null;
 
 	return (
-		<div className="flex flex-wrap items-center gap-6 md:gap-8 pt-8">
+		<div className="flex flex-wrap items-center gap-4 sm:gap-6 md:gap-8 pt-6 sm:pt-8">
 			{features.map((feature, idx) => (
-				<div key={idx} className="flex items-center gap-3">
-					<div className="flex items-center justify-center text-orange-500">
-						<Icon name={feature.icon} size={24} strokeWidth={1.5} />
+				<div key={idx} className="flex items-center gap-4 sm:gap-6 md:gap-8">
+					<div className="flex items-center gap-3.5">
+						<div className="flex items-center justify-center text-white">
+							<Icon name={feature.icon} size={36} strokeWidth={1.25} className="opacity-95" />
+						</div>
+						<div className="flex flex-col leading-snug">
+							{feature.title && (
+								<span className="text-[14px] sm:text-[15px] font-bold text-white tracking-wide">
+									{feature.title[language] || feature.title.ar || feature.title.en}
+								</span>
+							)}
+							{feature.subtitle && (
+								<span className="text-[11.5px] sm:text-[12.5px] font-medium text-white/85">
+									{feature.subtitle[language] || feature.subtitle.ar || feature.subtitle.en}
+								</span>
+							)}
+						</div>
 					</div>
-					<div className="flex flex-col leading-tight">
-						{feature.title && (
-							<span className="text-[13px] font-bold text-text">
-								{feature.title[language] || feature.title.ar || feature.title.en}
-							</span>
-						)}
-						{feature.subtitle && (
-							<span className="text-[12px] font-medium text-text-muted">
-								{feature.subtitle[language] || feature.subtitle.ar || feature.subtitle.en}
-							</span>
-						)}
-					</div>
+					{idx < features.length - 1 && (
+						<div className="hidden sm:block w-[1px] h-8 bg-white/25" />
+					)}
 				</div>
 			))}
 		</div>
