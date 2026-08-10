@@ -117,7 +117,7 @@ export const Hero = ({ sliders = [], isLoading }) => {
 							return (
 								<div
 									key={slide.id || index}
-									className="relative flex-[0_0_100%] min-w-0 h-[420px] sm:h-[460px] md:h-[500px] lg:h-[560px] select-none"
+									className="relative flex-[0_0_100%] min-w-0 h-[280px] sm:h-[380px] md:h-[460px] lg:h-[520px] select-none"
 								>
 									{/* Full Background Image */}
 									{slide.image ? (
@@ -131,8 +131,8 @@ export const Hero = ({ sliders = [], isLoading }) => {
 										<div className={`absolute inset-0 w-full h-full ${slide.background || "bg-[#0a2342]"} z-0`} />
 									)}
 
-									{/* Dark Blue Gradient Overlay - Deep navy blue gradient, dark but clearly blue */}
-									<div className="absolute inset-0 z-0 bg-gradient-to-r from-[#021124] via-[#031d3f]/95 via-[#062d61]/70 to-transparent rtl:bg-gradient-to-l pointer-events-none" />
+									{/* Dark Blue Gradient Overlay - Deep navy blue gradient, solid on mobile for text readability */}
+									<div className="absolute inset-0 z-0 bg-[#021124]/75 sm:bg-transparent bg-gradient-to-r from-[#021124] via-[#031d3f]/95 via-[#062d61]/70 to-transparent rtl:bg-gradient-to-l pointer-events-none" />
 
 									{/* Content Side - Sweet spot width to prevent text overflow and allow horizontal trust features */}
 									<div className="absolute inset-y-0 start-0 z-10 flex h-full items-center ps-6 md:ps-16 lg:ps-20 pe-6 w-full lg:w-[58%] xl:w-[54%]">

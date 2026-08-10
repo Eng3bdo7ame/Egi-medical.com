@@ -96,11 +96,7 @@ export const Navigation = () => {
 										</Badge>
 									)}
 									{/* Animated Underline */}
-									<span className={cn(
-										"absolute bottom-0 left-1/2 h-[3px] bg-current transition-all duration-300 -translate-x-1/2 group-hover:w-full rounded-t-full opacity-0 group-hover:opacity-100",
-										isRtl ? "translate-x-1/2" : "-translate-x-1/2",
-										"w-0 group-hover:w-full"
-									)} />
+									<span className="absolute bottom-0 left-1/2 w-0 h-[3px] bg-current transition-all duration-300 -translate-x-1/2 group-hover:w-full rounded-t-full opacity-0 group-hover:opacity-100" />
 								</LocalizedLink>
 							);
 						})}
