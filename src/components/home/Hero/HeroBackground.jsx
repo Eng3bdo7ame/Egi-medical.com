@@ -12,7 +12,7 @@ export const HeroBackground = ({ className, bgClass = "bg-[#F4F7FC]" }) => {
 			<div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/40 to-transparent dark:from-slate-950/70 dark:via-slate-950/40 pointer-events-none" />
 
 			{/* Dot Grid Pattern (Top Right/End) */}
-			<div className="absolute top-6 end-8 w-36 h-48 opacity-35 pointer-events-none">
+			<div className="absolute top-6 end-8 w-36 h-48 opacity-10 lg:opacity-35 pointer-events-none">
 				<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
 					<defs>
 						<pattern id="dotGrid" width="20" height="20" patternUnits="userSpaceOnUse">

@@ -23,7 +23,7 @@ export const Section = ({
 		surface: "bg-surface",
 	};
 
-	const paddingClass = spacingMap[spacing] || spacingMap.md;
+	const paddingClass = spacingMap[spacing] !== undefined ? spacingMap[spacing] : spacingMap.md;
 	const bgClass = bgMap[bg] || bgMap.default;
 
 	return (

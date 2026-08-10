@@ -16,7 +16,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/api": {
-				target: "https://egimedical.com",
+				target: "https://admin.egimedical.com",
 				changeOrigin: true,
 				secure: false,
 				xfwd: false, // Prevent adding X-Forwarded-For headers

@@ -8,6 +8,7 @@ import { Icon } from "@/components/ui/Icon";
 import { useSelector } from "react-redux";
 import { useLogout } from "@/features/auth";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/hooks/queries/useSettings";
 
 /**
  * AnnouncementBar Component
@@ -18,18 +19,23 @@ export const AnnouncementBar = () => {
 	const isRtl = language === "ar";
 	const { isAuthenticated, user } = useSelector((state) => state.auth);
 	const { logout } = useLogout();
+	const { data: settings } = useSettings();
+
+	const phone = settings?.phone || "01203036736";
+	// Formatted phone: replace spaces/special characters or format for display if needed
+	const formattedPhone = phone;
 
 	return (
 		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none relative z-[110]">
 			<Container>
 				<div className="flex items-center justify-between py-2.5 gap-4">
-					{/* Left: Shipping */}
+					{/* Left: Why Choose Us Announcement */}
 					<div className="flex items-center gap-2 font-medium">
-						<Icon name="Truck" size="sm" className="text-primary" />
-						<span>
-							{isRtl
-								? "شحن مجاني للطلبات فوق 50 دولار"
-								: "Free Shipping on orders over $50"}
+						<Icon name="ShieldCheck" size="sm" className="text-primary shrink-0" />
+						<span className="line-clamp-1">
+							{settings?.why_choose_us?.subtitle || settings?.why_choose_us?.title || (isRtl
+								? "نحن نضع معايير جديدة للموثوقية والأمان في توفير المستلزمات والأجهزة الطبية"
+								: "We set new standards of reliability and safety in providing medical supplies")}
 						</span>
 					</div>
 
@@ -52,7 +58,7 @@ export const AnnouncementBar = () => {
 
 						{/* Hotline */}
 						<a
-							href="tel:01001234567"
+							href={`tel:${phone}`}
 							className="hidden lg:flex items-center gap-2 text-text-secondary hover:text-primary transition-colors"
 						>
 							<Icon name="Phone" size="sm" className="text-primary shrink-0" />
@@ -60,7 +66,7 @@ export const AnnouncementBar = () => {
 								<span className="text-[10px] text-text-muted font-normal">
 									{isRtl ? "تحتاج مساعدة؟" : "Need Help?"}
 								</span>
-								<span className="font-semibold text-text">0100 123 4567</span>
+								<span className="font-semibold text-text">{formattedPhone}</span>
 							</div>
 						</a>
 

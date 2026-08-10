@@ -11,7 +11,7 @@ export const HeroButtons = ({ primary, secondary }) => {
 	if (!primary && !secondary) return null;
 
 	return (
-		<div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 sm:pt-4">
+		<div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2 sm:pt-4">
 			{primary && (
 				<Button
 					asChild
