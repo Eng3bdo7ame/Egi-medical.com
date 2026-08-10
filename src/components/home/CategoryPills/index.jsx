@@ -90,10 +90,10 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 										>
 											<LocalizedLink
 												to={linkUrl}
-												className="group flex flex-col overflow-hidden rounded-[20px] bg-surface border border-border/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-md h-full"
+												className="group flex flex-col overflow-hidden rounded-[20px] bg-surface border border-orange-500/20 hover:border-orange-500/45 transition-all duration-300 hover:-translate-y-1 hover:shadow-md h-full"
 											>
 												{/* Image Container */}
-												<div className="w-full aspect-[4/3] sm:aspect-square bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-center overflow-hidden border-b border-border/30">
+												<div className="w-full aspect-[4/3] sm:aspect-square bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-center overflow-hidden border-b border-orange-500/20">
 													<img
 														src={need.image}
 														alt={title}

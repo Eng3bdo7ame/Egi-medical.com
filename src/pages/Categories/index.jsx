@@ -78,7 +78,7 @@ const Categories = () => {
 											<img 
 												src={image} 
 												alt={categoryTitle.en} 
-												className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+												className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700"
 											/>
 										) : (
 											<LayoutGrid className="w-12 h-12 text-slate-300 dark:text-slate-600 group-hover:scale-110 transition-transform duration-500" />

@@ -19,7 +19,7 @@ export const ProductBadges = ({ badges = [], isOutOfStock, isRtl, language }) =>
 						"text-[11px] font-extrabold px-2.5 py-1 rounded-md shadow-sm backdrop-blur-md",
 						badge.type === "new" && "bg-success text-white",
 						badge.type === "bestseller" && "bg-warning text-white",
-						badge.type === "sale" && "bg-danger text-white",
+						badge.type === "sale" && "bg-orange-500 text-white shadow-sm shadow-orange-500/20",
 						badge.type === "out_of_stock" && "bg-slate-800 text-white"
 					)}
 				>

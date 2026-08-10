@@ -189,7 +189,7 @@ const ProductDetails = () => {
 		<div className="flex flex-col w-full min-h-screen bg-background pb-10">
 
 
-			<Container>
+			<Container className="pt-4 sm:pt-6">
 				{/* Top Section: Gallery & Info */}
 				<div className="flex flex-col lg:flex-row gap-8 lg:gap-12 relative items-start">
 

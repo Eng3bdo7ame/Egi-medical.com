@@ -77,8 +77,8 @@ export const PromoSection = ({ offers }) => {
 									className={cn(
 										"min-w-0 pl-4 rtl:pr-4 rtl:pl-0",
 										isSingle 
-											? "flex-[0_0_100%] sm:flex-[0_0_80%] md:flex-[0_0_70%] lg:flex-[0_0_60%]" 
-											: "flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_45%] lg:flex-[0_0_40%] xl:flex-[0_0_35%]"
+											? "flex-[0_0_100%]" 
+											: "flex-[0_0_90%] sm:flex-[0_0_50%] md:flex-[0_0_50%] lg:flex-[0_0_50%]"
 									)}
 								>
 									<motion.div
@@ -95,55 +95,44 @@ export const PromoSection = ({ offers }) => {
 												promo.bgClass
 											)}
 										>
-											{/* Background and Product Image */}
-											<div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900 flex items-center justify-end rtl:justify-start">
+											{/* Full Background Image */}
+											<div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900">
 												<img
 													src={promo.image}
 													alt={promo.title[language]}
-													className="w-[45%] h-[85%] object-contain p-2 transition-transform duration-1000 group-hover:scale-105"
+													className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-95 dark:opacity-75"
 												/>
+
 												{/* Subtle glass effect edge */}
 												<div className="absolute inset-0 border border-white/40 dark:border-white/10 rounded-[2rem] pointer-events-none" />
 											</div>
 
 											{/* Content */}
-											<div className="relative z-10 flex flex-col items-start max-w-[55%] sm:max-w-[60%]">
+											<div className="relative z-10 flex flex-col items-start max-w-[75%] sm:max-w-[60%] lg:max-w-[50%]">
 												{promo.badge && (
 													<span className={cn(
 														"px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-full mb-3 sm:mb-5 inline-flex items-center gap-1.5 border backdrop-blur-sm shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5",
-														promo.isFlashSale ? "bg-danger/10 text-danger border-danger/20" : promo.badgeClass
+														promo.isFlashSale ? "bg-danger/10 text-danger border-danger/20" : "bg-white/10 text-white border-white/20"
 													)}>
 														{promo.isFlashSale && <Tag className="w-3 h-3" />}
 														{promo.badge[language]}
 													</span>
 												)}
 												
-												<h3 className={cn(
-													"text-base sm:text-xl md:text-2xl lg:text-4xl font-extrabold lg:font-black leading-snug lg:leading-tight mb-2 sm:mb-3 drop-shadow-sm transition-colors duration-300", 
-													promo.textClass, 
-													"dark:text-white"
-												)}>
+												<h3 className="text-sm sm:text-lg md:text-xl lg:text-3xl font-extrabold lg:font-black leading-snug lg:leading-tight mb-2 sm:mb-3 text-white drop-shadow-md">
 													{promo.title[language]}
 												</h3>
 												
 												{promo.subtitle?.[language] && (
-													<p className={cn(
-														"text-xs sm:text-sm lg:text-base font-medium mb-4 sm:mb-8 opacity-75 leading-relaxed line-clamp-2 drop-shadow-sm max-w-[95%]", 
-														promo.textClass, 
-														"dark:text-slate-300"
-													)}>
+													<p className="text-[11px] sm:text-xs lg:text-sm font-medium mb-4 sm:mb-8 text-white/80 leading-relaxed line-clamp-2 drop-shadow-sm max-w-[95%]">
 														{promo.subtitle[language]}
 													</p>
 												)}
 
-												<span className={cn(
-													"inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:px-7 sm:py-3 text-xs sm:text-sm font-bold rounded-xl sm:rounded-2xl transition-all duration-300 shadow-lg hover:-translate-y-0.5 hover:shadow-xl",
-													promo.btnClass,
-													!promo.subtitle?.[language] && "mt-4"
-												)}>
+												<span className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-6 sm:py-2.5 text-[11px] sm:text-xs font-bold rounded-xl sm:rounded-2xl transition-all duration-300 shadow-lg hover:-translate-y-0.5 hover:shadow-xl bg-white text-slate-900 hover:bg-slate-100">
 													{promo.buttonText[language]}
 													<ArrowIcon className={cn(
-														"w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300",
+														"w-3.5 h-3.5 transition-transform duration-300",
 														isRtl ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"
 													)} />
 												</span>

@@ -27,7 +27,7 @@ export const BlogCard = ({ blog }) => {
 					loading="lazy"
 				/>
 				{categoryName && (
-					<span className="absolute top-4 ltr:left-4 rtl:right-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/95 text-white shadow-sm">
+					<span className="absolute top-4 ltr:left-4 rtl:right-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-orange-500/95 text-white shadow-sm">
 						{categoryName}
 					</span>
 				)}
@@ -38,12 +38,12 @@ export const BlogCard = ({ blog }) => {
 				{/* Metadata */}
 				<div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mb-3">
 					<div className="flex items-center gap-1.5">
-						<Calendar className="w-3.5 h-3.5 text-primary" />
+						<Calendar className="w-3.5 h-3.5 text-orange-500" />
 						<time dateTime={blog.publishedAt}>{blog.publishedAt}</time>
 					</div>
 					{readTime && (
 						<div className="flex items-center gap-1.5">
-							<Clock className="w-3.5 h-3.5 text-primary" />
+							<Clock className="w-3.5 h-3.5 text-orange-500" />
 							<span>{readTime}</span>
 						</div>
 					)}
@@ -68,7 +68,7 @@ export const BlogCard = ({ blog }) => {
 							<img
 								src={blog.author.avatar}
 								alt={authorName}
-								className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10"
+								className="w-8 h-8 rounded-full object-cover ring-2 ring-orange-500/20"
 							/>
 						)}
 						<span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
@@ -78,7 +78,7 @@ export const BlogCard = ({ blog }) => {
 
 					{/* Read More link-styled span */}
 					<span
-						className="inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:text-primary-hover transition-colors duration-200"
+						className="inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:text-orange-500 transition-colors duration-200"
 					>
 						{isRtl ? "اقرأ المزيد" : "Read More"}
 						{isRtl ? (

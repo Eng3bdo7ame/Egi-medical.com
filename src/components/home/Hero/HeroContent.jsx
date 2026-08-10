@@ -18,9 +18,9 @@ export const HeroContent = ({ slide, language, textVariants }) => {
 	const subtitleText = getLocalizedText(slide.subtitle);
 
 	return (
-		<div className="flex flex-col items-center lg:items-start justify-center z-10 w-full h-full pt-4 pb-4 sm:pt-6 sm:pb-6 lg:py-0 text-center lg:text-start">
+		<div className="flex flex-col items-center lg:items-start justify-center z-10 w-full h-full pt-2 pb-2 sm:pt-6 sm:pb-6 lg:py-0 text-center lg:text-start">
 			<motion.div
-				className="space-y-4 sm:space-y-6 max-w-xl flex flex-col items-center lg:items-start"
+				className="space-y-2 sm:space-y-6 max-w-xl flex flex-col items-center lg:items-start"
 				initial="hidden"
 				animate="visible"
 				exit="exit"
@@ -30,7 +30,7 @@ export const HeroContent = ({ slide, language, textVariants }) => {
 					<motion.h1
 						custom={0}
 						variants={textVariants}
-						className="text-xl sm:text-2xl md:text-3xl lg:text-display font-extrabold text-text leading-[1.25] lg:leading-[1.15]"
+						className="text-lg sm:text-2xl md:text-3xl lg:text-display font-extrabold text-text leading-[1.25] lg:leading-[1.15]"
 						dangerouslySetInnerHTML={{ __html: titleHtml }}
 					/>
 				)}
@@ -40,7 +40,7 @@ export const HeroContent = ({ slide, language, textVariants }) => {
 					<motion.p
 						custom={1}
 						variants={textVariants}
-						className="text-sm sm:text-base lg:text-body-large text-text-secondary leading-relaxed max-w-[95%] sm:max-w-[90%]"
+						className="text-xs sm:text-base lg:text-body-large text-text-secondary leading-relaxed max-w-[95%] sm:max-w-[90%]"
 					>
 						{subtitleText}
 					</motion.p>

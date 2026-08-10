@@ -34,8 +34,8 @@ export const Hero = ({ sliders = [], isLoading }) => {
 		return {
 			...staticFallback,
 			id: apiSlide.id || index,
-			title: apiSlide.title !== undefined && apiSlide.title !== null ? apiSlide.title : staticFallback.title,
-			subtitle: apiSlide.description !== undefined && apiSlide.description !== null ? apiSlide.description : staticFallback.subtitle,
+			title: apiSlide.title || "",
+			subtitle: apiSlide.description || "",
 			image: apiSlide.image || staticFallback.image,
 			buttons: {
 				primary: {
@@ -83,7 +83,7 @@ export const Hero = ({ sliders = [], isLoading }) => {
 	};
 
 	if (isLoading && (!sliders || sliders.length === 0)) {
-		return <Section spacing="none"><div className="min-h-[520px] bg-slate-100 animate-pulse w-full"></div></Section>;
+		return <Section spacing="none"><div className="min-h-[420px] bg-slate-100 animate-pulse w-full"></div></Section>;
 	}
 
 	return (
@@ -95,14 +95,14 @@ export const Hero = ({ sliders = [], isLoading }) => {
 					return (
 						<div
 							key={slide.id || index}
-							className="relative flex-[0_0_100%] min-w-0 h-auto min-h-[520px] sm:min-h-[460px] md:min-h-[480px] lg:h-[520px] select-none"
+							className="relative flex-[0_0_100%] min-w-0 h-auto min-h-[420px] sm:min-h-[460px] md:min-h-[480px] lg:h-[520px] select-none"
 						>
 							{/* Background Component (Full width) */}
 							<HeroBackground bgClass={slide.background || "bg-[#F4F7FC]"} />
 
-							<div className="relative lg:absolute lg:inset-0 z-10 w-full h-full py-8 lg:py-0 flex items-center">
+							<div className="relative lg:absolute lg:inset-0 z-10 w-full h-full py-4 lg:py-0 flex items-center">
 								<Container className="h-full flex items-center">
-									<div className="w-full grid grid-cols-1 lg:grid-cols-2 items-center gap-6 lg:gap-4 h-full">
+									<div className="w-full grid grid-cols-1 lg:grid-cols-2 items-center gap-2 lg:gap-4 h-full">
 
 										{/* Image Side - Order 1 on mobile, Order 2 on desktop */}
 										<div className="order-1 lg:order-2 w-full flex justify-center">

@@ -85,7 +85,7 @@ export const WhyMootah = ({ data }) => {
 								key={prop.id}
 								className="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 sm:p-6 flex flex-col items-start hover:border-primary/50 hover:bg-slate-800 transition-all duration-300 group"
 							>
-								<div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white flex items-center justify-center mb-4 sm:mb-6 transition-colors duration-300">
+								<div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-orange-500/10 text-orange-500 group-hover:bg-orange-500 group-hover:text-white flex items-center justify-center mb-4 sm:mb-6 transition-colors duration-300">
 									<IconComp className="w-5 h-5 sm:w-7 sm:h-7" />
 								</div>
 								<h3 className="text-base sm:text-xl font-bold text-white mb-1 sm:mb-2">

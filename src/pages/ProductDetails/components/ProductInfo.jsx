@@ -19,17 +19,6 @@ export const ProductInfo = ({ product }) => {
 
 			{/* Top Bar: Brand & Badges & Stock */}
 			<div className="flex flex-wrap items-center justify-between gap-3">
-				<div className="flex items-center gap-3">
-					<div className="flex items-center gap-2 px-3 py-1.5 bg-surface-2 rounded-full border border-border/50">
-						<ShieldCheck className="w-4 h-4 text-primary" />
-						<span className="text-xs font-bold text-text-secondary uppercase tracking-wider">
-							{product.brand?.name}
-						</span>
-					</div>
-
-					{/* Stock Status Badge */}
-					<StockBadge stock={product.stock} />
-				</div>
 
 				{product.badges && product.badges.length > 0 && (
 					<div className="flex gap-2">
@@ -38,7 +27,7 @@ export const ProductInfo = ({ product }) => {
 								key={idx}
 								className={cn(
 									"px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest",
-									badge.type === "sale" ? "bg-danger text-white shadow-sm shadow-danger/20" :
+									badge.type === "sale" ? "bg-orange-500 text-white shadow-sm shadow-orange-500/20" :
 										badge.type === "bestseller" ? "bg-warning text-white shadow-sm shadow-warning/20" :
 											badge.type === "new" ? "bg-success text-white shadow-sm shadow-success/20" :
 												"bg-surface-2 text-text"

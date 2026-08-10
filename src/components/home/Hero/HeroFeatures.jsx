@@ -13,7 +13,7 @@ export const HeroFeatures = ({ features, language = "ar" }) => {
 		<div className="flex flex-wrap items-center gap-6 md:gap-8 pt-8">
 			{features.map((feature, idx) => (
 				<div key={idx} className="flex items-center gap-3">
-					<div className="flex items-center justify-center text-primary">
+					<div className="flex items-center justify-center text-orange-500">
 						<Icon name={feature.icon} size={24} strokeWidth={1.5} />
 					</div>
 					<div className="flex flex-col leading-tight">
