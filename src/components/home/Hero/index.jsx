@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
 import { motion, AnimatePresence } from "framer-motion";
-import { heroSlides } from "./hero.data";
+
 import HeroSlider from "./HeroSlider";
 import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
@@ -14,8 +14,7 @@ export const Hero = ({ sliders = [], isLoading }) => {
 	const [activeIndex, setActiveIndex] = useState(0);
 
 	// Bind API data to the slider layout exactly as it is
-	const slidesToDisplay = (sliders && sliders.length > 0 ? sliders : heroSlides).map((apiSlide, index) => {
-		const staticFallback = heroSlides[index] || heroSlides[0];
+	const slidesToDisplay = (sliders || []).map((apiSlide, index) => {
 		
 		// Build dynamic link from API fields
 		let actionLink = "/shop";
@@ -27,16 +26,14 @@ export const Hero = ({ sliders = [], isLoading }) => {
 			actionLink = `/category/${apiSlide.link_id}`;
 		} else if (apiSlide.link_id && apiSlide.link_type === "product") {
 			actionLink = `/product/${apiSlide.link_id}`;
-		} else if (staticFallback.buttons?.primary?.link) {
-			actionLink = staticFallback.buttons.primary.link;
 		}
 
 		return {
-			...staticFallback,
 			id: apiSlide.id || index,
 			title: apiSlide.title || "",
 			subtitle: apiSlide.description || "",
-			image: apiSlide.image || staticFallback.image,
+			image: apiSlide.image || "",
+			background: apiSlide.background || "bg-[#F4F7FC]",
 			buttons: {
 				primary: {
 					en: "Shop Now",

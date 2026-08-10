@@ -2,7 +2,7 @@ import React from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { healthNeeds } from "./categories.data";
+
 import LocalizedLink from "@/components/ui/LocalizedLink";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Container from "@/components/ui/Container";
@@ -26,7 +26,7 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 		if (emblaApi) emblaApi.scrollNext();
 	};
 
-	const categoriesToDisplay = categories && categories.length > 0 ? categories : healthNeeds;
+	const categoriesToDisplay = categories || [];
 
 	if (isLoading && (!categories || categories.length === 0)) {
 		return (
@@ -41,14 +41,8 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 	return (
 		<Section bg="background" spacing="xs" className="overflow-hidden">
 			<Container>
-				<div className="relative rounded-[32px] p-3 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center overflow-hidden border border-border/60 shadow-sm">
-					{/* Background Image with Light Overlay */}
-					<div
-						className="absolute inset-0 bg-cover bg-center opacity-30 dark:opacity-15"
-						style={{ backgroundImage: "url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=1600')" }}
-					/>
-					<div className="absolute inset-0 bg-white/50 dark:bg-slate-900/60 backdrop-blur-[1px]" />
-
+				<div className="relative rounded-[32px] p-3 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center overflow-hidden border border-border/60 shadow-sm bg-slate-50/60 dark:bg-slate-900/20">
+					
 					{/* Text Side */}
 					<div className="relative z-10 w-full md:w-[20%] lg:w-[13%] flex flex-col items-start gap-3">
 						<h2 className="text-xl md:text-2xl font-extrabold text-text-heading leading-tight drop-shadow-sm">
@@ -90,7 +84,7 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 										>
 											<LocalizedLink
 												to={linkUrl}
-												className="group flex flex-col overflow-hidden rounded-[20px] bg-surface border border-orange-500/20 hover:border-orange-500/45 transition-all duration-300 hover:-translate-y-1 hover:shadow-md h-full"
+												className="group flex flex-col overflow-hidden rounded-[20px] bg-white dark:bg-slate-900 border border-orange-500/30 dark:border-slate-800 shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-lg hover:border-orange-500 transition-all duration-300 hover:-translate-y-1 h-full"
 											>
 												{/* Image Container */}
 												<div className="w-full aspect-[4/3] sm:aspect-square bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-center overflow-hidden border-b border-orange-500/20">

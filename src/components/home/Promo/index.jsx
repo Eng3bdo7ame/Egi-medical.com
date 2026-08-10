@@ -4,7 +4,7 @@ import { useLanguage } from "@/app/providers/I18nProvider";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { promoCards } from "./promo.data";
+
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { cn } from "@/lib/utils";
@@ -50,8 +50,7 @@ export const PromoSection = ({ offers }) => {
 		});
 	}
 
-	const sourceCards = mappedOffers.length > 0 ? mappedOffers : promoCards;
-	const displayCards = [...sourceCards];
+	const displayCards = mappedOffers;
 	
 	const isSingle = displayCards.length === 1;
 

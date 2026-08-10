@@ -103,7 +103,7 @@ const ProductDetails = () => {
 						brand: { name: data.brand || data.store_name || "EG Medical" },
 						shortDescription: { ar: data.meta_description || "", en: data.meta_description || "" },
 						reviews: { rating: data.rating || 0, count: data.rate_count || 0 },
-						reviewsList: data.product_rates || [], // fallback if mock needs it
+						reviewsList: data.product_rates || [],
 						badges,
 						specifications: data.specifications || data.attributes || [], // If API provides specs, map them here
 						_apiOriginal: data
