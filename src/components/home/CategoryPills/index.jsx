@@ -41,7 +41,7 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 	return (
 		<Section bg="background" spacing="xs" className="overflow-hidden">
 			<Container>
-				<div className="relative rounded-[32px] p-4 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center overflow-hidden border border-border/60 shadow-sm">
+				<div className="relative rounded-[32px] p-3 md:p-6 flex flex-col md:flex-row gap-4 md:gap-6 items-center overflow-hidden border border-border/60 shadow-sm">
 					{/* Background Image with Light Overlay */}
 					<div
 						className="absolute inset-0 bg-cover bg-center opacity-30 dark:opacity-15"
@@ -86,23 +86,24 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 									return (
 										<div
 											key={need.id || index}
-											className="flex-[0_0_50%] sm:flex-[0_0_30%] md:flex-[0_0_25%] lg:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
+											className="flex-[0_0_100%] sm:flex-[0_0_30%] md:flex-[0_0_25%] lg:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
 										>
 											<LocalizedLink
 												to={linkUrl}
-												className="group relative flex flex-col overflow-hidden rounded-[24px] aspect-[4/5] bg-surface border border-border/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+												className="group flex flex-col overflow-hidden rounded-[20px] bg-surface border border-border/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-md h-full"
 											>
-												<img
-													src={need.image}
-													alt={title}
-													className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-												/>
-												{/* Bottom Fade for Text */}
-												<div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-surface via-surface/60 to-transparent pointer-events-none" />
+												{/* Image Container */}
+												<div className="w-full aspect-[4/3] sm:aspect-square bg-slate-50/50 dark:bg-slate-800/20 flex items-center justify-center overflow-hidden border-b border-border/30">
+													<img
+														src={need.image}
+														alt={title}
+														className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+													/>
+												</div>
 
-												{/* Text */}
-												<div className="absolute inset-x-0 bottom-0 p-4 pt-8 flex items-end justify-center text-center">
-													<span className="text-text font-extrabold text-sm sm:text-base leading-tight drop-shadow-sm">
+												{/* Text Container below the image to prevent overlap */}
+												<div className="p-3.5 flex-grow flex items-center justify-center text-center bg-surface">
+													<span className="text-text font-extrabold text-xs sm:text-sm md:text-base leading-snug line-clamp-2">
 														{title}
 													</span>
 												</div>

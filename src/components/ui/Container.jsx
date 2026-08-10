@@ -11,7 +11,7 @@ export const Container = ({
 	// Uses max-w-screen-2xl which is dynamically mapped to 1440px in globals.css
 	// This acts as a Single Source of Truth for the max width of the layout.
 	const baseClass = "w-full max-w-screen-2xl mx-auto";
-	const paddingClass = clean ? "" : "px-4 md:px-6 lg:px-8";
+	const paddingClass = clean ? "" : "px-3 md:px-6 lg:px-8";
 
 	return (
 		<Component
