@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
+import { formatCurrency } from "@/components/ui/ProductCard/utils/product-card.helpers";
 import { ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ export const MobileBottomBar = ({ price, onAddToCart, disabled = false, showThre
 
 	const hasDiscount = price?.discount && price.discount > 0;
 	const finalPrice = hasDiscount ? price.current : price?.original || price?.current;
+	const finalFormatted = formatCurrency(finalPrice, "EGP", language);
 
 	return (
 		<div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden transform transition-transform duration-300 translate-y-0">
@@ -37,8 +39,7 @@ export const MobileBottomBar = ({ price, onAddToCart, disabled = false, showThre
 							{isRtl ? "السعر الإجمالي" : "Total Price"}
 						</span>
 						<div className="flex items-baseline gap-1">
-							<span className="text-xl font-extrabold text-primary">{finalPrice}</span>
-							<span className="text-sm font-bold text-primary/80">{isRtl ? "ج.م" : "EGP"}</span>
+							<span className="text-xl font-extrabold text-primary">{finalFormatted}</span>
 						</div>
 					</div>
 

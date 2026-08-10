@@ -141,8 +141,8 @@ export const OrderDetails = ({ orderId, onBack }) => {
 						<span className="font-extrabold">{isRtl ? "تفاصيل استرداد الأموال (Refund)" : "Refund Confirmation"}</span>
 						<p className="text-xs text-text-secondary leading-relaxed">
 							{isRtl 
-								? `تم استرداد مبلغ ${Number(order.total).toLocaleString()} ج.م بالكامل بنجاح.` 
-								: `The refund of ${Number(order.total).toLocaleString()} EGP has been successfully processed.`}
+								? `تم استرداد مبلغ ${Number(order.total).toLocaleString("en-US")} ج.م بالكامل بنجاح.` 
+								: `The refund of ${Number(order.total).toLocaleString("en-US")} EGP has been successfully processed.`}
 						</p>
 					</div>
 				</div>
@@ -222,14 +222,14 @@ export const OrderDetails = ({ orderId, onBack }) => {
 					<div className="flex justify-between text-sm text-text-secondary">
 						<span>{isRtl ? "المجموع الفرعي" : "Subtotal"}</span>
 						<span className="font-bold text-text">
-							{Number(order.subtotal || 0).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
+							{Number(order.subtotal || 0).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
 						</span>
 					</div>
 					
 					<div className="flex justify-between text-sm text-text-secondary">
 						<span>{isRtl ? "الشحن" : "Shipping"}</span>
 						<span className="font-bold text-text">
-							{Number(order.shipping_cost || 0).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
+							{Number(order.shipping_cost || 0).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
 						</span>
 					</div>
 
@@ -237,7 +237,7 @@ export const OrderDetails = ({ orderId, onBack }) => {
 						<div className="flex justify-between text-sm text-text-secondary">
 							<span>{isRtl ? "الضريبة" : "Tax"}</span>
 							<span className="font-bold text-text">
-								{Number(order.tax).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
+								{Number(order.tax).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
 							</span>
 						</div>
 					)}
@@ -246,7 +246,7 @@ export const OrderDetails = ({ orderId, onBack }) => {
 						<div className="flex justify-between text-sm text-success font-semibold">
 							<span>{isRtl ? "الخصم" : "Discount"}</span>
 							<span className="font-bold">
-								-{Number(order.discount).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
+								-{Number(order.discount).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
 							</span>
 						</div>
 					)}
@@ -256,7 +256,7 @@ export const OrderDetails = ({ orderId, onBack }) => {
 					<div className="flex justify-between text-lg text-text font-black">
 						<span>{isRtl ? "الإجمالي" : "Total"}</span>
 						<span className="text-primary text-xl">
-							{Number(order.total || 0).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
+							{Number(order.total || 0).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
 						</span>
 					</div>
 				</div>

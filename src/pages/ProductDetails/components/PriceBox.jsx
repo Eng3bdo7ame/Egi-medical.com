@@ -1,6 +1,6 @@
 import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { ProductPrice } from "@/components/ui/ProductCard/ProductPrice";
+import { formatCurrency } from "@/components/ui/ProductCard/utils/product-card.helpers";
 import { cn } from "@/lib/utils";
 
 export const PriceBox = ({ price, className }) => {
@@ -12,6 +12,9 @@ export const PriceBox = ({ price, className }) => {
 	const hasDiscount = price.discount && price.discount > 0;
 	const finalPrice = hasDiscount ? price.current : price.original || price.current;
 
+	const finalFormatted = formatCurrency(finalPrice, "EGP", language);
+	const originalFormatted = price.original ? formatCurrency(price.original, "EGP", language) : null;
+
 	return (
 		<div className={cn("p-4 bg-surface rounded-2xl border border-border shadow-sm", className)}>
 			<div className="flex flex-col gap-1">
@@ -22,7 +25,7 @@ export const PriceBox = ({ price, className }) => {
 							{isRtl ? `خصم ${price.discount}%` : `Save ${price.discount}%`}
 						</span>
 						<span className="text-text-muted line-through text-sm font-medium">
-							{price.original} {isRtl ? "ج.م" : "EGP"}
+							{originalFormatted}
 						</span>
 					</div>
 				)}
@@ -30,10 +33,7 @@ export const PriceBox = ({ price, className }) => {
 				{/* Main Price */}
 				<div className="flex items-baseline gap-1.5">
 					<span className="text-2xl sm:text-3xl font-extrabold text-primary">
-						{finalPrice}
-					</span>
-					<span className="text-sm sm:text-base font-bold text-primary/80">
-						{isRtl ? "ج.م" : "EGP"}
+						{finalFormatted}
 					</span>
 				</div>
 				

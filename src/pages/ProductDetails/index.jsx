@@ -57,6 +57,7 @@ const ProductDetails = () => {
 					const priceVal = data.price || 0;
 					const currentPrice = data.final_price || data.special_price || data.sale_price || priceVal;
 					const originalPrice = priceVal > currentPrice ? priceVal : null;
+					const discountVal = data.discount_percentage || (originalPrice ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100) : 0);
 					
 					const images = [];
 					if (data.primary_image || data.image) {
@@ -90,7 +91,7 @@ const ProductDetails = () => {
 						_realId: data.id,
 						title: { ar: data.name || data.title || "", en: data.name || data.title || "" },
 						description: { ar: data.description || "", en: data.description || "" },
-						price: { current: currentPrice, original: originalPrice },
+						price: { current: currentPrice, original: originalPrice, discount: discountVal },
 						images: images,
 						categories: [{ 
 							id: String(data.category_id || ""), 
@@ -162,13 +163,14 @@ const ProductDetails = () => {
 			const priceVal = apiProd.price || 0;
 			const currentPrice = apiProd.final_price || apiProd.special_price || apiProd.sale_price || priceVal;
 			const originalPrice = priceVal > currentPrice ? priceVal : null;
+			const discountVal = apiProd.discount_percentage || (originalPrice ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100) : 0);
 			return {
 				id: `prod-${apiProd.id}`,
 				title: { ar: apiProd.title || apiProd.name || "", en: apiProd.title || apiProd.name || "" },
 				category: { ar: apiProd.category || "", en: apiProd.category || "", id: String(apiProd.category_id || "") },
 				brand: apiProd.brand || "",
 				image: apiProd.primary_image || apiProd.image || "",
-				price: { current: currentPrice, original: originalPrice },
+				price: { current: currentPrice, original: originalPrice, discount: discountVal },
 				reviews: { rating: apiProd.rating || 0, count: apiProd.rate_count || 0 },
 				stock: { quantity: apiProd.quantity || 0 },
 				badges: [],

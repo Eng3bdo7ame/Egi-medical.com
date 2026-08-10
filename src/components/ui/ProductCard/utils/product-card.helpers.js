@@ -8,7 +8,7 @@
 export const formatCurrency = (amount, currencyCode = "EGP", locale = "en") => {
 	if (typeof amount !== "number") return "";
 	
-	return new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-US", {
+	return new Intl.NumberFormat(locale === "ar" ? "ar-EG-u-nu-latn" : "en-US", {
 		style: "currency",
 		currency: currencyCode,
 		minimumFractionDigits: 2,

@@ -47,19 +47,7 @@ export const Terms = () => {
 
 			<Container>
 				<div className="max-w-4xl mx-auto bg-surface border border-border/50 rounded-3xl p-6 sm:p-10 shadow-sm">
-					
-					{/* IMPORTANT Medical Disclaimer */}
-					<div className="p-5 bg-danger/5 border border-danger/20 rounded-2xl flex gap-3 text-danger mb-8 text-sm">
-						<AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
-						<div className="flex flex-col gap-1.5">
-							<span className="font-extrabold">{isRtl ? "إخلاء مسؤولية طبي هام جداً" : "CRITICAL Medical Disclaimer"}</span>
-							<p className="text-xs text-text-secondary leading-relaxed">
-								{isRtl 
-									? "المعلومات والأجهزة الطبية المعروضة في EG Medical لا تغني عن استشارة الطبيب المختص أو مقدم الرعاية الصحية المرخص. يجب دائماً قراءة دليل المستخدم المرفق مع الأجهزة بدقة واتباع إرشادات الطبيب المعالج قبل القياس أو التشخيص الذاتي."
-									: "The information and medical products listed on EG Medical are not substitutes for professional medical advice, diagnosis, or treatment. Always read the user manual supplied with the devices carefully and follow your physician's guidance before self-measurement or diagnostics."}
-							</p>
-						</div>
-					</div>
+
 
 					{/* Policy Content */}
 					<div className="prose prose-sm md:prose-base max-w-none text-text-secondary leading-relaxed flex flex-col gap-8 html-content">

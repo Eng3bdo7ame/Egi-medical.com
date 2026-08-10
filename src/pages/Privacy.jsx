@@ -47,19 +47,7 @@ export const Privacy = () => {
 
 			<Container>
 				<div className="max-w-4xl mx-auto bg-surface border border-border/50 rounded-3xl p-6 sm:p-10 shadow-sm">
-					
-					{/* Healthcare Data Warning */}
-					<div className="p-4 bg-primary/5 border border-primary/20 rounded-2xl flex gap-3 text-primary mb-8 text-sm">
-						<ShieldAlert className="w-5 h-5 shrink-0 mt-0.5" />
-						<div className="flex flex-col gap-1">
-							<span className="font-extrabold">{isRtl ? "حماية البيانات الصحية والطبية" : "Healthcare & Medical Data Protection"}</span>
-							<p className="text-xs text-text-secondary leading-relaxed">
-								{isRtl
-									? "نحن نلتزم بأعلى معايير السرية الطبية وحماية البيانات الشخصية والصحية لعملائنا وفقاً للقوانين المصرية المنظمة وحماية الخصوصية الرقمية للمريض."
-									: "We adhere to strict medical confidentiality and data protection laws in Egypt. Your health metrics, purchases, and prescription uploads are fully encrypted and protected."}
-							</p>
-						</div>
-					</div>
+
 
 					{/* Policy Content */}
 					<div className="prose prose-sm md:prose-base max-w-none text-text-secondary leading-relaxed flex flex-col gap-8 html-content">

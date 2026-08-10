@@ -18,7 +18,11 @@ export const mapBackendProduct = (apiProd) => {
 		category: { ar: apiProd.category || "", en: apiProd.category || "", id: String(apiProd.category_id || "") },
 		brand: apiProd.brand || "",
 		image: apiProd.primary_image || apiProd.image || "",
-		price: { current: currentPrice, original: originalPrice },
+		price: { 
+			current: currentPrice, 
+			original: originalPrice,
+			discount: apiProd.discount_percentage || (originalPrice ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100) : 0)
+		},
 		reviews: { rating: apiProd.rating || 0, count: apiProd.rate_count || 0 },
 		stock: { quantity: apiProd.quantity || 0 },
 		badges,

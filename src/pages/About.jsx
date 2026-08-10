@@ -4,6 +4,7 @@ import Container from "@/components/ui/Container";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Award, ShieldCheck, HeartHandshake, Eye, Target, Users, CheckCircle2, ChevronRight, Activity } from "lucide-react";
 import { usePages } from "@/hooks/queries/usePages";
+import { cn } from "@/lib/utils";
 
 export const About = () => {
 	const { language } = useLanguage();
@@ -16,6 +17,15 @@ export const About = () => {
 		title: aboutPage.title || "",
 		content: aboutPage.content || ""
 	}) : null;
+
+	const isPlaceholderContent = (content) => {
+		if (!content) return true;
+		const lower = content.toLowerCase();
+		return lower.includes("bookstore") || lower.includes("books for all ages");
+	};
+
+	const hasValidContent = pageData?.content && !isPlaceholderContent(pageData.content);
+	const pageImage = aboutPage?.image || aboutPage?.primary_image || "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop";
 
 	const breadcrumbItems = [
 		{ label: { en: "Home", ar: "الرئيسية" }, link: "/" },
@@ -71,7 +81,7 @@ export const About = () => {
 					<Breadcrumb items={breadcrumbItems} className="mb-6" />
 					
 					<div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-						<div className="lg:col-span-7 flex flex-col gap-6 text-start">
+						<div className={cn("flex flex-col gap-6 text-start", pageImage ? "lg:col-span-7" : "lg:col-span-12")}>
 							<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold w-fit">
 								<Activity className="w-3.5 h-3.5 animate-pulse" />
 								{isRtl ? "شريكك الطبي الموثوق" : "Your Trusted Medical Partner"}
@@ -94,32 +104,34 @@ export const About = () => {
 									<div className="h-4 bg-slate-200 dark:bg-slate-800 animate-pulse rounded w-5/6"></div>
 									<div className="h-4 bg-slate-200 dark:bg-slate-800 animate-pulse rounded w-2/3"></div>
 								</div>
-							) : pageData?.content ? (
+							) : hasValidContent ? (
 								<div 
-									className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl space-y-4 html-content"
+									className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-none space-y-4 html-content"
 									dangerouslySetInnerHTML={{ __html: pageData.content }}
 								/>
 							) : (
-								<p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+								<p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-4xl">
 									{isRtl 
-										? "المنصة الرائدة في جمهورية مصر العربية لتوفير وتجهيز الأجهزة والمستلزمات الطبية الموثوقة للمستشفيات، العيادات، والأفراد بأعلى معايير الجودة وخدمات صيانة استثنائية."
+										? "الشركة المصرية الألمانية للصناعات الهندسية هي شركة متخصصة في تصنيع وتوريد الاثاث الطبي عالي الجودة، مع التركيز على توفير حلول عملية ومبتكرة تخدم المستشفيات والعيادات والمراكز الطبية داخل مصر."
 										: "Egypt's premier portal for advanced medical engineering, supplying certified clinical equipment and homecare solutions to top hospitals, private practices, and patients nationwide."}
 								</p>
 							)}
 						</div>
 
-						{/* Hero Image / Visual Element */}
-						<div className="lg:col-span-5 relative">
-							<div className="absolute -inset-2 bg-gradient-to-tr from-primary to-secondary rounded-3xl opacity-20 blur-lg" />
-							<div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-800">
-								<img 
-									src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
-									alt="Precision Engineering" 
-									className="object-cover w-full h-full hover:scale-105 transition-transform duration-700"
-								/>
-								<div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
+						{/* Hero Image / Visual Element - Dynamic based on pageImage */}
+						{pageImage && (
+							<div className="lg:col-span-5 relative">
+								<div className="absolute -inset-2 bg-gradient-to-tr from-primary to-secondary rounded-3xl opacity-20 blur-lg" />
+								<div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-slate-100 dark:border-slate-800">
+									<img 
+										src={pageImage}
+										alt="Precision Engineering" 
+										className="object-cover w-full h-full hover:scale-105 transition-transform duration-700"
+									/>
+									<div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
+								</div>
 							</div>
-						</div>
+						)}
 					</div>
 				</Container>
 			</div>

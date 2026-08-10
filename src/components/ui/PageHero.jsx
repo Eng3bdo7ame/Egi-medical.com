@@ -80,7 +80,7 @@ export const PageHero = ({ title, subtitle, count, countLabel, breadcrumbs, bgIm
 					{count != null && (
 						<div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-white text-sm md:text-base font-bold shrink-0 shadow-sm shadow-primary/20">
 							<span>
-								{count.toLocaleString(isRtl ? "ar-EG" : "en-US")} {resolvedCountLabel[language]}
+								{count.toLocaleString("en-US")} {resolvedCountLabel[language]}
 							</span>
 						</div>
 					)}

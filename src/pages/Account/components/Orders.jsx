@@ -115,7 +115,7 @@ export const Orders = ({ onViewOrder }) => {
 								<div className="flex flex-col items-end">
 									<span className="text-sm text-text-secondary">{isRtl ? "الإجمالي" : "Total"}</span>
 									<span className="font-extrabold text-primary">
-										{Number(order.total).toLocaleString()} {order.currency || (isRtl ? "ج.م" : "EGP")}
+										{Number(order.total).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
 									</span>
 								</div>
 							</div>

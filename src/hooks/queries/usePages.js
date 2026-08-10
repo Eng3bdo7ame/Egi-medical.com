@@ -7,7 +7,7 @@ export const usePages = () => {
 		queryKey: ["pages"],
 		queryFn: async () => {
 			const response = await api.get(API_ENDPOINTS.PAGES);
-			return response.data || response;
+			return response.data?.data || response.data || [];
 		},
 	});
 };
