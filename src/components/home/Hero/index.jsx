@@ -119,7 +119,7 @@ export const Hero = ({ sliders = [], isLoading }) => {
 									key={slide.id || index}
 									className="relative flex-[0_0_100%] min-w-0 h-[280px] sm:h-[380px] md:h-[460px] lg:h-[520px] select-none"
 								>
-									{/* Full Background Image */}
+									{/*Full Background Image */}
 									{slide.image ? (
 										<img
 											src={slide.image}
