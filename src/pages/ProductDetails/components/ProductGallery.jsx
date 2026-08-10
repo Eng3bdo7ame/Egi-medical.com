@@ -64,7 +64,7 @@ export const ProductGallery = ({ images = [] }) => {
 		<div className="flex flex-col gap-4 w-full select-none">
 			
 			{/* Main Image Viewport */}
-			<div className="relative w-full aspect-square bg-white dark:bg-white rounded-2xl border border-border overflow-hidden group">
+			<div className="relative w-full aspect-[4/3] max-h-[300px] sm:max-h-[380px] md:max-h-[420px] lg:max-h-[460px] bg-white dark:bg-white rounded-2xl border border-border overflow-hidden group">
 				<div className="overflow-hidden h-full" ref={mainRef}>
 					<div className="flex h-full rtl:flex-row-reverse">
 						{images.map((img, index) => (
@@ -86,7 +86,7 @@ export const ProductGallery = ({ images = [] }) => {
 									style={{
 										backgroundImage: `url(${img})`,
 										backgroundPosition: isZoomed ? backgroundPosition : "center",
-										backgroundSize: isZoomed ? "200%" : "cover",
+										backgroundSize: isZoomed ? "200%" : "contain",
 										backgroundRepeat: "no-repeat",
 									}}
 								/>
@@ -136,7 +136,7 @@ export const ProductGallery = ({ images = [] }) => {
 								<img 
 									src={img} 
 									alt={`Thumbnail ${index + 1}`} 
-									className="w-full h-full object-cover"
+									className="w-full h-full object-contain p-1"
 								/>
 							</button>
 						))}

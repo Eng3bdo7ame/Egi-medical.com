@@ -52,7 +52,7 @@ export const ProductInfo = ({ product }) => {
 			</div>
 
 			{/* Title */}
-			<h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-text leading-tight tracking-tight mt-1">
+			<h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-text leading-tight tracking-tight mt-1">
 				{product.title[language]}
 			</h1>
 
@@ -84,7 +84,7 @@ export const ProductInfo = ({ product }) => {
 			{/* Short Description */}
 			{product.shortDescription?.[language] && (
 				<div 
-					className="text-text-secondary text-base leading-relaxed my-1 line-clamp-3 prose prose-sm dark:prose-invert"
+					className="text-text-secondary text-xs sm:text-sm leading-relaxed my-1 line-clamp-3 prose prose-sm dark:prose-invert"
 					dangerouslySetInnerHTML={{ __html: product.shortDescription[language] }}
 				/>
 			)}

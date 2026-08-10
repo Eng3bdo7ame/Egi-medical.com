@@ -95,34 +95,31 @@ export const PromoSection = ({ offers }) => {
 												promo.bgClass
 											)}
 										>
-											{/* Full Background Image */}
-											<div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900">
+											{/* Background and Product Image */}
+											<div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900 flex items-center justify-end rtl:justify-start">
 												<img
 													src={promo.image}
 													alt={promo.title[language]}
-													className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-90 dark:opacity-70"
+													className="w-[45%] h-[85%] object-contain p-2 transition-transform duration-1000 group-hover:scale-105"
 												/>
-												{/* Sophisticated gradient overlay for readability */}
-												<div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent dark:from-slate-950/95 dark:via-slate-950/80 rtl:bg-gradient-to-l pointer-events-none transition-opacity duration-500 group-hover:opacity-90" />
-												
 												{/* Subtle glass effect edge */}
 												<div className="absolute inset-0 border border-white/40 dark:border-white/10 rounded-[2rem] pointer-events-none" />
 											</div>
 
 											{/* Content */}
-											<div className="relative z-10 flex flex-col items-start max-w-[80%] sm:max-w-[70%]">
+											<div className="relative z-10 flex flex-col items-start max-w-[55%] sm:max-w-[60%]">
 												{promo.badge && (
 													<span className={cn(
-														"px-3 py-1.5 text-xs font-bold rounded-full mb-5 inline-flex items-center gap-1.5 border backdrop-blur-sm shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5",
+														"px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-full mb-3 sm:mb-5 inline-flex items-center gap-1.5 border backdrop-blur-sm shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5",
 														promo.isFlashSale ? "bg-danger/10 text-danger border-danger/20" : promo.badgeClass
 													)}>
-														{promo.isFlashSale && <Tag className="w-3.5 h-3.5" />}
+														{promo.isFlashSale && <Tag className="w-3 h-3" />}
 														{promo.badge[language]}
 													</span>
 												)}
 												
 												<h3 className={cn(
-													"text-2xl lg:text-4xl font-black leading-tight mb-3 drop-shadow-sm transition-colors duration-300", 
+													"text-base sm:text-xl md:text-2xl lg:text-4xl font-extrabold lg:font-black leading-snug lg:leading-tight mb-2 sm:mb-3 drop-shadow-sm transition-colors duration-300", 
 													promo.textClass, 
 													"dark:text-white"
 												)}>
@@ -131,7 +128,7 @@ export const PromoSection = ({ offers }) => {
 												
 												{promo.subtitle?.[language] && (
 													<p className={cn(
-														"text-sm sm:text-base font-medium mb-8 opacity-75 leading-relaxed line-clamp-2 drop-shadow-sm max-w-[90%]", 
+														"text-xs sm:text-sm lg:text-base font-medium mb-4 sm:mb-8 opacity-75 leading-relaxed line-clamp-2 drop-shadow-sm max-w-[95%]", 
 														promo.textClass, 
 														"dark:text-slate-300"
 													)}>
@@ -140,13 +137,13 @@ export const PromoSection = ({ offers }) => {
 												)}
 
 												<span className={cn(
-													"inline-flex items-center justify-center gap-2 px-7 py-3 text-sm font-bold rounded-2xl transition-all duration-300 shadow-lg",
+													"inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:px-7 sm:py-3 text-xs sm:text-sm font-bold rounded-xl sm:rounded-2xl transition-all duration-300 shadow-lg hover:-translate-y-0.5 hover:shadow-xl",
 													promo.btnClass,
-													!promo.subtitle?.[language] && "mt-6"
+													!promo.subtitle?.[language] && "mt-4"
 												)}>
 													{promo.buttonText[language]}
 													<ArrowIcon className={cn(
-														"w-4 h-4 transition-transform duration-300",
+														"w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300",
 														isRtl ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"
 													)} />
 												</span>

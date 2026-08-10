@@ -29,10 +29,10 @@ export const PriceBox = ({ price, className }) => {
 				
 				{/* Main Price */}
 				<div className="flex items-baseline gap-1.5">
-					<span className="text-4xl font-extrabold text-primary">
+					<span className="text-2xl sm:text-3xl font-extrabold text-primary">
 						{finalPrice}
 					</span>
-					<span className="text-lg font-bold text-primary/80">
+					<span className="text-sm sm:text-base font-bold text-primary/80">
 						{isRtl ? "ج.م" : "EGP"}
 					</span>
 				</div>

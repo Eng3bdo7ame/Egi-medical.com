@@ -188,11 +188,6 @@ const ProductDetails = () => {
 	return (
 		<div className="flex flex-col w-full min-h-screen bg-background pb-10">
 
-			<div className="bg-surface border-b border-border/60 py-4 mb-6 relative z-20">
-				<Container>
-					<Breadcrumb items={breadcrumbItems} />
-				</Container>
-			</div>
 
 			<Container>
 				{/* Top Section: Gallery & Info */}

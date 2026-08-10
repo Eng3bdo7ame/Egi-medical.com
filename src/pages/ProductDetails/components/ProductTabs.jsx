@@ -15,6 +15,7 @@ export const ProductTabs = ({ productId, description, specifications, reviews })
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const [activeTab, setActiveTab] = useState("description");
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const addReviewMutation = useAddReview();
 
 	// Local reviews state for dynamic additions
@@ -84,11 +85,57 @@ export const ProductTabs = ({ productId, description, specifications, reviews })
 		{ id: "qna", label: { en: "Q&A", ar: "الأسئلة والأجوبة" }, icon: HelpCircle }
 	];
 
+	const activeTabObj = tabs.find(t => t.id === activeTab) || tabs[0];
+	const ActiveTabIcon = activeTabObj.icon;
+
 	return (
 		<div className="mt-12 bg-surface rounded-2xl border border-border overflow-hidden">
 			
-			{/* Tabs Header */}
-			<div className="flex border-b border-border overflow-x-auto hide-scrollbar">
+			{/* Mobile Tabs Header (Dropdown Menu) */}
+			<div className="md:hidden relative border-b border-border">
+				<button 
+					onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+					className="w-full flex items-center justify-between px-5 py-4 font-bold text-sm text-primary bg-primary/5 focus:outline-none"
+				>
+					<span className="flex items-center gap-2">
+						<ActiveTabIcon className="w-4 h-4" />
+						{activeTabObj.label[language]}
+					</span>
+					<ChevronDown className={cn("w-4 h-4 transition-transform duration-250", isMobileMenuOpen && "rotate-180")} />
+				</button>
+				
+				{/* Dropdown Items */}
+				{isMobileMenuOpen && (
+					<div className="absolute top-full left-0 right-0 bg-surface border-b border-border shadow-lg z-30 flex flex-col divide-y divide-border/40">
+						{tabs.map(tab => {
+							const Icon = tab.icon;
+							const isActive = activeTab === tab.id;
+							
+							return (
+								<button
+									key={tab.id}
+									onClick={() => {
+										setActiveTab(tab.id);
+										setIsMobileMenuOpen(false);
+									}}
+									className={cn(
+										"flex items-center gap-3 px-6 py-4 font-bold text-sm text-right transition-colors border-r-4",
+										isActive 
+											? "border-primary text-primary bg-primary/5" 
+											: "border-transparent text-text-secondary hover:text-text hover:bg-surface-2"
+									)}
+								>
+									<Icon className="w-4 h-4 shrink-0" />
+									{tab.label[language]}
+								</button>
+							);
+						})}
+					</div>
+				)}
+			</div>
+
+			{/* Desktop Tabs Header (Fills entire width) */}
+			<div className="hidden md:flex w-full border-b border-border overflow-x-auto hide-scrollbar">
 				{tabs.map(tab => {
 					const Icon = tab.icon;
 					const isActive = activeTab === tab.id;
@@ -98,7 +145,7 @@ export const ProductTabs = ({ productId, description, specifications, reviews })
 							key={tab.id}
 							onClick={() => setActiveTab(tab.id)}
 							className={cn(
-								"flex items-center gap-2 px-6 py-5 min-w-max font-bold text-sm transition-colors border-b-2",
+								"flex-1 flex items-center justify-center gap-2 px-6 py-5 font-bold text-sm transition-colors border-b-2",
 								isActive 
 									? "border-primary text-primary bg-primary/5" 
 									: "border-transparent text-text-secondary hover:text-text hover:bg-surface-2"
