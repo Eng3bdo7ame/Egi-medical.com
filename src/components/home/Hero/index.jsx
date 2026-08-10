@@ -100,6 +100,8 @@ export const Hero = ({ sliders = [], isLoading }) => {
 		exit: { opacity: 0, transition: { duration: 0.2 } },
 	};
 
+	//
+
 	if (isLoading && (!sliders || sliders.length === 0)) {
 		return <Section spacing="none" className="pt-4 sm:pt-6 pb-8 sm:pb-12"><Container><div className="min-h-[340px] bg-slate-100 animate-pulse w-full rounded-[32px]"></div></Container></Section>;
 	}
