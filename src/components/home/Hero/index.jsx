@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 import HeroSlider from "./HeroSlider";
-import HeroContent from "./HeroContent";
 import Container from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 
@@ -117,35 +116,19 @@ export const Hero = ({ sliders = [], isLoading }) => {
 							return (
 								<div
 									key={slide.id || index}
-									className="relative flex-[0_0_100%] min-w-0 h-[280px] sm:h-[380px] md:h-[460px] lg:h-[520px] select-none"
+									className="relative flex-[0_0_100%] min-w-0 select-none"
 								>
 									{/*Full Background Image */}
 									{slide.image ? (
 										<img
 											src={slide.image}
 											alt={slide.title || "Hero Slider"}
-											className="absolute inset-0 w-full h-full object-cover z-0"
+											className="w-full h-auto object-contain block"
 											loading={index === 0 ? "eager" : "lazy"}
 										/>
 									) : (
-										<div className={`absolute inset-0 w-full h-full ${slide.background || "bg-[#0a2342]"} z-0`} />
+										<div className={`w-full aspect-[2.5/1] ${slide.background || "bg-[#0a2342]"}`} />
 									)}
-
-									{/* Dark Blue Gradient Overlay - Deep navy blue gradient, solid on mobile for text readability */}
-									<div className="absolute inset-0 z-0 bg-[#021124]/75 sm:bg-transparent bg-gradient-to-r from-[#021124] via-[#031d3f]/95 via-[#062d61]/70 to-transparent rtl:bg-gradient-to-l pointer-events-none" />
-
-									{/* Content Side - Sweet spot width to prevent text overflow and allow horizontal trust features */}
-									<div className="absolute inset-y-0 start-0 z-10 flex h-full items-center ps-6 md:ps-16 lg:ps-20 pe-6 w-full lg:w-[58%] xl:w-[54%]">
-										<AnimatePresence mode="wait">
-											{isActive && (
-												<HeroContent
-													slide={slide}
-													language={language}
-													textVariants={textVariants}
-												/>
-											)}
-										</AnimatePresence>
-									</div>
 								</div>
 							);
 						})}

@@ -1,6 +1,7 @@
 export const homepageConfig = [
 	{ id: "hero", type: "hero" },
 	{ id: "category-pills", type: "categoryPills" },
+	{ id: "trust-bar", type: "trustBar" },
 
 	{
 		id: "flash-deals",
@@ -12,15 +13,6 @@ export const homepageConfig = [
 	},
 	{ id: "promo", type: "promo" },
 	{
-		id: "featured-products",
-		type: "productSection",
-		variant: "default",
-		bg: "background",
-		title: { en: "Featured Products", ar: "منتجات مميزة" },
-		subtitle: { en: "Our top curated recommendations", ar: "أبرز المنتجات الموصى بها" },
-		viewAllLink: "/products"
-	},
-	{
 		id: "latest-products",
 		type: "productSection",
 		variant: "default",
@@ -28,6 +20,7 @@ export const homepageConfig = [
 		title: { en: "Latest Arrivals", ar: "أحدث المنتجات" },
 		viewAllLink: "/products"
 	},
+	{ id: "offer-banners", type: "offerBanners" },
 	{
 		id: "best-sellers",
 		type: "productSection",
@@ -36,7 +29,6 @@ export const homepageConfig = [
 		title: { en: "Best Sellers", ar: "الأكثر مبيعاً" },
 		viewAllLink: "/best-sellers"
 	},
-	{ id: "why-mootah", type: "whyMootah" },
 	{ id: "blog-section", type: "blogSection" },
 	{
 		id: "b2b-catalog",

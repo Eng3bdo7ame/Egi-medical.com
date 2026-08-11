@@ -89,53 +89,13 @@ export const PromoSection = ({ offers }) => {
 									>
 										<LocalizedLink
 											to={promo.link}
-											className={cn(
-												"group relative flex flex-col justify-center p-8 lg:p-10 rounded-[2rem] overflow-hidden min-h-[300px] sm:min-h-[340px] h-full transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 border border-black/5 dark:border-white/5",
-												promo.bgClass
-											)}
+											className="group relative block rounded-[2rem] overflow-hidden border border-black/5 dark:border-white/5 hover:shadow-2xl transition-all duration-300"
 										>
-											{/* Full Background Image */}
-											<div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900">
-												<img
-													src={promo.image}
-													alt={promo.title[language]}
-													className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-95 dark:opacity-75"
-												/>
-
-												{/* Subtle glass effect edge */}
-												<div className="absolute inset-0 border border-white/40 dark:border-white/10 rounded-[2rem] pointer-events-none" />
-											</div>
-
-											{/* Content */}
-											<div className="relative z-10 flex flex-col items-start max-w-[75%] sm:max-w-[60%] lg:max-w-[50%]">
-												{promo.badge && (
-													<span className={cn(
-														"px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-full mb-3 sm:mb-5 inline-flex items-center gap-1.5 border backdrop-blur-sm shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5",
-														promo.isFlashSale ? "bg-danger/10 text-danger border-danger/20" : "bg-white/10 text-white border-white/20"
-													)}>
-														{promo.isFlashSale && <Tag className="w-3 h-3" />}
-														{promo.badge[language]}
-													</span>
-												)}
-												
-												<h3 className="text-sm sm:text-lg md:text-xl lg:text-3xl font-extrabold lg:font-black leading-snug lg:leading-tight mb-2 sm:mb-3 text-white drop-shadow-md">
-													{promo.title[language]}
-												</h3>
-												
-												{promo.subtitle?.[language] && (
-													<p className="text-[11px] sm:text-xs lg:text-sm font-medium mb-4 sm:mb-8 text-white/80 leading-relaxed line-clamp-2 drop-shadow-sm max-w-[95%]">
-														{promo.subtitle[language]}
-													</p>
-												)}
-
-												<span className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-6 sm:py-2.5 text-[11px] sm:text-xs font-bold rounded-xl sm:rounded-2xl transition-all duration-300 shadow-lg hover:-translate-y-0.5 hover:shadow-xl bg-white text-slate-900 hover:bg-slate-100">
-													{promo.buttonText[language]}
-													<ArrowIcon className={cn(
-														"w-3.5 h-3.5 transition-transform duration-300",
-														isRtl ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"
-													)} />
-												</span>
-											</div>
+											<img
+												src={promo.image}
+												alt={promo.title[language]}
+												className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105"
+											/>
 										</LocalizedLink>
 									</motion.div>
 								</div>

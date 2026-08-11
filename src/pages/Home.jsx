@@ -3,9 +3,10 @@ import React from "react";
 import Hero from "@/components/home/Hero";
 import CategoryPills from "@/components/home/CategoryPills";
 import PromoSection from "@/components/home/Promo";
+import OfferBanners from "@/components/home/OfferBanners";
 import ProductSection from "@/components/home/ProductSection";
 import CallToAction from "@/components/home/CTA";
-import WhyMootah from "@/components/home/WhyMootah";
+import TrustBar from "@/components/home/TrustBar";
 import BlogSection from "@/components/home/BlogSection";
 import { homepageConfig } from "@/config/home.config";
 import { useHome } from "@/hooks/queries/useHome";
@@ -26,17 +27,18 @@ const Home = () => {
 						return <Hero key={section.id} sliders={homeData.sliders || []} isLoading={isLoading} />;
 					case "categoryPills":
 						return <CategoryPills key={section.id} categories={homeData.categories || []} isLoading={isLoading} />;
+					case "trustBar":
+						return <TrustBar key={section.id} />;
 					case "promo":
 						return <PromoSection key={section.id} offers={homeData.offers} />;
-					case "whyMootah":
-						return <WhyMootah key={section.id} data={homeData.why_choose_us} />;
+					case "offerBanners":
+						return <OfferBanners key={section.id} offers={homeData.offers || []} isLoading={isLoading} />;
 					case "blogSection":
 						return <BlogSection key={section.id} />;
 					case "productSection":
 						let products = [];
 						let sectionLoading = isLoading;
 						if (section.id === "flash-deals") products = homeData.flash_sales || [];
-						if (section.id === "featured-products") products = homeData.featured_products || [];
 						if (section.id === "latest-products") {
 							products = latestProducts?.length ? latestProducts : homeData.latest_products || [];
 							sectionLoading = isLoading || latestLoading;

@@ -11,7 +11,8 @@ export const formatCurrency = (amount, currencyCode = "EGP", locale = "en") => {
 	return new Intl.NumberFormat(locale === "ar" ? "ar-EG-u-nu-latn" : "en-US", {
 		style: "currency",
 		currency: currencyCode,
-		minimumFractionDigits: 2,
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
 	}).format(amount);
 };
 
