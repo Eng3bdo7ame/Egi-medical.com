@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GlobalDrawers from "@/components/layout/GlobalDrawers";
@@ -19,6 +19,7 @@ export const AppLayout = () => {
 
 	return (
 		<div className="min-h-screen flex flex-col bg-background text-text transition-colors duration-normal">
+			<ScrollRestoration />
 			<Header />
 			<main className="flex-grow">
 				<Outlet />
