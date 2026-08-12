@@ -10,6 +10,7 @@ export const ProductActions = ({
 	setQuantity, 
 	maxQuantity, 
 	onAddToCart, 
+	onBuyNow,
 	isWishlisted, 
 	onToggleWishlist 
 }) => {
@@ -32,9 +33,10 @@ export const ProductActions = ({
 				)}
 			</div>
 
-			{/* Add to Cart, Wishlist */}
+			{/* Add to Cart, Buy Now, Wishlist */}
 			<AddToCartBar 
 				onAddToCart={onAddToCart}
+				onBuyNow={onBuyNow}
 				isWishlisted={isWishlisted}
 				onToggleWishlist={onToggleWishlist}
 				disabled={outOfStock}

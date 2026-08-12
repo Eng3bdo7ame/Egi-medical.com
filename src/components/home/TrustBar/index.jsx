@@ -42,16 +42,16 @@ export const TrustBar = () => {
 	];
 
 	return (
-		<Section spacing="none" className="py-6 sm:py-8">
+		<Section spacing="none" className="py-6 sm:py-8 lg:py-4">
 			<Container>
-				<div className="bg-[#021d49] text-white rounded-3xl p-6 sm:p-8 lg:py-8 lg:px-10 shadow-md">
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-4 items-center justify-items-center">
+				<div className="bg-[#021d49] text-white rounded-3xl p-6 sm:p-8 lg:py-4 lg:px-10 shadow-md">
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-4 items-center justify-items-center">
 						{features.map((feat) => {
 							const Icon = feat.icon;
 							return (
 								<div
 									key={feat.id}
-									className="flex items-center gap-4 sm:gap-5 w-full justify-start md:justify-center"
+									className="flex items-center gap-4 sm:gap-5 w-full max-w-[260px] sm:max-w-none mx-auto justify-start md:justify-center sm:last:col-span-2 sm:last:justify-center md:last:col-span-1"
 									dir={isRtl ? "rtl" : "ltr"}
 								>
 									{/* Icon on the right for RTL, left for LTR */}

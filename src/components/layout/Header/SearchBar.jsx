@@ -91,8 +91,8 @@ export const SearchBar = ({ className }) => {
 				onSubmit={handleSubmit}
 				className={cn(
 					"flex items-stretch w-full h-[54px] rounded-full overflow-hidden relative z-50",
-					"border border-slate-200 focus-within:border-primary focus-within:shadow-[0_0_0_4px_rgba(var(--primary-rgb),0.1)]",
-					"bg-slate-50 hover:bg-white shadow-sm transition-all duration-300"
+					"border border-slate-200 dark:border-border/80 focus-within:border-primary focus-within:shadow-[0_0_0_4px_rgba(var(--primary-rgb),0.1)]",
+					"bg-slate-50 dark:bg-surface-2 hover:bg-white dark:hover:bg-surface-3 shadow-sm transition-all duration-300"
 				)}
 				role="search"
 				aria-label={isRtl ? "البحث عن المنتجات" : "Search products"}
@@ -112,21 +112,7 @@ export const SearchBar = ({ className }) => {
 					aria-label={isRtl ? "حقل البحث" : "Search field"}
 				/>
 
-				{/* Category Selector (Right) */}
-				<div className="relative hidden md:flex items-center border-s border-divider bg-transparent shrink-0">
-					<select
-						value={category}
-						onChange={(e) => setCategory(e.target.value)}
-						className="appearance-none bg-transparent text-text-secondary text-sm font-medium ps-4 pe-9 h-full cursor-pointer outline-none hover:text-text transition-colors"
-					>
-						{categories.map((cat) => (
-							<option key={cat.value} value={cat.value}>
-								{cat.label}
-							</option>
-						))}
-					</select>
-					<Icon name="ChevronDown" size="sm" className="absolute end-3 text-text-muted pointer-events-none" />
-				</div>
+
 
 				{/* Search Button (Far Right) */}
 				<button

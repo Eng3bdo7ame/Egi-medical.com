@@ -33,7 +33,7 @@ export const Navigation = () => {
 	};
 
 	return (
-		<div className="w-full bg-white border-b border-slate-200 hidden lg:block relative z-40 shadow-sm">
+		<div className="w-full bg-surface border-b border-border hidden lg:block relative z-40 shadow-sm">
 			<Container className="relative">
 				<div 
 					className="flex items-center gap-2 py-1 static"
@@ -86,7 +86,7 @@ export const Navigation = () => {
 										"relative inline-flex items-center gap-1.5 py-4 text-[15.5px] font-bold transition-all duration-300 select-none whitespace-nowrap group",
 										link.isOffer
 											? "text-secondary hover:text-secondary-hover"
-											: "text-slate-600 hover:text-primary"
+											: "text-text-secondary hover:text-primary"
 									)}
 								>
 									<span className="relative z-10">{linkName}</span>

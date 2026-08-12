@@ -66,7 +66,7 @@ export const ProductGallery = ({ images = [] }) => {
 			{/* Main Image Viewport */}
 			<div className="relative w-full aspect-[4/3] max-h-[300px] sm:max-h-[380px] md:max-h-[420px] lg:max-h-[460px] bg-white dark:bg-white rounded-2xl border border-border overflow-hidden group">
 				<div className="overflow-hidden h-full" ref={mainRef}>
-					<div className="flex h-full rtl:flex-row-reverse">
+					<div className="flex h-full">
 						{images.map((img, index) => (
 							<div key={index} className="relative flex-[0_0_100%] min-w-0 h-full">
 								
@@ -84,7 +84,7 @@ export const ProductGallery = ({ images = [] }) => {
 									onMouseMove={handleMouseMove}
 									onClick={() => setIsZoomed(!isZoomed)}
 									style={{
-										backgroundImage: `url(${img})`,
+										backgroundImage: `url("${img}")`,
 										backgroundPosition: isZoomed ? backgroundPosition : "center",
 										backgroundSize: isZoomed ? "200%" : "contain",
 										backgroundRepeat: "no-repeat",
@@ -121,7 +121,7 @@ export const ProductGallery = ({ images = [] }) => {
 			{/* Thumbnails Row */}
 			{images.length > 1 && (
 				<div className="overflow-hidden" ref={thumbRef}>
-					<div className="flex gap-3 ltr:-ml-3 rtl:-mr-3 ltr:pl-3 rtl:pr-3 py-1 rtl:flex-row-reverse">
+					<div className="flex gap-3 ltr:-ml-3 rtl:-mr-3 ltr:pl-3 rtl:pr-3 py-1">
 						{images.map((img, index) => (
 							<button
 								key={index}

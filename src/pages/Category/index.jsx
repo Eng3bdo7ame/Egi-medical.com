@@ -111,9 +111,36 @@ const Category = ({ isOffersRoute = false }) => {
 							_apiOriginal: apiProd
 						};
 					});
-					setProducts(mappedProducts);
-					setTotalPages(dataPayload?.meta?.last_page || dataPayload?.last_page || 1);
-					setTotalItems(dataPayload?.meta?.total || dataPayload?.total || mappedProducts.length);
+					// Client-side filtering fallback to ensure the UI is 100% accurate
+					let filtered = mappedProducts;
+					
+					// 1. Filter by category
+					const activeCategories = categories.length > 0 ? categories : (rawSlug !== "all-categories" ? [rawSlug] : []);
+					if (activeCategories.length > 0) {
+						filtered = filtered.filter(p => {
+							const prodCategoryIds = p.categories && p.categories.length > 0 
+								? p.categories.map(c => String(c.id)) 
+								: [String(p.category?.id || p._apiOriginal?.category_id || "")];
+							return prodCategoryIds.some(id => activeCategories.includes(id));
+						});
+					}
+
+					// 2. Filter by price
+					if (price && (price[0] > 0 || price[1] < 10000)) {
+						filtered = filtered.filter(p => {
+							const currentPrice = p.price?.current || 0;
+							return currentPrice >= price[0] && currentPrice <= price[1];
+						});
+					}
+
+					// 3. Filter by rating
+					if (rating) {
+						filtered = filtered.filter(p => (p.reviews?.rating || 0) >= rating);
+					}
+
+					setProducts(filtered);
+					setTotalPages(Math.ceil(filtered.length / itemsPerPage) || 1);
+					setTotalItems(filtered.length);
 					
 					// Set real category name from the first product
 					if (mappedProducts.length > 0) {
@@ -129,7 +156,7 @@ const Category = ({ isOffersRoute = false }) => {
 			}
 		};
 		fetchProducts();
-	}, [state, rawSlug, isRtl]);
+	}, [state, rawSlug, isRtl, searchQuery]);
 
 	const itemsPerPage = 12;
 
@@ -207,7 +234,10 @@ const Category = ({ isOffersRoute = false }) => {
 				<FilterSidebar.Categories
 					categories={filterOptions.categories}
 					selectedCategories={categories}
-					onChange={(val) => toggleArrayItem("categories", val)}
+					onChange={(val) => {
+						const isSelected = categories.includes(val);
+						updateParams({ categories: isSelected ? [] : [val] });
+					}}
 				/>
 			</FilterSidebar.Section>
 

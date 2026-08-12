@@ -1,18 +1,32 @@
 import React from "react";
 import { useLanguage } from "@/app/providers/I18nProvider";
-import { Package, Heart, MapPin, CreditCard } from "lucide-react";
+import { Package, Heart, MapPin, ShoppingCart } from "lucide-react";
+import { useOrders } from "@/hooks/queries/useOrders";
+import { useUserAddresses } from "@/hooks/queries/useUserAddresses";
+import { useAppSelector } from "@/app/store/hooks";
+import { selectWishlistCount } from "@/features/wishlist/wishlistSlice";
+import { selectCartCount } from "@/features/cart/cartSlice";
 
 export const ProfileOverview = ({ user }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
+	const { data: responseData } = useOrders();
+	const ordersCount = responseData?.data?.length || 0;
+
+	const { data: apiAddresses = [] } = useUserAddresses();
+	const addressesCount = apiAddresses.length;
+
+	const wishlistCount = useAppSelector(selectWishlistCount);
+	const cartCount = useAppSelector(selectCartCount);
+
 	const firstName = user?.name ? user.name.split(" ")[0] : (isRtl ? "مستخدم" : "User");
 
 	const stats = [
-		{ id: "orders", icon: Package, value: 12, label: { en: "Total Orders", ar: "إجمالي الطلبات" }, color: "text-primary", bg: "bg-primary/10" },
-		{ id: "wishlist", icon: Heart, value: 3, label: { en: "Wishlist Items", ar: "المنتجات المفضلة" }, color: "text-danger", bg: "bg-danger/10" },
-		{ id: "addresses", icon: MapPin, value: 2, label: { en: "Saved Addresses", ar: "العناوين المحفوظة" }, color: "text-success", bg: "bg-success/10" },
-		{ id: "cards", icon: CreditCard, value: 1, label: { en: "Saved Cards", ar: "البطاقات المحفوظة" }, color: "text-warning", bg: "bg-warning/10" }
+		{ id: "orders", icon: Package, value: ordersCount, label: { en: "Total Orders", ar: "إجمالي الطلبات" }, color: "text-primary", bg: "bg-primary/10" },
+		{ id: "wishlist", icon: Heart, value: wishlistCount, label: { en: "Wishlist Items", ar: "المنتجات المفضلة" }, color: "text-danger", bg: "bg-danger/10" },
+		{ id: "addresses", icon: MapPin, value: addressesCount, label: { en: "Saved Addresses", ar: "العناوين المحفوظة" }, color: "text-success", bg: "bg-success/10" },
+		{ id: "cart", icon: ShoppingCart, value: cartCount, label: { en: "Shopping Cart", ar: "سلة التسوق" }, color: "text-warning", bg: "bg-warning/10" }
 	];
 
 	return (

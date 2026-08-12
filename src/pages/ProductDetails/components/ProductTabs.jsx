@@ -80,9 +80,7 @@ export const ProductTabs = ({ productId, description, specifications, reviews })
 
 	const tabs = [
 		{ id: "description", label: { en: "Description", ar: "الوصف" }, icon: Info },
-		{ id: "specifications", label: { en: "Specifications", ar: "المواصفات" }, icon: Settings2 },
-		{ id: "reviews", label: { en: `Reviews (${localReviews?.length || 0})`, ar: `التقييمات (${localReviews?.length || 0})` }, icon: MessageSquare },
-		{ id: "qna", label: { en: "Q&A", ar: "الأسئلة والأجوبة" }, icon: HelpCircle }
+		{ id: "reviews", label: { en: `Reviews (${localReviews?.length || 0})`, ar: `التقييمات (${localReviews?.length || 0})` }, icon: MessageSquare }
 	];
 
 	const activeTabObj = tabs.find(t => t.id === activeTab) || tabs[0];
@@ -177,11 +175,6 @@ export const ProductTabs = ({ productId, description, specifications, reviews })
 						<TrustBadges />
 						<MedicalDisclaimer />
 					</div>
-				</div>
-
-				{/* Specifications Tab */}
-				<div className={cn(activeTab === "specifications" ? "block" : "hidden")}>
-					<SpecificationTable specifications={specifications} />
 				</div>
 
 				{/* Reviews Tab */}
@@ -318,11 +311,6 @@ export const ProductTabs = ({ productId, description, specifications, reviews })
 							</form>
 						)}
 					</div>
-				</div>
-
-				{/* Q&A Tab */}
-				<div className={cn(activeTab === "qna" ? "block" : "hidden")}>
-					<QnASubtab />
 				</div>
 
 			</div>

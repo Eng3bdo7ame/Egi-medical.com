@@ -213,6 +213,57 @@ export const OrderDetails = ({ orderId, onBack }) => {
 
 			</div>
 
+			{/* Ordered Items */}
+			<div className="bg-surface border border-border/50 rounded-2xl p-6 shadow-xs">
+				<h3 className="font-extrabold text-text text-base mb-4 pb-2 border-b border-border/30">
+					{isRtl ? "المنتجات المطلوبة" : "Ordered Items"}
+				</h3>
+				<div className="flex flex-col gap-4">
+					{order.details && order.details.map((item) => {
+						const prod = item.product || {};
+						return (
+							<div key={item.id} className="flex items-center gap-4 py-3 border-b border-border/20 last:border-0 last:pb-0">
+								{/* Product Image */}
+								<div className="w-16 h-16 rounded-xl border border-border bg-white flex items-center justify-center shrink-0 overflow-hidden">
+									<img 
+										src={prod.primary_image || prod.image || "https://placehold.co/100x100?text=No+Image"} 
+										alt={prod.title || prod.name} 
+										className="w-full h-full object-contain p-1"
+									/>
+								</div>
+
+								{/* Product Info */}
+								<div className="flex-1 min-w-0">
+									<h4 className="font-bold text-sm text-text truncate">
+										{prod.title || prod.name}
+									</h4>
+									<div className="flex items-center gap-3 mt-1 text-xs text-text-secondary">
+										<span>
+											{isRtl ? "السعر: " : "Price: "}
+											<span className="font-semibold text-text">
+												{Number(item.price).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
+											</span>
+										</span>
+										<span className="w-px h-3 bg-border/80" />
+										<span>
+											{isRtl ? "الكمية: " : "Qty: "}
+											<span className="font-semibold text-text">{item.quantity}</span>
+										</span>
+									</div>
+								</div>
+
+								{/* Subtotal */}
+								<div className="text-end">
+									<span className="font-extrabold text-sm text-primary">
+										{Number(item.subtotal || (item.price * item.quantity)).toLocaleString("en-US")} {order.currency || (isRtl ? "ج.م" : "EGP")}
+									</span>
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			</div>
+
 			{/* Financial Summary */}
 			<div className="bg-surface border border-border/50 rounded-2xl p-6 md:p-8 shadow-xs">
 				<h3 className="font-extrabold text-text text-base mb-4 pb-2 border-b border-border/30">

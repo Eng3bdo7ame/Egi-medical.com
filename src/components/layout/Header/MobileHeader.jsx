@@ -11,6 +11,9 @@ import {
 	Heart,
 	User,
 	ChevronRight,
+	ChevronDown,
+	Package,
+	LogOut,
 	Sun,
 	Moon,
 	Monitor,
@@ -30,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/app/store/hooks";
 import { selectCartCount } from "@/features/cart/cartSlice";
 import { selectWishlistCount } from "@/features/wishlist/wishlistSlice";
+import { useLogout } from "@/features/auth";
 
 /**
  * Helper to resolve appropriate icons for menu items
@@ -74,6 +78,9 @@ export const MobileHeader = () => {
 	const location = useLocation();
 	const cartCount = useAppSelector(selectCartCount);
 	const wishlistCount = useAppSelector(selectWishlistCount);
+	const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+	const { logout } = useLogout();
+	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
 	const handleLanguageSwitch = () => {
 		const newLang = language === "ar" ? "en" : "ar";
@@ -136,7 +143,7 @@ export const MobileHeader = () => {
 	const ThemeIcon = themeIcons[theme] || Monitor;
 
 	return (
-		<div className="w-full bg-surface border-b border-border md:hidden sticky top-0 z-50">
+		<div className="w-full bg-surface border-b border-border md:hidden sticky top-0 z-[120]">
 			<Container>
 				<div className="flex items-center justify-between py-2.5 gap-3">
 					{/* Menu Toggle */}
@@ -222,20 +229,88 @@ export const MobileHeader = () => {
 
 					{/* Scrollable Navigation Area */}
 					<nav className="flex-1 overflow-y-auto py-4 px-3 space-y-4" aria-label="Mobile navigation">
-						{/* Welcome Card */}
-						<div className="px-3.5 py-4 rounded-2xl bg-surface-2 border border-border/40 flex items-center gap-3">
-							<div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
-								<User className="w-5 h-5" />
+						{/* Welcome Card & Profile Options */}
+						{isAuthenticated ? (
+							<div className="flex flex-col gap-1.5">
+								<button
+									onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+									className="w-full text-start px-3.5 py-4 rounded-2xl bg-surface-2 border border-border/40 flex items-center justify-between hover:bg-surface-3 transition-colors cursor-pointer"
+								>
+									<div className="flex items-center gap-3 min-w-0">
+										<div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+											<User className="w-5 h-5" />
+										</div>
+										<div className="flex flex-col min-w-0">
+											<span className="text-xs font-bold text-text-muted">
+												{isRtl ? "مرحباً بك" : "Welcome"}
+											</span>
+											<span className="text-sm font-extrabold text-text truncate">
+												{user?.name || (isRtl ? "العميل" : "Customer")}
+											</span>
+										</div>
+									</div>
+									<ChevronDown className={cn("w-4 h-4 text-text-secondary transition-transform", isProfileMenuOpen && "rotate-180")} />
+								</button>
+
+								{/* Profile Options List */}
+								{isProfileMenuOpen && (
+									<div className="mx-2 bg-surface-2/40 border border-border/40 rounded-xl overflow-hidden flex flex-col p-1">
+										<LocalizedLink 
+											to="/account?tab=overview" 
+											onClick={close}
+											className="flex items-center gap-3 p-3 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-sm font-bold"
+										>
+											<User className="w-4 h-4 text-primary" />
+											{isRtl ? "الملف الشخصي" : "Profile"}
+										</LocalizedLink>
+										<LocalizedLink 
+											to="/account?tab=orders" 
+											onClick={close}
+											className="flex items-center gap-3 p-3 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-sm font-bold"
+										>
+											<Package className="w-4 h-4 text-primary" />
+											{isRtl ? "الطلبات" : "Orders"}
+										</LocalizedLink>
+										<LocalizedLink 
+											to="/wishlist" 
+											onClick={close}
+											className="flex items-center gap-3 p-3 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-sm font-bold"
+										>
+											<Heart className="w-4 h-4 text-primary" />
+											{isRtl ? "المفضلة" : "Wishlist"}
+										</LocalizedLink>
+										<button 
+											onClick={() => {
+												logout();
+												close();
+											}} 
+											className="flex w-full items-center gap-3 p-3 hover:bg-danger/10 text-danger rounded-lg transition-colors text-sm font-extrabold cursor-pointer border-t border-border/30 mt-1"
+										>
+											<LogOut className="w-4 h-4" />
+											{isRtl ? "تسجيل الخروج" : "Logout"}
+										</button>
+									</div>
+								)}
 							</div>
-							<div className="flex flex-col min-w-0">
-								<span className="text-xs font-bold text-text-muted">
-									{isRtl ? "مرحباً بك" : "Welcome"}
-								</span>
-								<span className="text-sm font-bold text-text truncate">
-									{isRtl ? "في إيجيبت فيجن الطبية" : "to Egypt Vision Medical"}
-								</span>
-							</div>
-						</div>
+						) : (
+							<LocalizedLink
+								to="/auth/login"
+								onClick={close}
+								className="w-full px-3.5 py-4 rounded-2xl bg-surface-2 border border-border/40 flex items-center gap-3 hover:bg-surface-3 transition-colors"
+							>
+								<div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+									<User className="w-5 h-5" />
+								</div>
+								<div className="flex flex-col min-w-0">
+									<span className="text-xs font-bold text-text-muted">
+										{isRtl ? "مرحباً بك" : "Welcome"}
+									</span>
+									<span className="text-sm font-bold text-text truncate">
+										{isRtl ? "تسجيل الدخول / إنشاء حساب" : "Login / Register"}
+									</span>
+								</div>
+							</LocalizedLink>
+						)}
 
 						{/* Links list */}
 						<div className="space-y-1">

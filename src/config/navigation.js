@@ -15,17 +15,18 @@ export const navigationLinks = [
 		path: "/categories"
 	},
 	{ 
+		id: "best-sellers",
+		name: { en: "Best Sellers", ar: "الأكثر مبيعاً" }, 
+		path: "/best-sellers",
+		badge: { en: "Top", ar: "مميز" },
+		badgeVariant: "success"
+	},
+	{ 
 		id: "flash-deals",
 		name: { en: "Flash Deals", ar: "عروض خاطفة" }, 
 		path: "/flash-deals",
 		badge: { en: "HOT", ar: "🔥 عروض" },
 		badgeVariant: "danger"
-	},
-	{ 
-		id: "offers",
-		name: { en: "Offers & Sales", ar: "التخفيضات" }, 
-		path: "/offers",
-		isOffer: true
 	},
 	{ 
 		id: "blogs",
@@ -41,13 +42,6 @@ export const navigationLinks = [
 		id: "contact",
 		name: { en: "Contact Us", ar: "تواصل معنا" }, 
 		path: "/contact" 
-	},
-	{ 
-		id: "best-sellers",
-		name: { en: "Best Sellers", ar: "الأكثر مبيعاً" }, 
-		path: "/best-sellers",
-		badge: { en: "Top", ar: "مميز" },
-		badgeVariant: "success"
 	}
 ];
 

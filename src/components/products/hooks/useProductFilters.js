@@ -55,6 +55,8 @@ export const useProductFilters = () => {
 			Object.entries(newParams).forEach(([key, value]) => {
 				if (value === null || value === undefined || value === "" || (Array.isArray(value) && value.length === 0)) {
 					next.delete(key);
+				} else if (key === "price" && Array.isArray(value)) {
+					next.set(key, `${value[0]}-${value[1]}`);
 				} else if (Array.isArray(value)) {
 					next.set(key, value.join(","));
 				} else {
