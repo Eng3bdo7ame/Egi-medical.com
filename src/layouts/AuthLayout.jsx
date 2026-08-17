@@ -40,15 +40,13 @@ export const AuthLayout = () => {
 				</div>
 				
 				{/* Top Logo */}
-				<div className="flex items-center gap-3 relative z-20">
-					<div className="w-11 h-11 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-						<HeartPulse className="w-6 h-6 text-white animate-pulse" />
-					</div>
-					<div className="flex flex-col">
-						<span className="text-xl font-black tracking-tight text-white leading-none">EG Medical</span>
-						<span className="text-[10px] text-slate-400 font-semibold mt-1">Care beyond boundaries</span>
-					</div>
-				</div>
+				<LocalizedLink to="/" className="flex items-center gap-3 relative z-20">
+					<img 
+						src="/images/logo.jpeg" 
+						alt="EGI Medical Logo" 
+						className="h-20 w-auto object-contain rounded-xl"
+					/>
+				</LocalizedLink>
 
 				{/* Center Content: Slogans overlaying the holographic Heart Cube Background */}
 				<div className="relative flex-1 flex flex-col items-center justify-center my-auto py-12">
@@ -74,8 +72,8 @@ export const AuthLayout = () => {
 						</h1>
 						<p className="text-sm text-slate-300 max-w-sm mx-auto leading-relaxed font-semibold drop-shadow-sm">
 							{isRtl 
-								? "انضم إلى منصة EG Medical واستمتع بتجربة تسوق آمنة، سهلة وموثوقة لكل احتياجاتك الطبية."
-								: "Join the EG Medical platform and enjoy a secure, easy, and reliable shopping experience for all your medical needs."}
+								? "انضم إلى منصة EGI Medical واستمتع بتجربة تسوق آمنة، سهلة وموثوقة لكل احتياجاتك الطبية."
+								: "Join the EGI Medical platform and enjoy a secure, easy, and reliable shopping experience for all your medical needs."}
 						</p>
 					</div>
 
@@ -148,10 +146,11 @@ export const AuthLayout = () => {
 				<div className="flex justify-between w-full items-center gap-4 relative z-25">
 					<LanguageSwitcher />
 					<LocalizedLink to="/" className="inline-flex items-center gap-2 lg:hidden">
-						<div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
-							<HeartPulse className="w-5 h-5 animate-pulse" />
-						</div>
-						<span className="text-lg font-black tracking-tight text-white">EG Medical</span>
+						<img 
+							src="/images/logo.jpeg" 
+							alt="EGI Medical Logo" 
+							className="h-14 w-auto object-contain rounded-lg"
+						/>
 					</LocalizedLink>
 				</div>
 
@@ -171,7 +170,7 @@ export const AuthLayout = () => {
 
 				{/* Bottom Footer / Copyright */}
 				<div className="text-center text-xs text-slate-500 font-bold select-none py-2 relative z-25">
-					© 2026 EG Medical. All rights reserved.
+					© 2026 EGI Medical. All rights reserved.
 				</div>
 
 			</div>

@@ -177,7 +177,7 @@ export const Footer = () => {
 				{/* Bottom Bar */}
 				<div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
 					<p className="text-slate-500 text-sm">
-						&copy; {new Date().getFullYear()} {settings?.app_name || "EG Medical"}. {isRtl ? "جميع الحقوق محفوظة." : "All rights reserved."}
+						&copy; {new Date().getFullYear()} {(settings?.app_name || "EG Medical").replace("EG Medical", "EGI Medical")}. {isRtl ? "جميع الحقوق محفوظة." : "All rights reserved."}
 					</p>
 					
 					<div className="flex items-center gap-6 text-sm text-slate-500">
