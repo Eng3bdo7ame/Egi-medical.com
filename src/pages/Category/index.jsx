@@ -49,7 +49,8 @@ const Category = ({ isOffersRoute = false }) => {
 	const { viewMode, sortOption, currentPage, availability, categories, rating, price, filterMode } = state;
 
 	const location = useLocation();
-	const searchQuery = new URLSearchParams(location.search).get("search");
+	const searchParams = new URLSearchParams(location.search);
+	const searchQuery = searchParams.get("search") || searchParams.get("q");
 
 	// Fetch all categories once on mount so they always appear in the filter sidebar
 	useEffect(() => {
@@ -139,8 +140,15 @@ const Category = ({ isOffersRoute = false }) => {
 					}
 
 					setProducts(filtered);
-					setTotalPages(Math.ceil(filtered.length / itemsPerPage) || 1);
-					setTotalItems(filtered.length);
+					
+					const meta = dataPayload?.meta;
+					if (meta && typeof meta.last_page === 'number') {
+						setTotalPages(meta.last_page);
+						setTotalItems(meta.total);
+					} else {
+						setTotalPages(Math.ceil(filtered.length / itemsPerPage) || 1);
+						setTotalItems(filtered.length);
+					}
 					
 					// Set real category name from the first product
 					if (mappedProducts.length > 0) {

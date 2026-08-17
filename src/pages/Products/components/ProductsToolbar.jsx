@@ -53,8 +53,8 @@ export const ProductsToolbar = ({
 				</h2>
 				<span className="text-sm font-medium text-text-secondary">
 					{isRtl 
-						? `عرض ${endItem - startItem + 1} منتجات`
-						: `Showing ${endItem - startItem + 1} products`
+						? `عرض ${startItem} - ${endItem} من ${totalItems} منتج`
+						: `Showing ${startItem} - ${endItem} of ${totalItems} products`
 					}
 				</span>
 			</div>

@@ -74,14 +74,14 @@ export const SearchBar = ({ className }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (query.trim()) {
-			navigate(`/products?search=${encodeURIComponent(query.trim())}`);
+			navigate(`/${language}/products?search=${encodeURIComponent(query.trim())}`);
 			setIsFocused(false);
 		}
 	};
 
 	const handleSuggestionClick = (title) => {
 		setQuery(title);
-		navigate(`/products?search=${encodeURIComponent(title)}`);
+		navigate(`/${language}/products?search=${encodeURIComponent(title)}`);
 		setIsFocused(false);
 	};
 

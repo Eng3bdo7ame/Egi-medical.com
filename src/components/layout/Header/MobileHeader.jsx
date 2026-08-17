@@ -100,7 +100,7 @@ export const MobileHeader = () => {
 	const handleSearchSubmit = (e) => {
 		e.preventDefault();
 		if (searchQuery.trim()) {
-			navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+			navigate(`/${language}/products?search=${encodeURIComponent(searchQuery.trim())}`);
 			setIsOpen(false);
 		}
 	};
