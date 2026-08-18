@@ -93,9 +93,9 @@ const mapBackendProduct = (prod) => {
 
 	const unitPrice = parsePrice(finalPrice) || (basePrice && typeof basePrice === 'object' ? parsePrice(basePrice.current) : parsePrice(basePrice));
 	const originalPrice = basePrice && typeof basePrice === 'object' ? parsePrice(basePrice.original) : (parsePrice(basePrice) || unitPrice);
-	
+
 	const frontendProductId = formatProductIdForFrontend(prod.id);
-	
+
 	const imageList = mapImages(prod.images || prod.gallery, prod.image || prod.primary_image);
 	const primaryImage = resolveImageUrl(prod.image || prod.primary_image) || imageList[0] || "";
 
@@ -146,7 +146,7 @@ export const toggleWishlist = createAsyncThunk(
 			const state = getState();
 			const isAuthenticated = state.auth?.isAuthenticated;
 			const tempUserId = !isAuthenticated ? getOrCreateTempUserId() : null;
-			
+
 			const response = await wishlistApi.toggleWishlist(product.id, tempUserId);
 			// Sync with backend by re-fetching the updated wishlist
 			dispatch(fetchWishlist());
@@ -178,7 +178,7 @@ const wishlistSlice = createSlice({
 			.addCase(fetchWishlist.fulfilled, (state, action) => {
 				state.status = "succeeded";
 				const responseData = action.payload;
-				
+
 				let wishlistItems = [];
 				if (Array.isArray(responseData)) {
 					wishlistItems = responseData;
@@ -201,9 +201,9 @@ const wishlistSlice = createSlice({
 						return mapBackendProduct(item);
 					})
 					.filter(Boolean);
-				
+
 				state.count = state.items.length;
-				
+
 				// Persist changes
 				storage.set(STORAGE_KEYS.WISHLIST, {
 					items: state.items,
@@ -224,7 +224,7 @@ export const selectWishlistItems = (state) => state.wishlist.items;
 export const selectWishlistCount = (state) => state.wishlist.count;
 export const selectWishlistStatus = (state) => state.wishlist.status;
 export const selectWishlistError = (state) => state.wishlist.error;
-export const selectIsWishlisted = (productId) => (state) => 
+export const selectIsWishlisted = (productId) => (state) =>
 	state.wishlist.items.some(item => item.id === productId);
 
 export default wishlistSlice.reducer;

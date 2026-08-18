@@ -7,13 +7,13 @@ import { cn } from "@/lib/utils";
 export const ProductGallery = ({ images = [] }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
-	
+
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [isZoomed, setIsZoomed] = useState(false);
 	const [backgroundPosition, setBackgroundPosition] = useState("0% 0%");
 
 	// Main carousel
-	const [mainRef, mainApi] = useEmblaCarousel({ 
+	const [mainRef, mainApi] = useEmblaCarousel({
 		align: "center",
 		direction: isRtl ? "rtl" : "ltr",
 		skipSnaps: false
@@ -62,16 +62,16 @@ export const ProductGallery = ({ images = [] }) => {
 
 	return (
 		<div className="flex flex-col gap-4 w-full select-none">
-			
+
 			{/* Main Image Viewport */}
 			<div className="relative w-full aspect-[4/3] max-h-[300px] sm:max-h-[380px] md:max-h-[420px] lg:max-h-[460px] bg-white dark:bg-white rounded-2xl border border-border overflow-hidden group">
 				<div className="overflow-hidden h-full" ref={mainRef}>
 					<div className="flex h-full">
 						{images.map((img, index) => (
 							<div key={index} className="relative flex-[0_0_100%] min-w-0 h-full">
-								
+
 								{/* Zoomable Image Container */}
-								<div 
+								<div
 									className={cn(
 										"w-full h-full cursor-zoom-in transition-all duration-300",
 										isZoomed ? "cursor-zoom-out" : ""
@@ -128,14 +128,14 @@ export const ProductGallery = ({ images = [] }) => {
 								onClick={() => onThumbClick(index)}
 								className={cn(
 									"relative flex-[0_0_20%] sm:flex-[0_0_18%] min-w-0 aspect-square rounded-xl overflow-hidden border-2 transition-all",
-									index === selectedIndex 
-										? "border-primary ring-2 ring-primary/20 ring-offset-1" 
+									index === selectedIndex
+										? "border-primary ring-2 ring-primary/20 ring-offset-1"
 										: "border-transparent opacity-60 hover:opacity-100 bg-white dark:bg-white"
 								)}
 							>
-								<img 
-									src={img} 
-									alt={`Thumbnail ${index + 1}`} 
+								<img
+									src={img}
+									alt={`Thumbnail ${index + 1}`}
 									className="w-full h-full object-contain p-1"
 								/>
 							</button>

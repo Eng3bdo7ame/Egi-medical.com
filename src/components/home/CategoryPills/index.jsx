@@ -44,7 +44,7 @@ export const CategoriesSection = ({ categories = [], isLoading }) => {
 				<div className="bg-slate-50/60 dark:bg-slate-900/20 rounded-[32px] flex  flex-col md:flex-row gap-4 md:gap-6 border border-border/60 shadow-sm overflow-hidden">
 					{/* Text Side */}
 					<div className="relative z-10 w-full md:w-[24%] lg:w-[18%] flex flex-col items-start justify-center gap-3 bg-[#021d49] text-white p-6 rounded-2xl self-stretch shrink-0">
-						<h2 className="text-sm sm:text-base md:text-xl font-extrabold text-white leading-tight drop-shadow-sm whitespace-nowrap">
+						<h2 className="text-sm sm:text-base md:text-xl font-extrabold text-white leading-tight drop-shadow-sm">
 							{isRtl ? "تسوق حسب الاحتياجات الصحية" : "Shop by Health Needs"}
 						</h2>
 						<LocalizedLink

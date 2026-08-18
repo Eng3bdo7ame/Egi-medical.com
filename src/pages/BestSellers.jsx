@@ -80,9 +80,9 @@ const mapBackendProduct = (prod) => {
 
 	const unitPrice = parsePrice(finalPrice) || (basePrice && typeof basePrice === 'object' ? parsePrice(basePrice.current) : parsePrice(basePrice));
 	const originalPrice = basePrice && typeof basePrice === 'object' ? parsePrice(basePrice.original) : (parsePrice(basePrice) || unitPrice);
-	
+
 	const frontendProductId = formatProductIdForFrontend(prod.id);
-	
+
 	const imageList = mapImages(prod.images || prod.gallery, prod.image || prod.primary_image);
 	const primaryImage = resolveImageUrl(prod.image || prod.primary_image) || imageList[0] || "";
 
@@ -131,7 +131,7 @@ export const BestSellers = () => {
 
 	return (
 		<div className="flex flex-col w-full min-h-screen bg-background pb-16">
-			<PageHero 
+			<PageHero
 				title={{ en: "Best Sellers", ar: "الأكثر مبيعاً" }}
 				subtitle={{ en: "Discover our most popular and trusted medical equipment chosen by professionals.", ar: "اكتشف أجهزتنا الطبية الأكثر شعبية وثقة والمختارة من قبل المحترفين." }}
 				count={products.length}

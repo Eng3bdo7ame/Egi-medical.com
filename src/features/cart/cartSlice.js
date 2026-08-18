@@ -107,16 +107,16 @@ const parsePrice = (value) => {
 // Robust mapping of backend cart item records to frontend CartItem structures
 const mapBackendCartItem = (item) => {
 	const prod = item.product || {};
-	
+
 	// Determine the actual current price the user is paying
 	const finalPrice = prod.final_price || prod.special_price || prod.sale_price;
 	const basePrice = prod.price;
 
 	const unitPrice = item.unitPrice || item.price || parsePrice(finalPrice) || (basePrice && typeof basePrice === 'object' ? parsePrice(basePrice.current) : parsePrice(basePrice));
 	const originalPrice = basePrice && typeof basePrice === 'object' ? parsePrice(basePrice.original) : (parsePrice(basePrice) || unitPrice);
-	
+
 	const frontendProductId = formatProductIdForFrontend(item.product_id || item.productId || prod.id);
-	
+
 	const imageList = mapImages(prod.images || prod.gallery, prod.image || prod.primary_image);
 	const primaryImage = resolveImageUrl(prod.image || prod.primary_image) || imageList[0] || "";
 
@@ -156,7 +156,7 @@ const mapBackendCartItem = (item) => {
 const calculateTotals = (state) => {
 	let totalItems = 0;
 	let subtotal = 0;
-	
+
 	state.items.forEach(item => {
 		totalItems += item.quantity;
 		// Ensure subtotal per item is correct
@@ -168,7 +168,7 @@ const calculateTotals = (state) => {
 	state.subtotal = subtotal;
 	// total = subtotal - discount + shipping
 	state.total = Math.max(0, state.subtotal - state.discount + state.shipping);
-	
+
 	// Persist changes
 	storage.set(STORAGE_KEYS.CART, {
 		items: state.items,
@@ -203,7 +203,7 @@ export const addToCart = createAsyncThunk(
 			const state = getState();
 			const isAuthenticated = state.auth?.isAuthenticated;
 			const tempUserId = !isAuthenticated ? getOrCreateTempUserId() : null;
-			
+
 			const response = await cartApi.addToCart(product.id, quantity, tempUserId);
 			// Sync with backend by re-fetching the updated cart
 			dispatch(fetchCart());
@@ -221,8 +221,8 @@ export const updateQuantity = createAsyncThunk(
 			const state = getState();
 			const items = state.cart.items;
 			const item = items.find(
-				(i) => i.productId === productId && 
-				       JSON.stringify(i.selectedVariant) === JSON.stringify(selectedVariant)
+				(i) => i.productId === productId &&
+					JSON.stringify(i.selectedVariant) === JSON.stringify(selectedVariant)
 			);
 
 			if (!item || !item.id) {
@@ -235,7 +235,7 @@ export const updateQuantity = createAsyncThunk(
 			} else {
 				response = await cartApi.updateCartItem(item.id, quantity);
 			}
-			
+
 			// Sync with backend by re-fetching the updated cart
 			dispatch(fetchCart());
 			return response;
@@ -252,8 +252,8 @@ export const removeFromCart = createAsyncThunk(
 			const state = getState();
 			const items = state.cart.items;
 			const item = items.find(
-				(i) => i.productId === productId && 
-				       JSON.stringify(i.selectedVariant) === JSON.stringify(selectedVariant)
+				(i) => i.productId === productId &&
+					JSON.stringify(i.selectedVariant) === JSON.stringify(selectedVariant)
 			);
 
 			if (!item || !item.id) {
@@ -313,7 +313,7 @@ const cartSlice = createSlice({
 			.addCase(fetchCart.fulfilled, (state, action) => {
 				state.status = "succeeded";
 				const responseData = action.payload;
-				
+
 				let cartItems = [];
 				if (Array.isArray(responseData)) {
 					cartItems = responseData;
@@ -353,7 +353,7 @@ export const selectCartShipping = (state) => state.cart.shipping;
 export const selectCartTotal = (state) => state.cart.total;
 export const selectCartStatus = (state) => state.cart.status;
 export const selectCartError = (state) => state.cart.error;
-export const selectCartItemById = (productId, variant = null) => (state) => 
+export const selectCartItemById = (productId, variant = null) => (state) =>
 	state.cart.items.find(item => item.productId === productId && JSON.stringify(item.selectedVariant) === JSON.stringify(variant));
 
 export default cartSlice.reducer;
