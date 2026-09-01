@@ -10,19 +10,6 @@ export const OfferBanners = ({ offers = [], isLoading }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 
-	if (isLoading) {
-		return (
-			<Section spacing="none" className="py-6 sm:py-10">
-				<Container>
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-						<div className="aspect-[21/9] w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-[2rem]" />
-						<div className="aspect-[21/9] w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-[2rem] hidden md:block" />
-					</div>
-				</Container>
-			</Section>
-		);
-	}
-
 	// Filter and map offers
 	const banners = (offers || [])
 		.slice(0, 2) // Limit to maximum 2 banners
@@ -45,8 +32,6 @@ export const OfferBanners = ({ offers = [], isLoading }) => {
 		})
 		.filter((b) => b.image);
 
-	if (banners.length === 0) return null;
-
 	const isSingle = banners.length === 1;
 
 	// Embla Carousel configuration for mobile slider (or desktop too if preferred)
@@ -59,6 +44,21 @@ export const OfferBanners = ({ offers = [], isLoading }) => {
 		},
 		[Autoplay({ delay: 5000, stopOnInteraction: true })]
 	);
+
+	if (isLoading) {
+		return (
+			<Section spacing="none" className="py-6 sm:py-10">
+				<Container>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div className="aspect-[21/9] w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-[2rem]" />
+						<div className="aspect-[21/9] w-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-[2rem] hidden md:block" />
+					</div>
+				</Container>
+			</Section>
+		);
+	}
+
+	if (banners.length === 0) return null;
 
 	return (
 		<Section spacing="none" className="py-6 sm:py-10">
