@@ -14,7 +14,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
  */
 export const MainHeader = () => {
 	return (
-		<div className="w-full bg-surface border-b border-border py-3 hidden md:block relative z-50">
+		<div className="w-full bg-surface border-b border-border py-3 hidden xl:block relative z-50">
 			<Container>
 				<div className="flex items-center gap-6">
 					{/* Logo */}

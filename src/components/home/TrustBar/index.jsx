@@ -44,25 +44,25 @@ export const TrustBar = () => {
 	return (
 		<Section spacing="none" className="py-6 sm:py-8 lg:py-4">
 			<Container>
-				<div className="bg-[#021d49] text-white rounded-3xl p-6 sm:p-8 lg:py-4 lg:px-10 shadow-md">
-					<div className="flex overflow-x-auto hide-scrollbar gap-8 lg:gap-4 items-center lg:justify-between">
+				<div className="bg-[#021d49] text-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-xl">
+					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-6 gap-x-4 sm:gap-6 lg:gap-4 items-center">
 						{features.map((feat) => {
 							const Icon = feat.icon;
 							return (
 								<div
 									key={feat.id}
-									className="flex items-center gap-3 sm:gap-4 shrink-0"
+									className="flex items-center gap-3 sm:gap-4 group"
 									dir={isRtl ? "rtl" : "ltr"}
 								>
 									{/* Icon on the right for RTL, left for LTR */}
-									<div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/10 flex items-center justify-center text-white shrink-0">
-										<Icon className="w-6 h-6 sm:w-7 sm:h-7" />
+									<div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-white/10 flex items-center justify-center text-white shrink-0 transition-all duration-300 group-hover:bg-white/20 group-hover:scale-110">
+										<Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
 									</div>
 									<div className="flex flex-col text-start">
-										<span className="text-sm sm:text-base font-bold leading-tight">
+										<span className="text-xs sm:text-sm lg:text-base font-bold leading-tight transition-colors duration-300 group-hover:text-blue-100">
 											{feat.title[language]}
 										</span>
-										<span className="text-xs sm:text-sm text-white/70 font-medium mt-1">
+										<span className="text-[10px] sm:text-xs lg:text-sm text-white/70 font-medium mt-1">
 											{feat.desc[language]}
 										</span>
 									</div>

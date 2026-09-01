@@ -143,7 +143,7 @@ export const MobileHeader = () => {
 	const ThemeIcon = themeIcons[theme] || Monitor;
 
 	return (
-		<div className="w-full bg-surface border-b border-border md:hidden sticky top-0 z-[120]">
+		<div className="w-full bg-surface border-b border-border xl:hidden sticky top-0 z-[120]">
 			<Container>
 				<div className="flex items-center justify-between py-2.5 gap-3">
 					{/* Menu Toggle */}

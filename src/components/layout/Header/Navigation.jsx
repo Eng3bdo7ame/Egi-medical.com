@@ -33,7 +33,7 @@ export const Navigation = () => {
 	};
 
 	return (
-		<div className="w-full bg-surface border-b border-border hidden lg:block relative z-40 shadow-sm">
+		<div className="w-full bg-surface border-b border-border hidden xl:block relative z-40 shadow-sm">
 			<Container className="relative">
 				<div 
 					className="flex items-center gap-2 py-1 static"

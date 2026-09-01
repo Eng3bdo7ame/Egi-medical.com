@@ -17,13 +17,13 @@ export const ProductsLayout = ({
 		<Container>
 			{/* Toolbar (Sort, View Mode, Count) */}
 			{toolbar && <div className="w-full">{toolbar}</div>}
-			
+
 			{/* Active Filters Row */}
 			{activeFilters && <div className="w-full mb-6">{activeFilters}</div>}
 
 			{/* Main Layout (Sidebar + Grid) */}
-			<div className="flex gap-8 items-start w-full relative">
-				
+			<div className="flex gap-0 lg:gap-8 items-start w-full relative">
+
 				{/* Desktop Sidebar - Sticky */}
 				{sidebar && (
 					<aside className="hidden lg:block sticky top-24 self-start w-[280px] shrink-0 z-10">
@@ -42,7 +42,7 @@ export const ProductsLayout = ({
 				<main className="w-full flex-grow min-w-0 flex flex-col">
 					{children}
 				</main>
-				
+
 			</div>
 
 			{/* Bottom Content */}
