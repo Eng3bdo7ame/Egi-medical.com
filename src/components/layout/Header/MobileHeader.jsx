@@ -145,34 +145,34 @@ export const MobileHeader = () => {
 	return (
 		<div className="w-full bg-surface border-b border-border xl:hidden sticky top-0 z-[120]">
 			<Container>
-				<div className="flex items-center justify-between py-2.5 gap-3">
-					{/* Menu Toggle */}
+				<div className="flex items-center justify-between py-2.5 gap-2 sm:gap-3">
+					{/* Logo on the right (start) */}
+					<Logo imgClassName="h-14 sm:h-16" />
+
+					{/* Search Input always visible in the middle */}
+					<div className="flex-1 max-w-[180px] sm:max-w-sm mx-1 sm:mx-2">
+						<form onSubmit={handleSearchSubmit} className="flex items-center bg-surface-2/80 rounded-full px-3 py-1.5 sm:py-2 border border-border/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+							<input
+								type="search"
+								value={searchQuery}
+								onChange={(e) => setSearchQuery(e.target.value)}
+								placeholder={isRtl ? "بحث..." : "Search..."}
+								className="flex-1 bg-transparent text-[13px] outline-none w-full text-text placeholder:text-text-muted"
+							/>
+							<button type="submit" className="text-text-muted hover:text-primary shrink-0 p-0.5" aria-label="Search">
+								<Search className="w-4 h-4" />
+							</button>
+						</form>
+					</div>
+
+					{/* Menu Toggle on the left (end) */}
 					<button
 						onClick={() => setIsOpen(true)}
-						className="p-2 rounded-xl text-text-secondary hover:text-primary hover:bg-surface-2 transition-all active:scale-95 cursor-pointer"
+						className="p-2 shrink-0 rounded-xl text-text-secondary hover:text-primary hover:bg-surface-2 transition-all active:scale-95 cursor-pointer"
 						aria-label={isRtl ? "فتح القائمة" : "Open menu"}
 					>
-						<Menu className="w-5 h-5" />
+						<Menu className="w-6 h-6" />
 					</button>
-
-					{/* Logo */}
-					<Logo />
-
-					{/* Right Actions */}
-					<div className="flex items-center gap-0.5">
-						<LocalizedLink
-							to="/cart"
-							className="relative p-2 rounded-xl text-text-secondary hover:text-primary hover:bg-surface-2 transition-all active:scale-95"
-							aria-label={isRtl ? "السلة" : "Cart"}
-						>
-							<ShoppingCart className="w-5 h-5" />
-							{cartCount > 0 && (
-								<span className="absolute top-0.5 end-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-secondary text-white text-[10px] font-bold leading-none">
-									{cartCount}
-								</span>
-							)}
-						</LocalizedLink>
-					</div>
 				</div>
 			</Container>
 
