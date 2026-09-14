@@ -14,9 +14,9 @@ export const ThemeSwitcher = ({ variant = "default", className }) => {
 	const { theme, toggleTheme } = useTheme();
 
 	const themeConfig = {
-		[THEMES.LIGHT]: { icon: Sun, label: "Light" },
-		[THEMES.DARK]: { icon: Moon, label: "Dark" },
-		[THEMES.SYSTEM]: { icon: Monitor, label: "System" },
+		[THEMES.LIGHT]: { icon: Sun, label: "Light", color: "text-amber-400" },
+		[THEMES.DARK]: { icon: Moon, label: "Dark", color: "text-blue-300" },
+		[THEMES.SYSTEM]: { icon: Monitor, label: "System", color: "text-white" },
 	};
 
 	const current = themeConfig[theme] || themeConfig[THEMES.SYSTEM];
@@ -26,16 +26,14 @@ export const ThemeSwitcher = ({ variant = "default", className }) => {
 		<button
 			onClick={toggleTheme}
 			className={cn(
-				"inline-flex items-center justify-center transition-colors duration-150 cursor-pointer select-none rounded-md focus-visible:ring-2 focus-visible:ring-ring/50 outline-none",
-				variant === "announcement"
-					? "text-white/90 hover:text-white p-1.5"
-					: "text-text-secondary hover:text-primary p-1.5 hover:bg-surface-2",
+				"inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 cursor-pointer select-none",
+				"bg-white/10 hover:bg-white/20 active:scale-95 border border-white/15 text-white shadow-sm",
 				className
 			)}
 			aria-label={`Toggle theme. Current: ${current.label}`}
-			title={current.label}
+			title={`Theme: ${current.label}`}
 		>
-			<Icon className="w-4 h-4" />
+			<Icon className={cn("w-5 h-5 transition-transform duration-200 hover:rotate-12", current.color)} />
 		</button>
 	);
 };

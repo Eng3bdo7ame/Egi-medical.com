@@ -26,12 +26,12 @@ export const AnnouncementBar = () => {
 	const formattedPhone = phone;
 
 	return (
-		<div className="w-full bg-surface-2 border-b border-divider text-text-secondary text-xs select-none relative z-[110]">
+		<div className="w-full bg-[#021d49] border-b border-white/10 text-white/90 text-xs select-none relative z-[110]">
 			<Container>
-				<div className="flex items-center justify-between py-2.5 gap-4">
+				<div className="flex items-center justify-between py-2 gap-4">
 					{/* Left: Why Choose Us Announcement */}
-					<div className="flex items-center gap-2 font-medium">
-						<Icon name="ShieldCheck" size="sm" className="text-primary shrink-0" />
+					<div className="flex items-center gap-2 font-medium text-white/80">
+						<Icon name="ShieldCheck" size="sm" className="text-orange-400 shrink-0" />
 						<span className="line-clamp-1">
 							{settings?.why_choose_us?.subtitle || settings?.why_choose_us?.title || (isRtl
 								? "نحن نضع معايير جديدة للموثوقية والأمان في توفير المستلزمات والأجهزة الطبية"
@@ -40,51 +40,51 @@ export const AnnouncementBar = () => {
 					</div>
 
 					{/* Right: Location + Hotline + Language + Auth */}
-					<div className="flex items-center gap-4 lg:gap-6">
+					<div className="flex items-center gap-3 lg:gap-5">
 						{/* Deliver To */}
-						<div className="hidden lg:flex items-center gap-2 text-text-secondary">
-							<Icon name="MapPin" size="sm" className="text-primary shrink-0" />
+						<div className="hidden lg:flex items-center gap-2 text-white/80">
+							<Icon name="MapPin" size="sm" className="text-orange-400 shrink-0" />
 							<div className="flex flex-col leading-[1.2]">
-								<span className="text-[10px] text-text-muted font-normal">
+								<span className="text-[10px] text-white/60 font-normal">
 									{isRtl ? "التوصيل إلى" : "Deliver to"}
 								</span>
-								<span className="font-semibold text-text">
+								<span className="font-semibold text-white">
 									{isRtl ? "القاهرة، مصر" : "Cairo, Egypt"}
 								</span>
 							</div>
 						</div>
 
-						<span className="hidden lg:block w-px h-5 bg-divider" />
+						<span className="hidden lg:block w-px h-4 bg-white/20" />
 
 						{/* Hotline */}
 						<a
 							href={`tel:${phone}`}
-							className="hidden lg:flex items-center gap-2 text-text-secondary hover:text-primary transition-colors"
+							className="hidden lg:flex items-center gap-2 text-white/80 hover:text-orange-300 transition-colors"
 						>
-							<Icon name="Phone" size="sm" className="text-primary shrink-0" />
+							<Icon name="Phone" size="sm" className="text-orange-400 shrink-0" />
 							<div className="flex flex-col leading-[1.2]">
-								<span className="text-[10px] text-text-muted font-normal">
+								<span className="text-[10px] text-white/60 font-normal">
 									{isRtl ? "تحتاج مساعدة؟" : "Need Help?"}
 								</span>
-								<span className="font-semibold text-text">{formattedPhone}</span>
+								<span className="font-semibold text-white">{formattedPhone}</span>
 							</div>
 						</a>
 
-						<span className="hidden lg:block w-px h-5 bg-divider" />
+						<span className="hidden lg:block w-px h-4 bg-white/20" />
 
 						{/* Language Switcher */}
-						<LanguageSwitcher />
+						<LanguageSwitcher variant="announcement" />
 
-						<span className="hidden sm:block w-px h-5 bg-divider" />
+						<span className="hidden sm:block w-px h-4 bg-white/20" />
 
 						{/* Login / Register or Profile */}
 						{isAuthenticated ? (
 							<div className="relative group z-50">
 								<LocalizedLink
 									to="/account"
-									className="flex items-center gap-2 font-bold text-primary hover:text-primary-hover transition-colors py-2"
+									className="flex items-center gap-2 font-bold text-white hover:text-orange-300 transition-colors py-1"
 								>
-									<Icon name="User" size="sm" className="text-primary shrink-0" />
+									<Icon name="User" size="sm" className="text-orange-400 shrink-0" />
 									<span className="hidden sm:inline">
 										{user?.name || (isRtl ? "حسابي" : "My Account")}
 									</span>
@@ -92,7 +92,7 @@ export const AnnouncementBar = () => {
 
 								{/* Dropdown Menu */}
 								<div className={cn(
-									"absolute top-full opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 w-48 bg-surface border border-border rounded-xl shadow-lg shadow-black/5 overflow-hidden flex flex-col z-[100]",
+									"absolute top-full opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 w-48 bg-surface border border-border rounded-xl shadow-lg shadow-black/10 overflow-hidden flex flex-col z-[100]",
 									isRtl ? "left-0" : "right-0"
 								)}>
 									<div className="p-3 border-b border-border/50">
@@ -127,9 +127,9 @@ export const AnnouncementBar = () => {
 						) : (
 							<LocalizedLink
 								to="/auth/login"
-								className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
+								className="flex items-center gap-2 font-medium text-white/90 hover:text-orange-300 transition-colors"
 							>
-								<Icon name="User" size="sm" className="text-primary shrink-0" />
+								<Icon name="User" size="sm" className="text-orange-400 shrink-0" />
 								<span className="hidden sm:inline">
 									{isRtl ? "الدخول / التسجيل" : "Login / Register"}
 								</span>

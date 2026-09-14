@@ -60,9 +60,8 @@ export const SearchBar = ({ className }) => {
 			<form
 				onSubmit={handleSubmit}
 				className={cn(
-					"flex items-stretch w-full h-[54px] rounded-full overflow-hidden relative z-50",
-					"border border-slate-200 dark:border-border/80 focus-within:border-primary focus-within:shadow-[0_0_0_4px_rgba(var(--primary-rgb),0.1)]",
-					"bg-slate-50 dark:bg-surface-2 hover:bg-white dark:hover:bg-surface-3 shadow-sm transition-all duration-300"
+					"flex items-stretch w-full h-[52px] rounded-full overflow-hidden relative z-50",
+					"bg-white shadow-md border border-white/30 focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent transition-all duration-300"
 				)}
 				role="search"
 				aria-label={isRtl ? "البحث عن المنتجات" : "Search products"}
@@ -78,14 +77,14 @@ export const SearchBar = ({ className }) => {
 							? "ابحث عن الأدوية، الأجهزة، الماركات..."
 							: "Search for medicines, devices, brands..."
 					}
-					className="flex-1 bg-transparent text-[15px] text-text placeholder:text-text-muted px-5 outline-none min-w-0"
+					className="flex-1 bg-transparent text-[15px] text-slate-800 placeholder:text-slate-400 px-5 outline-none min-w-0 font-medium"
 					aria-label={isRtl ? "حقل البحث" : "Search field"}
 				/>
 
-				{/* Search Button (Far Right) */}
+				{/* Search Button (Orange) */}
 				<button
 					type="submit"
-					className="flex items-center justify-center w-16 bg-primary hover:bg-primary-hover active:bg-primary-active text-white transition-colors duration-200 shrink-0 cursor-pointer"
+					className="flex items-center justify-center w-16 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-95 text-white transition-all duration-200 shrink-0 cursor-pointer shadow-sm"
 					aria-label={isRtl ? "بحث" : "Search"}
 				>
 					<Icon name="Search" size={22} strokeWidth={2.5} />

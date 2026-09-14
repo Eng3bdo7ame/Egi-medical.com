@@ -33,7 +33,7 @@ export const Navigation = () => {
 	};
 
 	return (
-		<div className="w-full bg-surface border-b border-border hidden xl:block relative z-40 shadow-sm">
+		<div className="w-full bg-[#021d49] border-t border-white/10 hidden xl:block relative z-40 shadow-sm text-white">
 			<Container className="relative">
 				<div 
 					className="flex items-center gap-2 py-1 static"
@@ -47,7 +47,7 @@ export const Navigation = () => {
 						<button
 							className={cn(
 								"inline-flex items-center justify-between min-w-[220px] h-[56px] text-white text-[15px] font-bold px-6 rounded-t-xl transition-all duration-300 cursor-pointer select-none shrink-0",
-								isMegaMenuOpen ? "bg-primary/90 shadow-inner" : "bg-primary hover:bg-primary/90 hover:-translate-y-0.5"
+								isMegaMenuOpen ? "bg-orange-500 shadow-inner" : "bg-orange-500 hover:bg-orange-600 hover:-translate-y-0.5"
 							)}
 							aria-haspopup="true"
 							aria-expanded={isMegaMenuOpen}
@@ -85,8 +85,8 @@ export const Navigation = () => {
 									className={cn(
 										"relative inline-flex items-center gap-1.5 py-4 text-[15.5px] font-bold transition-all duration-300 select-none whitespace-nowrap group",
 										link.isOffer
-											? "text-secondary hover:text-secondary-hover"
-											: "text-text-secondary hover:text-primary"
+											? "text-orange-400 hover:text-orange-300"
+											: "text-white/90 hover:text-orange-400"
 									)}
 								>
 									<span className="relative z-10">{linkName}</span>
@@ -96,7 +96,7 @@ export const Navigation = () => {
 										</Badge>
 									)}
 									{/* Animated Underline */}
-									<span className="absolute bottom-0 left-1/2 w-0 h-[3px] bg-current transition-all duration-300 -translate-x-1/2 group-hover:w-full rounded-t-full opacity-0 group-hover:opacity-100" />
+									<span className="absolute bottom-0 left-1/2 w-0 h-[3px] bg-orange-400 transition-all duration-300 -translate-x-1/2 group-hover:w-full rounded-t-full opacity-0 group-hover:opacity-100" />
 								</LocalizedLink>
 							);
 						})}

@@ -85,14 +85,14 @@ export const MobileHeader = () => {
 	const handleLanguageSwitch = () => {
 		const newLang = language === "ar" ? "en" : "ar";
 		toggleLanguage();
-		
+
 		const pathSegments = location.pathname.split('/').filter(Boolean);
 		if (pathSegments.length > 0 && ["ar", "en"].includes(pathSegments[0])) {
 			pathSegments[0] = newLang;
 		} else {
 			pathSegments.unshift(newLang);
 		}
-		
+
 		const newPath = '/' + pathSegments.join('/') + location.search + location.hash;
 		navigate(newPath);
 	};
@@ -143,36 +143,51 @@ export const MobileHeader = () => {
 	const ThemeIcon = themeIcons[theme] || Monitor;
 
 	return (
-		<div className="w-full bg-surface border-b border-border xl:hidden sticky top-0 z-[120]">
+		<div className="w-full bg-[#021d49] text-white border-b border-white/10 xl:hidden sticky top-0 z-[120]">
 			<Container>
-				<div className="flex items-center justify-between py-2.5 gap-2 sm:gap-3">
-					{/* Logo on the right (start) */}
-					<Logo imgClassName="h-14 sm:h-16" />
+				<div className="flex items-center justify-between py-2.5 gap-2 sm:gap-4" dir={isRtl ? "rtl" : "ltr"}>
+					{/* 1. Logo (Start) */}
+					<div className="shrink-0 flex items-center">
+						<Logo imgClassName="h-10 sm:h-12 w-auto object-contain brightness-105" />
+					</div>
 
-					{/* Search Input always visible in the middle */}
-					<div className="flex-1 max-w-[180px] sm:max-w-sm mx-1 sm:mx-2">
-						<form onSubmit={handleSearchSubmit} className="flex items-center bg-surface-2/80 rounded-full px-3 py-1.5 sm:py-2 border border-border/50 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+					{/* 2. Search Bar (Center) */}
+					<div className="flex-1 min-w-0 mx-1 sm:mx-2">
+						<form
+							onSubmit={handleSearchSubmit}
+							className="relative flex items-center w-full h-10 sm:h-11 bg-white rounded-full border border-white/30 shadow-inner focus-within:ring-2 focus-within:ring-orange-400 transition-all duration-200 pl-1 pr-3.5"
+						>
 							<input
 								type="search"
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
-								placeholder={isRtl ? "بحث..." : "Search..."}
-								className="flex-1 bg-transparent text-[13px] outline-none w-full text-text placeholder:text-text-muted"
+								placeholder={
+									isRtl
+										? "ابحث عن منتج، علامة تجارية..."
+										: "Search for product, brand..."
+								}
+								className="flex-1 bg-transparent text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 outline-none px-2 min-w-0 font-medium"
 							/>
-							<button type="submit" className="text-text-muted hover:text-primary shrink-0 p-0.5" aria-label="Search">
-								<Search className="w-4 h-4" />
+							<button
+								type="submit"
+								className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:scale-90 text-white flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer shadow-sm shadow-orange-500/30"
+								aria-label={isRtl ? "بحث" : "Search"}
+							>
+								<Search className="w-4 h-4 stroke-[2.5]" />
 							</button>
 						</form>
 					</div>
 
-					{/* Menu Toggle on the left (end) */}
-					<button
-						onClick={() => setIsOpen(true)}
-						className="p-2 shrink-0 rounded-xl text-text-secondary hover:text-primary hover:bg-surface-2 transition-all active:scale-95 cursor-pointer"
-						aria-label={isRtl ? "فتح القائمة" : "Open menu"}
-					>
-						<Menu className="w-6 h-6" />
-					</button>
+					{/* 3. Menu Toggle (End) */}
+					<div className="shrink-0 flex items-center">
+						<button
+							onClick={() => setIsOpen(true)}
+							className="p-2 sm:p-2.5 rounded-xl text-white hover:bg-white/10 active:bg-white/20 transition-all active:scale-95 cursor-pointer border border-white/15 bg-white/5"
+							aria-label={isRtl ? "فتح القائمة" : "Open menu"}
+						>
+							<Menu className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
+						</button>
+					</div>
 				</div>
 			</Container>
 
@@ -184,9 +199,9 @@ export const MobileHeader = () => {
 				)}
 			>
 				{/* Backdrop with Blur */}
-				<div 
-					className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-all duration-300 touch-none" 
-					onClick={close} 
+				<div
+					className="absolute inset-0 bg-black/60 backdrop-blur-xs transition-all duration-300 touch-none"
+					onClick={close}
 				/>
 
 				{/* Drawer Panel */}
@@ -255,35 +270,35 @@ export const MobileHeader = () => {
 								{/* Profile Options List */}
 								{isProfileMenuOpen && (
 									<div className="mx-2 bg-surface-2/40 border border-border/40 rounded-xl overflow-hidden flex flex-col p-1">
-										<LocalizedLink 
-											to="/account?tab=overview" 
+										<LocalizedLink
+											to="/account?tab=overview"
 											onClick={close}
 											className="flex items-center gap-3 p-3 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-sm font-bold"
 										>
 											<User className="w-4 h-4 text-primary" />
 											{isRtl ? "الملف الشخصي" : "Profile"}
 										</LocalizedLink>
-										<LocalizedLink 
-											to="/account?tab=orders" 
+										<LocalizedLink
+											to="/account?tab=orders"
 											onClick={close}
 											className="flex items-center gap-3 p-3 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-sm font-bold"
 										>
 											<Package className="w-4 h-4 text-primary" />
 											{isRtl ? "الطلبات" : "Orders"}
 										</LocalizedLink>
-										<LocalizedLink 
-											to="/wishlist" 
+										<LocalizedLink
+											to="/wishlist"
 											onClick={close}
 											className="flex items-center gap-3 p-3 hover:bg-surface-2 rounded-lg text-text-secondary hover:text-primary transition-colors text-sm font-bold"
 										>
 											<Heart className="w-4 h-4 text-primary" />
 											{isRtl ? "المفضلة" : "Wishlist"}
 										</LocalizedLink>
-										<button 
+										<button
 											onClick={() => {
 												logout();
 												close();
-											}} 
+											}}
 											className="flex w-full items-center gap-3 p-3 hover:bg-danger/10 text-danger rounded-lg transition-colors text-sm font-extrabold cursor-pointer border-t border-border/30 mt-1"
 										>
 											<LogOut className="w-4 h-4" />
@@ -335,8 +350,8 @@ export const MobileHeader = () => {
 										{link.badge && (
 											<span className={cn(
 												"px-2 py-0.5 text-[9px] font-extrabold rounded-full uppercase tracking-wider shrink-0",
-												link.badgeVariant === "danger" 
-													? "bg-danger/10 text-danger border border-danger/20" 
+												link.badgeVariant === "danger"
+													? "bg-danger/10 text-danger border border-danger/20"
 													: "bg-success/10 text-success border border-success/20"
 											)}>
 												{link.badge[language]}
@@ -396,10 +411,10 @@ export const MobileHeader = () => {
 							>
 								<ThemeIcon className="w-4 h-4 text-warning" />
 								<span>
-									{theme === "dark" 
-										? (isRtl ? "داكن" : "Dark") 
-										: theme === "light" 
-											? (isRtl ? "فاتح" : "Light") 
+									{theme === "dark"
+										? (isRtl ? "داكن" : "Dark")
+										: theme === "light"
+											? (isRtl ? "فاتح" : "Light")
 											: (isRtl ? "النظام" : "System")}
 								</span>
 							</button>

@@ -42,16 +42,16 @@ export const TrustBar = () => {
 	];
 
 	return (
-		<Section spacing="none" className="py-6 sm:py-8 lg:py-4">
+		<Section spacing="none" className="py-4 sm:py-6 lg:py-4">
 			<Container>
-				<div className="bg-[#021d49] text-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-xl">
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-6 gap-x-4 sm:gap-6 lg:gap-4 items-center">
+				<div className="bg-[#021d49] text-white rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-8 shadow-xl">
+					<div className="flex lg:grid lg:grid-cols-5 overflow-x-auto lg:overflow-visible gap-4 sm:gap-5 lg:gap-4 items-center pb-2 lg:pb-0 scroll-smooth snap-x snap-mandatory [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-white/10 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/30 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/50 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.3)_rgba(255,255,255,0.1)]">
 						{features.map((feat) => {
 							const Icon = feat.icon;
 							return (
 								<div
 									key={feat.id}
-									className="flex items-center gap-3 sm:gap-4 group"
+									className="flex items-center gap-2.5 sm:gap-3.5 group shrink-0 min-w-max lg:min-w-0 snap-start"
 									dir={isRtl ? "rtl" : "ltr"}
 								>
 									{/* Icon on the right for RTL, left for LTR */}
@@ -59,10 +59,10 @@ export const TrustBar = () => {
 										<Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
 									</div>
 									<div className="flex flex-col text-start">
-										<span className="text-xs sm:text-sm lg:text-base font-bold leading-tight transition-colors duration-300 group-hover:text-blue-100">
+										<span className="text-xs sm:text-sm lg:text-base font-bold leading-tight transition-colors duration-300 group-hover:text-blue-100 whitespace-nowrap lg:whitespace-normal">
 											{feat.title[language]}
 										</span>
-										<span className="text-[10px] sm:text-xs lg:text-sm text-white/70 font-medium mt-1">
+										<span className="text-[10px] sm:text-xs lg:text-sm text-white/70 font-medium mt-0.5 sm:mt-1 whitespace-nowrap lg:whitespace-normal">
 											{feat.desc[language]}
 										</span>
 									</div>

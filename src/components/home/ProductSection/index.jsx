@@ -78,7 +78,7 @@ export const ProductSection = ({ title, subtitle, viewAllLink, variant = "defaul
 					</div>
 					<div className="flex gap-4 overflow-hidden">
 						{[...Array(5)].map((_, i) => (
-							<div key={i} className="flex-[0_0_65%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] xl:flex-[0_0_18%] min-w-0">
+							<div key={i} className="flex-[0_0_80%] sm:flex-[0_0_48%] md:flex-[0_0_32%] lg:flex-[0_0_24%] xl:flex-[0_0_20%] min-w-0">
 								<div className="w-full h-80 bg-slate-100 animate-pulse rounded-2xl"></div>
 							</div>
 						))}
@@ -138,7 +138,7 @@ export const ProductSection = ({ title, subtitle, viewAllLink, variant = "defaul
 							{productsToDisplay.map((prod, i) => (
 								<div
 									key={prod.id || i}
-									className="flex-[0_0_65%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_22%] xl:flex-[0_0_18%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
+									className="flex-[0_0_80%] sm:flex-[0_0_48%] md:flex-[0_0_32%] lg:flex-[0_0_24%] xl:flex-[0_0_20%] min-w-0 pl-4 rtl:pr-4 rtl:pl-0"
 								>
 									<ProductCard product={prod} />
 								</div>

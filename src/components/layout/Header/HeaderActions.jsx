@@ -19,21 +19,21 @@ const ActionButton = ({ to, icon, label, count, className }) => {
 	const content = (
 		<>
 			<div className="relative">
-				<Icon name={icon} size="lg" className="text-text group-hover:text-primary transition-colors" />
+				<Icon name={icon} size="lg" className="text-white group-hover:text-orange-400 transition-colors" />
 				{count > 0 && (
-					<span className="absolute -top-2 -end-2 flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-primary text-white text-[11px] font-bold leading-none shadow-sm">
+					<span className="absolute -top-2 -end-2 flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-orange-500 text-white text-[11px] font-bold leading-none shadow-sm">
 						{count > 99 ? "99+" : count}
 					</span>
 				)}
 			</div>
-			<span className="font-semibold text-text group-hover:text-primary transition-colors hidden xl:block">
+			<span className="font-semibold text-white/90 group-hover:text-orange-400 transition-colors hidden xl:block">
 				{label}
 			</span>
 		</>
 	);
 
 	const baseClass = cn(
-		"flex items-center gap-2 p-2 rounded-[14px] text-text-secondary hover:text-primary transition-colors duration-200 group select-none",
+		"flex items-center gap-2 p-2 rounded-[14px] text-white/90 hover:text-orange-400 transition-colors duration-200 group select-none",
 		className
 	);
 

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import BottomNavigation from "@/components/layout/BottomNavigation";
 import GlobalDrawers from "@/components/layout/GlobalDrawers";
 import GlobalModals from "@/components/layout/GlobalModals";
 import Toaster from "@/components/layout/Toaster";
@@ -18,13 +19,14 @@ export const AppLayout = () => {
 	}, [dispatch]);
 
 	return (
-		<div className="min-h-screen flex flex-col bg-background text-text transition-colors duration-normal">
+		<div className="min-h-screen flex flex-col bg-background text-text transition-colors duration-normal pb-16 xl:pb-0">
 			<ScrollRestoration />
 			<Header />
 			<main className="flex-grow">
 				<Outlet />
 			</main>
 			<Footer />
+			<BottomNavigation />
 			<GlobalDrawers />
 			<GlobalModals />
 			<Toaster />
