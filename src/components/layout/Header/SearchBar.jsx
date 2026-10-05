@@ -74,8 +74,8 @@ export const SearchBar = ({ className }) => {
 					onFocus={() => setIsFocused(true)}
 					placeholder={
 						isRtl
-							? "ابحث عن الأدوية، الأجهزة، الماركات..."
-							: "Search for medicines, devices, brands..."
+							? "ابحث..."
+							: "Search..."
 					}
 					className="flex-1 bg-transparent text-[15px] text-slate-800 placeholder:text-slate-400 px-5 outline-none min-w-0 font-medium"
 					aria-label={isRtl ? "حقل البحث" : "Search field"}

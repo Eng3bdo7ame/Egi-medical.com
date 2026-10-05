@@ -29,18 +29,13 @@ export const PriceBox = ({ price, className }) => {
 						</span>
 					</div>
 				)}
-				
+
 				{/* Main Price */}
 				<div className="flex items-baseline gap-1.5">
 					<span className="text-2xl sm:text-3xl font-extrabold text-primary">
 						{finalFormatted}
 					</span>
 				</div>
-				
-				{/* VAT Info */}
-				<span className="text-xs text-text-secondary mt-2">
-					{isRtl ? "السعر يشمل ضريبة القيمة المضافة (VAT)" : "Price includes VAT"}
-				</span>
 			</div>
 		</div>
 	);
