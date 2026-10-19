@@ -10,14 +10,14 @@ import Section from "@/components/ui/Section";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowLeft, Tag } from "lucide-react";
 
-export const PromoSection = ({ offers }) => {
+export const PromoSection = ({ top_offers }) => {
 	const { language } = useLanguage();
 	const isRtl = language === "ar";
 	const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
 	let mappedOffers = [];
-	if (offers && offers.length > 0) {
-		mappedOffers = offers.map((offer, index) => {
+	if (top_offers && top_offers.length > 0) {
+		mappedOffers = top_offers.map((offer, index) => {
 			const bgClasses = ["bg-primary/5", "bg-blue-50", "bg-slate-100"];
 			const textClasses = ["text-primary", "text-blue-950", "text-slate-900"];
 			const btnClasses = [
@@ -30,7 +30,7 @@ export const PromoSection = ({ offers }) => {
 				"bg-blue-600/10 text-blue-600 border-blue-600/20",
 				"bg-slate-900/10 text-slate-900 border-slate-900/20"
 			];
-			
+
 			const colorIdx = index % 3;
 
 			return {
@@ -39,7 +39,7 @@ export const PromoSection = ({ offers }) => {
 				subtitle: { ar: offer.description || "", en: offer.description || "" },
 				buttonText: { ar: "تسوق الآن", en: "Shop Now" },
 				link: offer.link_type === 'category' ? `/category/${offer.category_id}` : (offer.link || "/"),
-				image: offer.image || offer.category?.image || "https://images.unsplash.com/photo-1584820927498-cafe8c1c969b?auto=format&fit=crop&q=80&w=600",
+				image: offer.image || offer.category?.image,
 				badge: offer.filters?.flash_sale ? { ar: "عرض خاص", en: "Special Offer" } : null,
 				bgClass: bgClasses[colorIdx],
 				textClass: textClasses[colorIdx],
@@ -51,7 +51,7 @@ export const PromoSection = ({ offers }) => {
 	}
 
 	const displayCards = mappedOffers;
-	
+
 	const isSingle = displayCards.length === 1;
 
 	const [emblaRef] = useEmblaCarousel(
@@ -75,8 +75,8 @@ export const PromoSection = ({ offers }) => {
 									key={promo.id + index}
 									className={cn(
 										"min-w-0 pl-4 rtl:pr-4 rtl:pl-0",
-										isSingle 
-											? "flex-[0_0_100%]" 
+										isSingle
+											? "flex-[0_0_100%]"
 											: "flex-[0_0_90%] sm:flex-[0_0_50%] md:flex-[0_0_50%] lg:flex-[0_0_50%]"
 									)}
 								>

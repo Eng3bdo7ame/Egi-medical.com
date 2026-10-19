@@ -30,7 +30,7 @@ const Home = () => {
 					case "trustBar":
 						return <TrustBar key={section.id} />;
 					case "promo":
-						return <PromoSection key={section.id} offers={homeData.offers} />;
+						return <PromoSection key={section.id} top_offers={homeData.top_offers || []} isLoading={isLoading} />;
 					case "offerBanners":
 						return <OfferBanners key={section.id} offers={homeData.offers || []} isLoading={isLoading} />;
 					case "blogSection":

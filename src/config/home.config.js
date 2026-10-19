@@ -20,7 +20,9 @@ export const homepageConfig = [
 		title: { en: "Latest Arrivals", ar: "أحدث المنتجات" },
 		viewAllLink: "/products"
 	},
+
 	{ id: "offer-banners", type: "offerBanners" },
+
 	{
 		id: "best-sellers",
 		type: "productSection",
