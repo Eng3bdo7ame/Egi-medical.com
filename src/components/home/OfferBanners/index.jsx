@@ -12,7 +12,6 @@ export const OfferBanners = ({ offers = [], isLoading }) => {
 
 	// Filter and map offers
 	const banners = (offers || [])
-		.slice(0, 2) // Limit to maximum 2 banners
 		.map((offer, index) => {
 			let link = "/";
 			if (offer.link_type === "category" && offer.category_id) {
